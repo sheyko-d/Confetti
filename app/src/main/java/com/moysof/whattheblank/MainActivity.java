@@ -1,12 +1,19 @@
 package com.moysof.whattheblank;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDialog;
+import android.view.View;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -77,23 +84,66 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
-            if (position==0) {
+            if (position == 0) {
                 return HomeFragment.newInstance();
-            } else {
+            } else if (position == 1) {
                 return ChatFragment.newInstance();
+            } else if (position == 2) {
+                return FriendsFragment.newInstance();
+            } else {
+                return SettingsFragment.newInstance();
             }
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
             return 4;
         }
 
-        @Override
-        public CharSequence getPageTitle(int position) {
-            //TODO: Won't need title, because it's replaced with logo
-            return "Home";
+    }
+
+    public void support(View v) {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Util.URL_SUPPORT)));
+    }
+
+    public void rate(View v) {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id="
+                + getPackageName())));
+    }
+
+    public void purchase(View v) {
+        Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show();
+    }
+
+    public void about(View v) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MaterialDialogStyle);
+        String version;
+        try {
+            version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+        } catch (Exception e) {
+            version = "n/a";
+        }
+        builder.setTitle(getString(R.string.app_name) + " v" + version);
+        builder.setView(R.layout.dialog_about);
+        builder.setPositiveButton(R.string.settings_about_cancel_btn,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        AppCompatDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mViewPager.getCurrentItem() != 0) {
+            // If user pressed back button, and current tab is not home, then return to the 1st tab
+            mViewPager.setCurrentItem(0);
+        } else {
+            // Otherwise exit app
+            super.onBackPressed();
         }
     }
 

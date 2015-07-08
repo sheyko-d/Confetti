@@ -4,8 +4,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <!-- General dimensions -->
-    <dimen name="btn_roboto_txt_size">16sp</dimen>
+    <!-- Project dimensions -->
+    <dimen name="btn_roboto_txt_size">18sp</dimen>
     <dimen name="btn_moon_flower_txt_size">30sp</dimen>
     <dimen name="btn_moon_flower_small_txt_size">22sp</dimen>
     <dimen name="btn_elevation">4dp</dimen>

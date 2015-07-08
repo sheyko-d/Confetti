@@ -3,20 +3,20 @@ package com.moysof.whattheblank.typeface;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
-import android.widget.Button;
+import android.widget.TextView;
 
-public class ButtonRobotoMedium extends Button {
+public class TextRobotoLight extends TextView {
 
-    public ButtonRobotoMedium(Context context) {
+    public TextRobotoLight(Context context) {
         super(context);
     }
 
-    public ButtonRobotoMedium(Context context, AttributeSet attrs) {
+    public TextRobotoLight(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public ButtonRobotoMedium(Context context, AttributeSet attrs, int defStyle) {
+    public TextRobotoLight(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
     }
@@ -25,7 +25,7 @@ public class ButtonRobotoMedium extends Button {
     private void init() {
         if (!isInEditMode()) {
             Typeface tf = Typeface.createFromAsset(getContext().getAssets(),
-                    "Roboto-Medium.ttf");
+                    "Roboto-Light.ttf");
             setTypeface(tf);
         }
     }

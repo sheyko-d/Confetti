@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
+                <com.moysof.whattheblank.typeface.TextRobotoLight
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -37,7 +37,7 @@
                     android:textColor="@android:color/white"
                     android:textSize="16sp" />
 
-                <TextView
+                <com.moysof.whattheblank.typeface.TextRobotoLight
                     android:id="@+id/home_stat_games_total"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
+                <com.moysof.whattheblank.typeface.TextRobotoLight
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -61,7 +61,7 @@
                     android:textColor="@android:color/white"
                     android:textSize="16sp" />
 
-                <TextView
+                <com.moysof.whattheblank.typeface.TextRobotoLight
                     android:id="@+id/home_stat_time_solved"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
+                <com.moysof.whattheblank.typeface.TextRobotoLight
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -85,7 +85,7 @@
                     android:textColor="@android:color/white"
                     android:textSize="16sp" />
 
-                <TextView
+                <com.moysof.whattheblank.typeface.TextRobotoLight
                     android:id="@+id/home_stat_skill_ranking"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

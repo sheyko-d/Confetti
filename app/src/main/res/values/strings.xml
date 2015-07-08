@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">WhatTheBlank</string>
+    <string name="app_name">What the Blank?</string>
+    <string name="app_name_condensed">WhatTheBlank</string>
+    <string name="url_website">www.moyersoftware.com</string>
 
     <!-- Loading screen -->
     <string name="btn_email">Register with Email</string>
@@ -9,7 +11,6 @@
     <string name="btn_google">Google+</string>
 
     <!-- Home screen -->
-    <string name="title_activity_main">Home</string>
     <string name="btn_how_to">HOW TO PLAY</string>
     <string name="btn_store">STORE</string>
     <string name="btn_join_game">JOIN A GAME</string>
@@ -18,4 +19,22 @@
     <string name="stat_time_solved">Avg. Time to be Solved</string>
     <string name="stat_skill_ranking">Skill Ranking</string>
 
+    <!-- Settings screen -->
+    <string name="settings_account_header">MY ACCOUNT</string>
+    <string name="settings_name">Name</string>
+    <string name="settings_username">Username</string>
+    <string name="settings_phone">Phone Number</string>
+    <string name="settings_email">Email Address</string>
+    <string name="settings_password">Password</string>
+    <string name="settings_password_change">Change Password</string>
+    <string name="settings_support">Support</string>
+    <string name="settings_rate">Rate the Game</string>
+    <string name="settings_purchase">Purchase Full Version</string>
+    <string name="settings_about">About</string>
+    <string name="settings_about_cancel_btn">Cancel</string>
+    <string name="settings_about_copyright">Copyright © 2015 MoyerSoftware</string>
+    <string name="title_activity_chat_thread">Chat thread</string>
+
+    <!-- Chat thread screen -->
+    
 </resources>

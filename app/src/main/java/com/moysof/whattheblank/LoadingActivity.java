@@ -43,17 +43,22 @@ public class LoadingActivity extends AppCompatActivity {
 
     private void loginEmail() {
         // TODO: Replace with real sign in mechanism
-        startActivity(new Intent(LoadingActivity.this, MainActivity.class));
+        onLoginSuccess();
     }
 
     private void loginGoogle() {
         // TODO: Replace with real sign in mechanism
-        startActivity(new Intent(LoadingActivity.this, MainActivity.class));
+        onLoginSuccess();
     }
 
     private void loginFacebook() {
         // TODO: Replace with real sign in mechanism
+        onLoginSuccess();
+    }
+
+    private void onLoginSuccess(){
         startActivity(new Intent(LoadingActivity.this, MainActivity.class));
+        finish();
     }
 
 }

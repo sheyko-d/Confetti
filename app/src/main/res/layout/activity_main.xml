@@ -28,6 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|enterAlways"
+            app:tabIndicatorColor="@android:color/white"
             app:tabSelectedTextColor="@color/tab_selected_text"
             app:tabTextColor="@color/tab_text" />
 
