@@ -33,8 +33,13 @@
     <string name="settings_about">About</string>
     <string name="settings_about_cancel_btn">Cancel</string>
     <string name="settings_about_copyright">Copyright © 2015 MoyerSoftware</string>
-    <string name="title_activity_chat_thread">Chat thread</string>
 
-    <!-- Chat thread screen -->
+    <!-- Chat thread (conversation) screen -->
+    <string name="thread_edit_txt_hint">Your message</string>
+
+    <!-- Friends screen -->
+    <string name="friends_requests_header">ADDED YOU</string>
+    <string name="friends_friends_header">FRIENDS</string>
+    <string name="friends_facebook_header">FACEBOOK FRIENDS</string>
     
 </resources>
