@@ -21,7 +21,6 @@ public class TextRobotoRegular extends TextView {
         init();
     }
 
-
     private void init() {
         if (!isInEditMode()) {
             Typeface tf = Typeface.createFromAsset(getContext().getAssets(),

@@ -21,7 +21,6 @@ public class TextRobotoLight extends TextView {
         init();
     }
 
-
     private void init() {
         if (!isInEditMode()) {
             Typeface tf = Typeface.createFromAsset(getContext().getAssets(),

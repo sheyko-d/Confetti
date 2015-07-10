@@ -19,16 +19,16 @@
         <item name="colorAccent">@color/accent</item>
     </style>
 
-    <style name="Button.Base.MoonFlower" parent="Widget.AppCompat.Button">
-        <item name="android:textSize">@dimen/btn_moon_flower_txt_size</item>
+    <style name="Button.Base.BasicTitle" parent="Widget.AppCompat.Button">
+        <item name="android:textSize">@dimen/btn_basic_title_txt_size</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:height">@dimen/btn_moon_flower_height</item>
+        <item name="android:height">@dimen/btn_basic_title_height</item>
         <item name="elevation">@dimen/btn_elevation</item>
     </style>
 
-    <style name="Button.Base.MoonFlower.Small" parent="Button.Base.MoonFlower">
-        <item name="android:textSize">@dimen/btn_moon_flower_small_txt_size</item>
-        <item name="android:height">@dimen/btn_moon_flower_small_height</item>
+    <style name="Button.Base.BasicTitle.Small" parent="Button.Base.BasicTitle">
+        <item name="android:textSize">@dimen/btn_basic_title_small_txt_size</item>
+        <item name="android:height">@dimen/btn_basic_title_small_height</item>
     </style>
 
     <style name="Button.Base.Roboto" parent="Widget.AppCompat.Button">
@@ -51,11 +51,11 @@
         <item name="colorButtonNormal">@color/btn_facebook</item>
     </style>
 
-    <style name="ButtonGreen" parent="Button.Base.MoonFlower">
+    <style name="ButtonGreen" parent="Button.Base.BasicTitle">
         <item name="colorButtonNormal">@color/green</item>
     </style>
 
-    <style name="ButtonRed" parent="Button.Base.MoonFlower.Small">
+    <style name="ButtonRed" parent="Button.Base.BasicTitle.Small">
         <item name="colorButtonNormal">@color/red</item>
     </style>
 

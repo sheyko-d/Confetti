@@ -6,11 +6,11 @@
 
     <!-- Project dimensions -->
     <dimen name="btn_roboto_txt_size">18sp</dimen>
-    <dimen name="btn_moon_flower_txt_size">30sp</dimen>
-    <dimen name="btn_moon_flower_small_txt_size">22sp</dimen>
+    <dimen name="btn_basic_title_txt_size">28sp</dimen>
+    <dimen name="btn_basic_title_small_txt_size">22sp</dimen>
     <dimen name="btn_elevation">4dp</dimen>
     <dimen name="btn_roboto_height">56dp</dimen>
-    <dimen name="btn_moon_flower_height">60dp</dimen>
-    <dimen name="btn_moon_flower_small_height">52dp</dimen>
+    <dimen name="btn_basic_title_height">60dp</dimen>
+    <dimen name="btn_basic_title_small_height">52dp</dimen>
 
 </resources>

@@ -22,22 +22,16 @@
             android:paddingTop="8dp"
             android:src="@drawable/logo_white" />
 
-        <android.support.design.widget.TabLayout
+        <com.moysof.whattheblank.typeface.TextMoonFlowerBold
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:tabIndicatorColor="@android:color/white"
-            app:tabMode="fixed"
-            app:tabSelectedTextColor="@color/tab_selected_text"
-            app:tabTextColor="@color/tab_text" />
+            android:layout_height="48dp"
+            android:background="@color/blue"
+            android:gravity="center_vertical"
+            android:text="@string/join_title"
+            android:textColor="@android:color/white"
+            android:textSize="26sp" />
 
     </LinearLayout>
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
 
 </LinearLayout>

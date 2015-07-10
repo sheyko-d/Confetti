@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
 
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_tab_home));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_tab_chat));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_tab_friends));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_tab_settings));
 
@@ -87,8 +86,6 @@ public class MainActivity extends AppCompatActivity {
             if (position == 0) {
                 return HomeFragment.newInstance();
             } else if (position == 1) {
-                return ChatFragment.newInstance();
-            } else if (position == 2) {
                 return FriendsFragment.newInstance();
             } else {
                 return SettingsFragment.newInstance();
@@ -97,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return 4;
+            return 3;
         }
 
     }

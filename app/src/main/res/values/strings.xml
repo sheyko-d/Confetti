@@ -41,5 +41,8 @@
     <string name="friends_requests_header">ADDED YOU</string>
     <string name="friends_friends_header">FRIENDS</string>
     <string name="friends_facebook_header">FACEBOOK FRIENDS</string>
-    
+
+    <!-- Join a Game screen -->
+    <string name="join_title">JOIN A GAME</string>
+
 </resources>

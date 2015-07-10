@@ -5,27 +5,26 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.Button;
 
-public class ButtonMoonFlowerBold extends Button {
+public class ButtonBasicTitle extends Button {
 
-    public ButtonMoonFlowerBold(Context context) {
+    public ButtonBasicTitle(Context context) {
         super(context);
     }
 
-    public ButtonMoonFlowerBold(Context context, AttributeSet attrs) {
+    public ButtonBasicTitle(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public ButtonMoonFlowerBold(Context context, AttributeSet attrs, int defStyle) {
+    public ButtonBasicTitle(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
     }
 
-
     private void init() {
         if (!isInEditMode()) {
             Typeface tf = Typeface.createFromAsset(getContext().getAssets(),
-                    "MoonFlower-Bold.ttf");
+                    "BasicTitleFont.ttf");
             setTypeface(tf);
         }
     }
