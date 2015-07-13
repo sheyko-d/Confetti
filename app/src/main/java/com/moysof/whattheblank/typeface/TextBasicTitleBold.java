@@ -2,21 +2,22 @@ package com.moysof.whattheblank.typeface;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.text.Html;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-public class TextRobotoLight extends TextView {
+public class TextBasicTitleBold extends TextView {
 
-    public TextRobotoLight(Context context) {
+    public TextBasicTitleBold(Context context) {
         super(context);
     }
 
-    public TextRobotoLight(Context context, AttributeSet attrs) {
+    public TextBasicTitleBold(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public TextRobotoLight(Context context, AttributeSet attrs, int defStyle) {
+    public TextBasicTitleBold(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
     }
@@ -24,8 +25,9 @@ public class TextRobotoLight extends TextView {
     private void init() {
         if (!isInEditMode()) {
             Typeface tf = Typeface.createFromAsset(getContext().getAssets(),
-                    "fonts/Roboto-Light.ttf");
+                    "fonts/BasicTitleFont.ttf");
             setTypeface(tf);
+            setText(Html.fromHtml("<b>" + getText() + "</b>"));
         }
     }
 }

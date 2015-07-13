@@ -24,7 +24,7 @@ public class ButtonRobotoLight extends Button {
     private void init() {
         if (!isInEditMode()) {
             Typeface tf = Typeface.createFromAsset(getContext().getAssets(),
-                    "Roboto-Light.ttf");
+                    "fonts/Roboto-Light.ttf");
             setTypeface(tf);
         }
     }

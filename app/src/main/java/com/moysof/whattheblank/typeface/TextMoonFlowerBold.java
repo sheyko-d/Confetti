@@ -24,7 +24,7 @@ public class TextMoonFlowerBold extends TextView {
     private void init() {
         if (!isInEditMode()) {
             Typeface tf = Typeface.createFromAsset(getContext().getAssets(),
-                    "MoonFlower-Bold.ttf");
+                    "fonts/MoonFlower-Bold.ttf");
             setTypeface(tf);
         }
     }

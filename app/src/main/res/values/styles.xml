@@ -59,6 +59,10 @@
         <item name="colorButtonNormal">@color/red</item>
     </style>
 
+    <style name="ButtonPurple" parent="Button.Base.BasicTitle.Small">
+        <item name="colorButtonNormal">@color/primary</item>
+    </style>
+
     <style name="MaterialDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">@android:color/white</item>
     </style>

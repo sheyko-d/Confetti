@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.moysof.whattheblank.typeface.TextMoonFlowerBold
+        <com.moysof.whattheblank.typeface.TextBasicTitleBold
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="12dp"
@@ -17,7 +17,7 @@
             android:paddingTop="12dp"
             android:text="@string/settings_account_header"
             android:textColor="@color/primary"
-            android:textSize="22sp" />
+            android:textSize="18sp" />
 
         <View
             android:layout_width="match_parent"
@@ -154,7 +154,7 @@
                 android:textSize="14sp" />
         </LinearLayout>
 
-        <com.moysof.whattheblank.typeface.TextMoonFlowerBold
+        <com.moysof.whattheblank.typeface.TextBasicTitleBold
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="12dp"
@@ -163,7 +163,7 @@
             android:paddingTop="12dp"
             android:text="@string/settings_support"
             android:textColor="@color/primary"
-            android:textSize="22sp" />
+            android:textSize="18sp" />
 
         <View
             android:layout_width="match_parent"

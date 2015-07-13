@@ -4,20 +4,21 @@
     <string name="app_name">What the Blank?</string>
     <string name="app_name_condensed">WhatTheBlank</string>
     <string name="url_website">www.moyersoftware.com</string>
+    <string name="facebook_app_id">943466632343086</string>
 
     <!-- Loading screen -->
-    <string name="btn_email">Register with Email</string>
-    <string name="btn_facebook">Facebook</string>
-    <string name="btn_google">Google+</string>
+    <string name="loading_btn_email">Register with Email</string>
+    <string name="loading_btn_facebook">Facebook</string>
+    <string name="loading_btn_google">Google+</string>
 
     <!-- Home screen -->
-    <string name="btn_how_to">HOW TO PLAY</string>
-    <string name="btn_store">STORE</string>
-    <string name="btn_join_game">JOIN A GAME</string>
-    <string name="btn_host_game">HOST A GAME</string>
-    <string name="stat_games_total">Games Played</string>
-    <string name="stat_time_solved">Avg. Time to be Solved</string>
-    <string name="stat_skill_ranking">Skill Ranking</string>
+    <string name="home_btn_how_to">HOW TO PLAY</string>
+    <string name="home_btn_store">STORE</string>
+    <string name="home_btn_join_game">JOIN A GAME</string>
+    <string name="home_btn_host_game">HOST A GAME</string>
+    <string name="home_stat_games_total">Games Played</string>
+    <string name="home_stat_time_solved">Avg. Time to be Solved</string>
+    <string name="home_stat_skill_ranking">Skill Ranking</string>
 
     <!-- Settings screen -->
     <string name="settings_account_header">MY ACCOUNT</string>
@@ -44,5 +45,11 @@
 
     <!-- Join a Game screen -->
     <string name="join_title">JOIN A GAME</string>
+    <string name="join_tab_id">JOIN BY ID</string>
+    <string name="join_tab_location">JOIN BY LOCATION</string>
+    <string name="join_title_id">Search by Game ID</string>
+    <string name="join_title_location">Searching near your location…</string>
+    <string name="join_header_found">GAMES FOUND</string>
+    <string name="join_games_btn">JOIN</string>
 
 </resources>

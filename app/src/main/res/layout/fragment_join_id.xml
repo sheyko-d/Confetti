@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.moysof.whattheblank.typeface.TextRobotoRegular
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/join_title_id"
+        android:textColor="@color/primary_text"
+        android:textSize="14sp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="13dp"
+        android:layout_marginRight="13dp"
+        android:layout_marginTop="16dp" />
+
+    <com.moysof.whattheblank.typeface.TextBasicTitleBold
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="12dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="24dp"
+        android:text="@string/join_header_found"
+        android:textColor="@color/primary"
+        android:textSize="18sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/primary" />
+
+    <!-- TODO: Replace with RecyclerView -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="12dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="12dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <com.moysof.whattheblank.typeface.TextRobotoRegular
+                android:id="@+id/join_game_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Wicked Fun Game"
+                android:textColor="@color/primary_text"
+                android:textSize="16sp" />
+
+            <com.moysof.whattheblank.typeface.TextRobotoRegular
+                android:id="@+id/join_game_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Created by @sd1234"
+                android:textColor="@color/secondary_text"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <com.moysof.whattheblank.typeface.ButtonBasicTitle
+            android:id="@+id/join_game_btn"
+            android:layout_width="80dp"
+            android:layout_height="48dp"
+            android:text="@string/join_games_btn"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:theme="@style/ButtonGreen" />
+    </LinearLayout>
+
+</LinearLayout>

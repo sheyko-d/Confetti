@@ -3,6 +3,7 @@ package com.moysof.whattheblank.adapter;
 import android.content.Context;
 import android.support.v7.util.SortedList;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -133,10 +134,12 @@ public class FriendsAdapter extends
     public void onBindViewHolder(FriendHolder holder, int position) {
         Friend friend = friends.get(position);
 
-        holder.nameTxt.setText(friend.getName());
         if (isItem(getItemViewType(position))) {
             mImageLoader.displayImage(friend.getAvatar(), holder.avatarImg);
             holder.usernameTxt.setText(friend.getUsername());
+            holder.nameTxt.setText(friend.getName());
+        } else {
+            holder.nameTxt.setText(Html.fromHtml("<b>" + friend.getName() + "</b>"));
         }
     }
 

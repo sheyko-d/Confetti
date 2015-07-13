@@ -33,7 +33,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:padding="4dp"
-                    android:text="@string/stat_games_total"
+                    android:text="@string/home_stat_games_total"
                     android:textColor="@android:color/white"
                     android:textSize="16sp" />
 
@@ -57,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:padding="4dp"
-                    android:text="@string/stat_time_solved"
+                    android:text="@string/home_stat_time_solved"
                     android:textColor="@android:color/white"
                     android:textSize="16sp" />
 
@@ -81,7 +81,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:padding="4dp"
-                    android:text="@string/stat_skill_ranking"
+                    android:text="@string/home_stat_skill_ranking"
                     android:textColor="@android:color/white"
                     android:textSize="16sp" />
 
@@ -110,7 +110,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="3dp"
             android:layout_weight="1"
-            android:text="@string/btn_how_to"
+            android:text="@string/home_btn_how_to"
             android:theme="@style/ButtonRed" />
 
         <com.moysof.whattheblank.typeface.ButtonBasicTitle
@@ -119,7 +119,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="3dp"
             android:layout_weight="1"
-            android:text="@string/btn_store"
+            android:text="@string/home_btn_store"
             android:theme="@style/ButtonRed" />
     </LinearLayout>
 
@@ -130,7 +130,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginTop="4dp"
         android:onClick="joinGame"
-        android:text="@string/btn_join_game"
+        android:text="@string/home_btn_join_game"
         android:theme="@style/ButtonGreen" />
 
     <com.moysof.whattheblank.typeface.ButtonBasicTitle
@@ -139,7 +139,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/home_join_btn"
         android:layout_marginBottom="4dp"
-        android:text="@string/btn_host_game"
+        android:text="@string/home_btn_host_game"
         android:theme="@style/ButtonGreen" />
 
 </RelativeLayout>

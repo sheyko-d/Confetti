@@ -24,7 +24,7 @@ public class ButtonBasicTitle extends Button {
     private void init() {
         if (!isInEditMode()) {
             Typeface tf = Typeface.createFromAsset(getContext().getAssets(),
-                    "BasicTitleFont.ttf");
+                    "fonts/BasicTitleFont.ttf");
             setTypeface(tf);
         }
     }

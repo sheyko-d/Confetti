@@ -31,7 +31,7 @@
         android:drawableLeft="@drawable/ic_btn_email"
         android:paddingLeft="12dp"
         android:paddingRight="28dp"
-        android:text="@string/btn_email"
+        android:text="@string/loading_btn_email"
         android:theme="@style/ButtonEmail" />
 
     <com.moysof.whattheblank.typeface.ButtonRobotoLight
@@ -43,7 +43,7 @@
         android:drawableLeft="@drawable/ic_btn_google"
         android:paddingLeft="12dp"
         android:paddingRight="26dp"
-        android:text="@string/btn_google"
+        android:text="@string/loading_btn_google"
         android:theme="@style/ButtonGoogle" />
 
     <com.moysof.whattheblank.typeface.ButtonRobotoLight
@@ -54,6 +54,6 @@
         android:drawableLeft="@drawable/ic_btn_facebook"
         android:paddingLeft="12dp"
         android:paddingRight="24dp"
-        android:text="@string/btn_facebook"
+        android:text="@string/loading_btn_facebook"
         android:theme="@style/ButtonFacebook" />
 </LinearLayout>
