@@ -7,8 +7,9 @@ public class Util {
 
     // Constants
     public static final String URL_SUPPORT = "http://www.moyersoftware.com";
-    public static final String EXTRA_AUTHOR = "author";
-    public static final String URL_LOGIN = "http://moyersoftware.com/blank/sign_in.php";
+    public static final String URL_SIGN_IN = "http://moyersoftware.com/blank/sign_in.php";
+    public static final String URL_SIGN_IN_SOCIAL
+            = "http://moyersoftware.com/blank/sign_in_social.php";
     private static final String LOG_TAG = "BlankDebug";
 
     // Methods

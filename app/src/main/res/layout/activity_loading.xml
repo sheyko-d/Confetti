@@ -32,6 +32,7 @@
         android:paddingLeft="12dp"
         android:paddingRight="28dp"
         android:text="@string/loading_btn_email"
+        android:textSize="18sp"
         android:theme="@style/ButtonEmail" />
 
     <com.moysof.whattheblank.typeface.ButtonRobotoLight
@@ -44,6 +45,7 @@
         android:paddingLeft="12dp"
         android:paddingRight="26dp"
         android:text="@string/loading_btn_google"
+        android:textSize="18sp"
         android:theme="@style/ButtonGoogle" />
 
     <com.moysof.whattheblank.typeface.ButtonRobotoLight
@@ -55,5 +57,6 @@
         android:paddingLeft="12dp"
         android:paddingRight="24dp"
         android:text="@string/loading_btn_facebook"
+        android:textSize="18sp"
         android:theme="@style/ButtonFacebook" />
 </LinearLayout>

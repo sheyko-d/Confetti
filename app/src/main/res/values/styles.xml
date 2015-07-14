@@ -59,12 +59,20 @@
         <item name="colorButtonNormal">@color/red</item>
     </style>
 
-    <style name="ButtonPurple" parent="Button.Base.BasicTitle.Small">
+    <style name="ButtonPurple" parent="Button.Base.Roboto">
+        <item name="colorButtonNormal">@color/primary</item>
+    </style>
+
+    <style name="ButtonPurple.Small" parent="Button.Base.BasicTitle.Small">
         <item name="colorButtonNormal">@color/primary</item>
     </style>
 
     <style name="MaterialDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">@android:color/white</item>
+    </style>
+
+    <style name="ToolBar" parent="Theme.AppCompat.Light">
+        <item name="android:textColorPrimary">@color/primary</item>
     </style>
 
 </resources>

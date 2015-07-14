@@ -1,5 +1,7 @@
 package com.moysof.whattheblank;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageInfo;
@@ -58,12 +60,15 @@ public class LoadingActivity extends AppCompatActivity implements
     private boolean mSignInClicked;
     private GoogleApiClient mGoogleApiClient;
     private ConnectionResult mConnectionResult;
+    public static Activity sActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
         FacebookSdk.sdkInitialize(this);
+
+        sActivity = this;
 
         mBtnEmail = (Button) findViewById(R.id.loading_button_email);
         mBtnGoogle = (Button) findViewById(R.id.loading_button_google);
@@ -197,8 +202,7 @@ public class LoadingActivity extends AppCompatActivity implements
     };
 
     private void loginEmail() {
-        // TODO: Replace with real sign in mechanism
-        onLoginSuccess();
+        startActivity(new Intent(LoadingActivity.this, RegisterActivity.class));
     }
 
     private void loginGoogle() {
@@ -354,11 +358,15 @@ public class LoadingActivity extends AppCompatActivity implements
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
 
+        final ProgressDialog progressDialog  = ProgressDialog.show(this, "",
+                "Connecting...");
+
         // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Util.URL_LOGIN,
-                new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                Util.URL_SIGN_IN_SOCIAL, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        progressDialog.cancel();
                         try {
                             JSONObject responseJSON = new JSONObject(response);
                             if (responseJSON.getString("result").equals("success")) {
@@ -384,6 +392,7 @@ public class LoadingActivity extends AppCompatActivity implements
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progressDialog.cancel();
                 Toast.makeText(LoadingActivity.this, "Server error",
                         Toast.LENGTH_LONG).show();
                 Util.Log("Server error: " + error);
