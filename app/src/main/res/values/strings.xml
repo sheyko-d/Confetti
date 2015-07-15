@@ -7,7 +7,6 @@
     <string name="facebook_app_id">943466632343086</string>
 
     <!-- Loading screen -->
-    <string name="title_activity_login">Log In</string>
     <string name="loading_btn_email">Register with Email</string>
     <string name="loading_btn_facebook">Facebook</string>
     <string name="loading_btn_google">Google+</string>
@@ -16,10 +15,18 @@
     <string name="title_activity_register">Create an Account</string>
     <string name="register_btn">Register</string>
     <string name="register_title_name">Name</string>
+    <string name="register_title_username">Username</string>
     <string name="register_title_email">Email</string>
     <string name="register_title_password">Password</string>
     <string name="register_title_password_repeat">Repeat Password</string>
     <string name="register_login_btn">Already have an account?</string>
+
+    <!-- Login screen -->
+    <string name="title_activity_login">Log In</string>
+    <string name="login_btn">Log In</string>
+    <string name="login_title_email">Email or Username</string>
+    <string name="login_title_password">Password</string>
+    <string name="login_register_btn">Don\'t have an account?</string>
 
     <!-- Home screen -->
     <string name="home_btn_how_to">HOW TO PLAY</string>

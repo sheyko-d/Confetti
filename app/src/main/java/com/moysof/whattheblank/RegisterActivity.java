@@ -1,10 +1,14 @@
 package com.moysof.whattheblank;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -33,14 +37,17 @@ public class RegisterActivity extends AppCompatActivity {
 
     private ActionBar mActionBar;
     private EditText mNameEditTxt;
+    private EditText mUsernameEditTxt;
     private EditText mEmailEditTxt;
     private EditText mPasswordEditTxt;
     private EditText mPasswordRepeatEditTxt;
     private TextInputLayout mNameLayout;
+    private TextInputLayout mUsernameLayout;
     private TextInputLayout mEmailLayout;
     private TextInputLayout mPasswordLayout;
     private TextInputLayout mPasswordRepeatLayout;
     private Button mRegisterBtn;
+    private Button mRegisterLoginBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,23 +55,30 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         mNameEditTxt = (EditText) findViewById(R.id.register_name_edit_txt);
+        mUsernameEditTxt = (EditText) findViewById(R.id.register_username_edit_txt);
         mEmailEditTxt = (EditText) findViewById(R.id.register_email_edit_txt);
         mPasswordEditTxt = (EditText) findViewById(R.id.register_password_edit_txt);
         mPasswordRepeatEditTxt = (EditText) findViewById(R.id.register_password_repeat_edit_txt);
         mNameLayout = (TextInputLayout) findViewById(R.id.register_name_layout);
+        mUsernameLayout = (TextInputLayout) findViewById(R.id.register_username_layout);
         mEmailLayout = (TextInputLayout) findViewById(R.id.register_email_layout);
         mPasswordLayout = (TextInputLayout) findViewById(R.id.register_password_layout);
         mPasswordRepeatLayout = (TextInputLayout) findViewById(R.id.register_password_repeat_layout);
         mRegisterBtn = (Button) findViewById(R.id.register_button);
+        mRegisterLoginBtn = (Button) findViewById(R.id.register_login_btn);
+
+        autoFill();
 
         initToolbar();
 
         // Work-around to include error text padding
         mNameLayout.setError(" ");
+        mUsernameLayout.setError(" ");
         mEmailLayout.setError(" ");
         mPasswordLayout.setError(" ");
         mPasswordRepeatLayout.setError(" ");
         mNameLayout.setError(null);
+        mUsernameLayout.setError(null);
         mEmailLayout.setError(null);
         mPasswordLayout.setError(null);
         mPasswordRepeatLayout.setError(null);
@@ -73,6 +87,13 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 register();
+            }
+        });
+
+        mRegisterLoginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logIn();
             }
         });
     }
@@ -94,13 +115,46 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+    private void autoFill() {
+        AccountManager manager = (AccountManager) getSystemService(ACCOUNT_SERVICE);
+        Account[] accounts = manager.getAccountsByType("com.google");
+        if (accounts.length > 0) {
+            mEmailEditTxt.setText(accounts[0].name);
+            mNameEditTxt.setText(formatName(accounts[0].name));
+            mUsernameEditTxt.setText(formatUsername(accounts[0].name));
+
+            // If auto filled successfully, then focus on password field
+            mPasswordEditTxt.requestFocus();
+        }
+    }
+
+    private String formatUsername(String email) {
+        return email.substring(0, email.indexOf("@"));
+    }
+
+    private String formatName(String email) {
+        String name = email.substring(0, email.indexOf("@"));
+
+        // Capitalize first letters
+        StringBuffer res = new StringBuffer();
+        String[] strArr = name.split("\\.");
+        for (String str : strArr) {
+            char[] stringArray = str.trim().toCharArray();
+            stringArray[0] = Character.toUpperCase(stringArray[0]);
+            str = new String(stringArray);
+            res.append(str).append(" ");
+        }
+        name = res.toString();
+
+        return name;
+    }
+
     public void register() {
         String name = mNameEditTxt.getText().toString();
+        String username = mUsernameEditTxt.getText().toString();
         String email = mEmailEditTxt.getText().toString();
         String password = mPasswordEditTxt.getText().toString();
         String passwordRepeat = mPasswordRepeatEditTxt.getText().toString();
-
-        clearErrors();
 
         Boolean foundError = false;
         if (TextUtils.isEmpty(name)) {
@@ -108,6 +162,12 @@ public class RegisterActivity extends AppCompatActivity {
             foundError = true;
         } else {
             mNameLayout.setError(null);
+        }
+        if (TextUtils.isEmpty(username)) {
+            mUsernameLayout.setError("Username is required");
+            foundError = true;
+        } else {
+            mUsernameLayout.setError(null);
         }
         if (TextUtils.isEmpty(email)) {
             mEmailLayout.setError("Email is required");
@@ -137,12 +197,14 @@ public class RegisterActivity extends AppCompatActivity {
             mPasswordRepeatLayout.setError(null);
         }
 
-        if (!foundError){
-            signInOnServer(email, name, password);
+        if (!foundError) {
+            signInOnServer(email, name, username, password);
         }
     }
 
-    private void clearErrors() {
+    private void logIn() {
+        finish();
+        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
     }
 
     boolean isEmailValid(CharSequence email) {
@@ -155,13 +217,14 @@ public class RegisterActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void signInOnServer(final String email, final String name, final String password) {
-        Util.Log(email + ", " + name + ", " + password);
+    private void signInOnServer(final String email, final String name, final String username,
+                                final String password) {
+        final String phone = Util.getPhone();
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        final ProgressDialog progressDialog  = ProgressDialog.show(this, "",
+        final ProgressDialog progressDialog = ProgressDialog.show(this, "",
                 "Connecting...");
 
         // Request a string response from the provided URL.
@@ -173,6 +236,9 @@ public class RegisterActivity extends AppCompatActivity {
                         try {
                             JSONObject responseJSON = new JSONObject(response);
                             if (responseJSON.getString("result").equals("success")) {
+                                String id = responseJSON.getString("id");
+                                String avatar = responseJSON.getString("avatar");
+                                savePreferences(id, name, username, email, phone, avatar);
                                 onLoginSuccess();
                             } else if (responseJSON.getString("result").equals("empty")) {
                                 Toast.makeText(RegisterActivity.this, "Some fields are empty",
@@ -209,13 +275,23 @@ public class RegisterActivity extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("name", name);
+                params.put("username", username);
                 params.put("email", email);
                 params.put("password", password);
+                params.put("phone", phone);
                 return params;
             }
         };
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
+    }
+
+    private void savePreferences(String id, String name, String username, String email,
+                                 String phone, String avatar) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        prefs.edit().putString("id", id).putString("name", name).putString("username", username)
+                .putString("email", email).putString("phone", phone)
+                .putString("avatar", avatar).apply();
     }
 
     private void onLoginSuccess() {

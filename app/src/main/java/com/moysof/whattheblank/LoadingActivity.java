@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
@@ -139,6 +141,7 @@ public class LoadingActivity extends AppCompatActivity implements
                                                 String id;
                                                 String email;
                                                 String name;
+                                                String username;
                                                 try {
                                                     id = object.getString("id");
                                                 } catch (JSONException e) {
@@ -149,14 +152,28 @@ public class LoadingActivity extends AppCompatActivity implements
                                                 } catch (JSONException e) {
                                                     email = "";
                                                 }
+                                                /*
+                                                 * Username field is deprecated for Facebook API
+                                                 * with versions 2.0 and higher, so just extract
+                                                 * username from email.
+                                                 *
+                                                 * http://stackoverflow.com/a/23527664
+                                                 */
                                                 try {
                                                     name = object.getString("name");
                                                 } catch (JSONException e) {
                                                     name = "";
                                                 }
+                                                try {
+                                                    username = email.substring(0,
+                                                            email.indexOf("@"));
+                                                } catch (Exception e) {
+                                                    username = "";
+                                                }
 
-                                                signInOnServer(id, email, name, "http://graph.facebook.com/"
-                                                        + id + "/picture?type=normal");
+                                                signInOnServer(id, email, name, username,
+                                                        "http://graph.facebook.com/" + id
+                                                                + "/picture?type=normal");
                                             }
 
                                         });
@@ -287,20 +304,17 @@ public class LoadingActivity extends AppCompatActivity implements
                     Person currentPerson = Plus.PeopleApi
                             .getCurrentPerson(mGoogleApiClient);
 
-                    String personName = currentPerson.getDisplayName();
+                    String id = currentPerson.getId();
+                    String name = currentPerson.getDisplayName();
                     String personPhotoUrl = currentPerson.getImage().getUrl();
-                    String personGooglePlusProfile = currentPerson.getUrl();
                     String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
+                    String username = email.substring(0, email.indexOf("@"));
 
                     personPhotoUrl = personPhotoUrl.substring(0,
                             personPhotoUrl.length() - 2)
                             + 100;
 
-                    signInOnServer(currentPerson.getId(), email, personName, personPhotoUrl);
-
-                    Log.d("Log", "Name: " + personName + ", plusProfile: "
-                            + personGooglePlusProfile + ", email: " + email
-                            + ", Image: " + personPhotoUrl);
+                    signInOnServer(id, email, name, username, personPhotoUrl);
 
 
                     // by default the profile url gives 50x50 px image only
@@ -352,44 +366,46 @@ public class LoadingActivity extends AppCompatActivity implements
     }
 
     private void signInOnServer(final String id, final String email, final String name,
-                                final String avatar) {
-        Util.Log(id + ", " + email + ", " + name + ", " + avatar);
+                                final String username, final String avatar) {
+        final String phone = Util.getPhone();
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        final ProgressDialog progressDialog  = ProgressDialog.show(this, "",
+        final ProgressDialog progressDialog = ProgressDialog.show(this, "",
                 "Connecting...");
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
                 Util.URL_SIGN_IN_SOCIAL, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        progressDialog.cancel();
-                        try {
-                            JSONObject responseJSON = new JSONObject(response);
-                            if (responseJSON.getString("result").equals("success")) {
-                                onLoginSuccess();
-                            } else if (responseJSON.getString("result").equals("empty")) {
-                                Toast.makeText(LoadingActivity.this, "Some fields are empty",
-                                        Toast.LENGTH_LONG).show();
-                            } else {
-                                Toast.makeText(LoadingActivity.this, "Unknown server error",
-                                        Toast.LENGTH_LONG).show();
-                            }
-                        } catch (JSONException e) {
-                            if (Util.isDebugging()) {
-                                Toast.makeText(LoadingActivity.this, "JSON error: " + response,
-                                        Toast.LENGTH_LONG).show();
-                            } else {
-                                Toast.makeText(LoadingActivity.this, "Unknown server error",
-                                        Toast.LENGTH_LONG).show();
-                            }
-                        }
-                        Util.Log(response);
+            @Override
+            public void onResponse(String response) {
+                progressDialog.cancel();
+                try {
+                    JSONObject responseJSON = new JSONObject(response);
+                    if (responseJSON.getString("result").equals("success")) {
+                        String id = responseJSON.getString("id");
+                        savePreferences(id, name, username, email, phone, avatar);
+                        onLoginSuccess();
+                    } else if (responseJSON.getString("result").equals("empty")) {
+                        Toast.makeText(LoadingActivity.this, "Some fields are empty",
+                                Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(LoadingActivity.this, "Unknown server error",
+                                Toast.LENGTH_LONG).show();
                     }
-                }, new Response.ErrorListener() {
+                } catch (JSONException e) {
+                    if (Util.isDebugging()) {
+                        Toast.makeText(LoadingActivity.this, "JSON error: " + response,
+                                Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(LoadingActivity.this, "Unknown server error",
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+                Util.Log(response);
+            }
+        }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressDialog.cancel();
@@ -403,13 +419,23 @@ public class LoadingActivity extends AppCompatActivity implements
                 Map<String, String> params = new HashMap<>();
                 params.put("id", id);
                 params.put("name", name);
+                params.put("username", username);
                 params.put("email", email);
+                params.put("phone", phone);
                 params.put("avatar", avatar);
                 return params;
             }
         };
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
+    }
+
+    private void savePreferences(String id, String name, String username, String email,
+                                 String phone, String avatar) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        prefs.edit().putString("id", id).putString("name", name).putString("username", username)
+                .putString("email", email).putString("phone", phone).putString("avatar", avatar)
+                .apply();
     }
 
 }
