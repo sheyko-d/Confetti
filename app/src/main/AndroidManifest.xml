@@ -45,6 +45,10 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".JoinActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".LobbyActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- Facebook data -->

@@ -14,11 +14,12 @@ import android.view.View;
 import android.widget.TextView;
 
 
-public class JoinActivity extends AppCompatActivity {
+public class LobbyActivity extends AppCompatActivity {
 
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
     private SectionsPagerAdapter mSectionsPagerAdapter;
+    public static final String EXTRA_TITLE = "title";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,9 @@ public class JoinActivity extends AppCompatActivity {
     }
 
     private void initTabs() {
+        ((TextView) findViewById(R.id.join_title_txt)).setText(Html.fromHtml("<b>" + getIntent()
+                .getStringExtra(EXTRA_TITLE) + "</b>"));
+
         Typeface droidSerifMonoTF = Typeface.createFromAsset(getAssets(),
                 "fonts/BasicTitleFont.ttf");
         for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
@@ -60,7 +64,7 @@ public class JoinActivity extends AppCompatActivity {
         mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                //mViewPager.setCurrentItem(tab.getPosition());
+                mViewPager.setCurrentItem(tab.getPosition());
             }
 
             @Override
@@ -87,9 +91,9 @@ public class JoinActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             if (position == 0) {
-                return JoinIDFragment.newInstance();
+                return LobbyGameFragment.newInstance();
             } else {
-                return JoinLocationFragment.newInstance();
+                return LobbyPlayersFragment.newInstance();
             }
         }
 
@@ -101,9 +105,9 @@ public class JoinActivity extends AppCompatActivity {
         @Override
         public String getPageTitle(int position) {
             if (position == 0) {
-                return getString(R.string.join_tab_id);
+                return getString(R.string.lobby_tab_game);
             } else {
-                return getString(R.string.join_tab_location);
+                return getString(R.string.lobby_tab_players);
             }
         }
 
