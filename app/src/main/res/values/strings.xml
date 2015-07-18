@@ -79,4 +79,18 @@
     <string name="lobby_title_time">Time per Round</string>
     <string name="lobby_title_wait">PLEASE WAIT WHILE OTHERS JOIN…</string>
 
+    <!-- Host a Game screen -->
+    <string name="host_title">HOST A GAME</string>
+    <string name="host_id_title">Game ID</string>
+    <string name="host_title_name">Game Name</string>
+    <string name="host_desc_name">Name your game so players know it\'s yours</string>
+    <string name="host_title_password">Game Password</string>
+    <string name="host_desc_password">Needs to be at least 4 numbers</string>
+    <string name="host_title_teams">Number of Teams</string>
+    <string name="host_title_players">Number of Players per Team</string>
+    <string name="host_title_cards">Number of Players per Team</string>
+    <string name="host_title_time">Time per Round</string>
+    <string name="host_btn">CREATE GAME</string>
+    <string name="host_spinner_pro_badge">PRO</string>
+
 </resources>

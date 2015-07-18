@@ -7,6 +7,9 @@ import android.util.Log;
 
 public class Util {
 
+    // Max number of teams, players per team, or cards per player
+    public static final Integer MAX_NUMBER = 10;
+
     // Constants
     public static final String URL_SUPPORT = "http://www.moyersoftware.com";
     public static final String URL_LOG_IN = "http://moyersoftware.com/blank/log_in.php";

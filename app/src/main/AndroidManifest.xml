@@ -50,6 +50,10 @@
         <activity
             android:name=".LobbyActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".HostActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
 
         <!-- Facebook data -->
         <meta-data

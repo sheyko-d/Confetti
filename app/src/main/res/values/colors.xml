@@ -10,7 +10,7 @@
     <color name="accent">@color/primary</color>
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#AA212121</color>
-    <color name="divider">#B6B6B6</color>
+    <color name="divider">#E0E0E0</color>
     <color name="bg">#E4E4E4</color>
     <color name="btn_facebook">#415DAE</color>
     <color name="btn_google">#DD4B39</color>

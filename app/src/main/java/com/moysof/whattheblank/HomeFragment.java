@@ -52,7 +52,6 @@ public class HomeFragment extends Fragment {
     }
 
     public void hostGame() {
-        // TODO: Host instead of join
-        startActivity(new Intent(getActivity(), JoinActivity.class));
+        startActivity(new Intent(getActivity(), HostActivity.class));
     }
 }
