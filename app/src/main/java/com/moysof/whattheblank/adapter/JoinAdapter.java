@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.moysof.whattheblank.LobbyActivity;
+import com.moysof.whattheblank.JoinLobbyActivity;
 import com.moysof.whattheblank.R;
 
 public class JoinAdapter extends
@@ -131,8 +131,8 @@ public class JoinAdapter extends
 
         @Override
         public void onItemClick(View v, int position) {
-            mContext.startActivity(new Intent(mContext, LobbyActivity.class)
-                    .putExtra(LobbyActivity.EXTRA_TITLE, games.get(position).getName()));
+            mContext.startActivity(new Intent(mContext, JoinLobbyActivity.class)
+                    .putExtra(JoinLobbyActivity.EXTRA_TITLE, games.get(position).getName()));
         }
 
     };

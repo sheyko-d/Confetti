@@ -11,7 +11,7 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="24dp"
-        android:text="@string/lobby_game_header"
+        android:text="@string/join_lobby_game_header"
         android:textColor="@color/primary"
         android:textSize="18sp" />
 
@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="@string/lobby_title_players"
+            android:text="@string/join_lobby_title_players"
             android:textColor="@color/primary_text"
             android:textSize="16sp" />
 
@@ -47,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="@string/lobby_title_cards"
+            android:text="@string/join_lobby_title_cards"
             android:textColor="@color/primary_text"
             android:textSize="16sp" />
 
@@ -62,7 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="@string/lobby_title_time"
+            android:text="@string/join_lobby_title_time"
             android:textColor="@color/primary_text"
             android:textSize="16sp" />
 
@@ -79,7 +79,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:paddingBottom="16dp"
-        android:text="@string/lobby_title_wait"
+        android:text="@string/join_lobby_title_wait"
         android:textColor="@color/primary"
         android:textSize="32sp" />
 

@@ -48,12 +48,15 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".LobbyActivity"
+            android:name=".JoinLobbyActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".HostActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".HostLobbyActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- Facebook data -->
         <meta-data

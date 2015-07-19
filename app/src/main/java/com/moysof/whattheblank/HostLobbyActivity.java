@@ -14,8 +14,9 @@ import android.view.View;
 import android.widget.TextView;
 
 
-public class LobbyActivity extends AppCompatActivity {
+public class HostLobbyActivity extends AppCompatActivity {
 
+    public static Integer sTotalPlayersCount = 3;
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
     private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -91,9 +92,9 @@ public class LobbyActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             if (position == 0) {
-                return LobbyGameFragment.newInstance();
+                return HostLobbyGameFragment.newInstance();
             } else {
-                return LobbyPlayersFragment.newInstance();
+                return HostLobbyPlayersFragment.newInstance();
             }
         }
 
@@ -105,9 +106,9 @@ public class LobbyActivity extends AppCompatActivity {
         @Override
         public String getPageTitle(int position) {
             if (position == 0) {
-                return getString(R.string.lobby_tab_game);
+                return getString(R.string.host_lobby_tab_game);
             } else {
-                return getString(R.string.lobby_tab_players);
+                return getString(R.string.host_lobby_tab_players);
             }
         }
 

@@ -52,7 +52,7 @@
     </style>
 
     <style name="ButtonGreen" parent="Button.Base.BasicTitle">
-        <item name="colorButtonNormal">@color/green</item>
+        <item name="colorButtonNormal">@drawable/btn_green_selector</item>
     </style>
 
     <style name="ButtonRed" parent="Button.Base.BasicTitle.Small">

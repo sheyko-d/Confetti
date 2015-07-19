@@ -70,14 +70,14 @@
     <string name="join_games_btn">JOIN</string>
 
     <!-- Join a Game (lobby) screen -->
-    <string name="lobby_tab_game">GAME</string>
-    <string name="lobby_tab_players">PLAYERS</string>
-    <string name="lobby_game_header">GAME INFORMATION</string>
-    <string name="lobby_players_header">Teams</string>
-    <string name="lobby_title_players">Number of Player</string>
-    <string name="lobby_title_cards">Number of Cards</string>
-    <string name="lobby_title_time">Time per Round</string>
-    <string name="lobby_title_wait">PLEASE WAIT WHILE OTHERS JOIN…</string>
+    <string name="join_lobby_tab_game">GAME</string>
+    <string name="join_lobby_tab_players">PLAYERS</string>
+    <string name="join_lobby_game_header">GAME INFORMATION</string>
+    <string name="join_lobby_players_header">Teams</string>
+    <string name="join_lobby_title_players">Number of Player</string>
+    <string name="join_lobby_title_cards">Number of Cards</string>
+    <string name="join_lobby_title_time">Time per Round</string>
+    <string name="join_lobby_title_wait">PLEASE WAIT WHILE OTHERS JOIN…</string>
 
     <!-- Host a Game screen -->
     <string name="host_title">HOST A GAME</string>
@@ -92,5 +92,13 @@
     <string name="host_title_time">Time per Round</string>
     <string name="host_btn">CREATE GAME</string>
     <string name="host_spinner_pro_badge">PRO</string>
+
+    <!-- Host a Game (lobby) screen -->
+    <string name="host_lobby_tab_game">GAME</string>
+    <string name="host_lobby_tab_players">PLAYERS</string>
+    <string name="host_lobby_game_header">Teams</string>
+    <string name="host_lobby_title_id">Game ID</string>
+    <string name="host_lobby_title_password">Game Password</string>
+    <string name="host_players_btn">MANUALLY ADD</string>
 
 </resources>

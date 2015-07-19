@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.moysof.whattheblank.adapter.PlayersAdapter;
 
-public class LobbyPlayersFragment extends Fragment {
+public class JoinLobbyPlayersFragment extends Fragment {
     private PlayersAdapter mAdapter;
     private SortedList mPlayers = new SortedList<>(PlayersAdapter.Player.class,
             new SortedList.Callback<PlayersAdapter.Player>() {
@@ -58,18 +58,18 @@ public class LobbyPlayersFragment extends Fragment {
                 }
             });
 
-    public static LobbyPlayersFragment newInstance() {
-        LobbyPlayersFragment fragment = new LobbyPlayersFragment();
+    public static JoinLobbyPlayersFragment newInstance() {
+        JoinLobbyPlayersFragment fragment = new JoinLobbyPlayersFragment();
         return fragment;
     }
 
-    public LobbyPlayersFragment() {
+    public JoinLobbyPlayersFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_lobby_players, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_join_lobby_players, container, false);
 
         RecyclerView recyclerView = (RecyclerView) rootView
                 .findViewById(R.id.lobby_recycler_view);

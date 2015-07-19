@@ -11,7 +11,7 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="24dp"
-        android:text="@string/lobby_players_header"
+        android:text="@string/join_lobby_players_header"
         android:textColor="@color/primary"
         android:textSize="18sp" />
 

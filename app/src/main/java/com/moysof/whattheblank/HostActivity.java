@@ -1,5 +1,6 @@
 package com.moysof.whattheblank;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -29,6 +30,18 @@ public class HostActivity extends AppCompatActivity {
         ((Spinner) findViewById(R.id.host_players_spinner)).setAdapter(mSpinnerAdapter);
         ((Spinner) findViewById(R.id.host_cards_spinner)).setAdapter(mSpinnerAdapter);
         ((Spinner) findViewById(R.id.host_time_spinner)).setAdapter(mSpinnerAdapter);
+
+        findViewById(R.id.host_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createGame();
+            }
+        });
+    }
+
+    private void createGame() {
+        startActivity(new Intent(this, HostLobbyActivity.class)
+                .putExtra(HostLobbyActivity.EXTRA_TITLE, "TODO: Real game title"));
     }
 
 }

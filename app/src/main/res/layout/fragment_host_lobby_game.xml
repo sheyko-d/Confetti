@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <com.moysof.whattheblank.typeface.TextRobotoRegular
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/host_lobby_title_id"
+            android:textColor="@color/primary_text"
+            android:textSize="16sp" />
+
+        <com.moysof.whattheblank.typeface.TextRobotoRegular
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="548976"
+            android:textColor="@color/secondary_text"
+            android:textSize="14sp" />
+
+        <com.moysof.whattheblank.typeface.TextRobotoRegular
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/host_lobby_title_password"
+            android:textColor="@color/primary_text"
+            android:textSize="16sp" />
+
+        <com.moysof.whattheblank.typeface.TextRobotoRegular
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1234"
+            android:textColor="@color/secondary_text"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <com.moysof.whattheblank.typeface.TextBasicTitleBold
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="12dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="24dp"
+        android:text="@string/host_lobby_game_header"
+        android:textColor="@color/primary"
+        android:textSize="18sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/primary" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/host_lobby_game_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:scrollbars="vertical" />
+
+    <com.moysof.whattheblank.typeface.ButtonBasicTitle
+        android:id="@+id/host_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:enabled="false"
+        android:text="@string/host_btn"
+        android:theme="@style/ButtonGreen" />
+
+</LinearLayout>
