@@ -18,6 +18,8 @@ public class Util {
     public static final String URL_SIGN_IN = "http://moyersoftware.com/blank/sign_in.php";
     public static final String URL_SIGN_IN_SOCIAL
             = "http://moyersoftware.com/blank/sign_in_social.php";
+    public static final String URL_GET_STATS
+            = "http://moyersoftware.com/blank/get_user_stats.php";
     private static final String LOG_TAG = "BlankDebug";
 
     // Methods

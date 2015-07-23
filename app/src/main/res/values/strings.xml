@@ -36,6 +36,28 @@
     <string name="home_stat_games_total">Games Played</string>
     <string name="home_stat_time_solved">Avg. Time to be Solved</string>
     <string name="home_stat_skill_ranking">Skill Ranking</string>
+    <string name="home_how_to_desc">What the Blank is a game to be played with at least 4 people.
+        To begin, everyone is split into equal sized teams and every person is given the same amount
+        of pieces of paper (cards). The default amount per person is 3. On those cards, every person
+        writes down a phrase, word, action, etc. in secret. They cannot let anyone else see what
+        they write. Once they have them filled out, they would fold them and put them into a hat
+        along with everyone else\'s cards. They would then be mixed up and the game can begin.
+        \n\nNext, it is decided which team will begin. They will have an amount of time to figure
+        out what the card says. By default, it is usually 30 seconds. \n\nThe game is in three
+        rounds. The first round allows the person holding the card to say, act, and do anything they
+        want to do to get their partners to guess the card correctly. They are just not allowed to
+        say what is actually on the card. For example: if the card was \'cat\', they can say: \"it\'s
+        raining this and dogs\" so that the teammates would realize the person was actually saying
+        \"it\'s raining CATS and dogs\" and so they would guess cats and the card holder would go on
+        to the next randomly picked card. They do this until the 30 seconds runs out. \n\nThen the
+        cards that were guessed correctly are tallied up and counted as points. The remaining cards
+        are still in the hat and the next team goes until their time runs out. Then the next team,
+        and it keeps going until the cards run out.\n\nThe second round then begins. This round,
+        the person holding the card can only act. They cannot make any noises at all.\n\nThe third
+        round begins when all the cards have been correctly guessed by the teams. This round, the
+        person holding the card can only say one word. They can\'t act out anything. They can\'t say
+        any other words. \n\nOnce all cards are guessed correctly, the scores are tallied and the
+        team with the most points wins.</string>
 
     <!-- Settings screen -->
     <string name="settings_account_header">MY ACCOUNT</string>
