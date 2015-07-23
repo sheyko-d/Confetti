@@ -116,4 +116,17 @@
     played on the Host\'s phone. Good luck!</string>
     <string name="start_waiting_btn">BEGIN</string>
 
+    <!-- Play Game (waiting) screen -->
+    <string name="play_wait_title">The game is being played on the Host\'s phone!</string>
+
+    <!-- Play Game (card) screen -->
+    <string name="play_title_start">Pass the phone to %1$s so that the game can begin.\n\nEach team
+        has 30 seconds to guess each card until all the cards are gone. Swipe right or left to skip
+        the card. Click the green check if your team guessed correctly.</string>
+
+    <!-- Play Game (winner) screen -->
+    <string name="play_title_won">CONGRATULATIONS %1$s! You won!\n\nPlay again?</string>
+    <string name="start_won_play_btn">PLAY</string>
+    <string name="start_won_quit_btn">QUIT</string>
+
 </resources>

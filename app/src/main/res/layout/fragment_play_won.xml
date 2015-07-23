@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginTop="8dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="2dp"
+        app:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/start_ready_logo_height"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@null"
+                android:src="@drawable/logo_purple" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginEnd="48dp"
+                android:layout_marginLeft="48dp"
+                android:layout_marginRight="48dp"
+                android:layout_marginStart="48dp"
+                android:layout_marginTop="32dp"
+                android:layout_weight="1">
+
+                <com.moysof.whattheblank.typeface.TextRobotoRegular
+                    android:id="@+id/play_won_desc_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:lineSpacingExtra="4dp"
+                    android:text="@string/play_title_won"
+                    android:textColor="@color/primary_text"
+                    android:textSize="18sp" />
+
+            </ScrollView>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:orientation="horizontal">
+
+                <com.moysof.whattheblank.typeface.ButtonBasicTitle
+                    android:id="@+id/play_again_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="-2dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:text="@string/start_won_play_btn"
+                    android:textSize="28sp"
+                    android:theme="@style/ButtonGreen" />
+
+                <com.moysof.whattheblank.typeface.ButtonBasicTitle
+                    android:id="@+id/play_quit_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="-2dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:text="@string/start_won_quit_btn"
+                    android:textSize="28sp"
+                    android:theme="@style/ButtonGreen" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/play_won_order_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:animateLayoutChanges="true"
+            android:orientation="horizontal"
+            android:paddingBottom="8dp"
+            android:paddingEnd="12dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingStart="12dp"
+            android:paddingTop="8dp" />
+    </android.support.v7.widget.CardView>
+
+</FrameLayout>
