@@ -12,5 +12,6 @@
     <dimen name="btn_roboto_height">56dp</dimen>
     <dimen name="btn_basic_title_height">60dp</dimen>
     <dimen name="btn_basic_title_small_height">52dp</dimen>
+    <dimen name="start_ready_logo_height">80dp</dimen>
 
 </resources>

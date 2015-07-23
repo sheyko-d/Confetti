@@ -17,5 +17,6 @@
     <color name="tab_text">#AAFFFFFF</color>
     <color name="tab_selected_text">#FFF</color>
     <color name="btn_disabled">#A2A2A2</color>
+    <color name="draw_bg">#FAFAFA</color>
 
 </resources>

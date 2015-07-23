@@ -2,7 +2,9 @@ package com.moysof.whattheblank;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
+import android.content.res.Resources;
 import android.telephony.TelephonyManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 public class Util {
@@ -35,6 +37,13 @@ public class Util {
         } catch (Exception e) {
             return "";
         }
+    }
+
+    public static int convertDpToPixel(float dp) {
+        Resources resources = BaseApplication.getAppContext().getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        int px = (int) (dp * (metrics.densityDpi / 160f));
+        return px;
     }
 
 }

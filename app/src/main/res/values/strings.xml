@@ -101,4 +101,19 @@
     <string name="host_lobby_title_password">Game Password</string>
     <string name="host_players_btn">MANUALLY ADD</string>
 
+    <!-- Start Game (creating cards) screen -->
+    <string name="start_ready_title">Are you ready to play!?</string>
+    <string name="start_ready_desc">First things first… You have 3 cards to create! Write a word,
+        phrase, noun, verb, ANYTHING you desire using your finger. When you are done, click on the
+        green check mark to go to your next card.</string>
+    <string name="start_ready_btn">START</string>
+
+    <!-- Start Game (waiting) screen -->
+    <string name="start_waiting_title">Nice job with those cards!</string>
+    <string name="start_waiting_desc">Now you are just waiting for all of the other players to
+        finish up with their cards. The teams will go in the following order:</string>
+    <string name="start_waiting_btn_desc">Click the Begin button to start the game! The game will be
+    played on the Host\'s phone. Good luck!</string>
+    <string name="start_waiting_btn">BEGIN</string>
+
 </resources>
