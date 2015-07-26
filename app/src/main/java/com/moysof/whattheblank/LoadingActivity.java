@@ -63,6 +63,7 @@ public class LoadingActivity extends AppCompatActivity implements
     private GoogleApiClient mGoogleApiClient;
     private ConnectionResult mConnectionResult;
     public static Activity sActivity;
+    private SharedPreferences mPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,10 @@ public class LoadingActivity extends AppCompatActivity implements
         FacebookSdk.sdkInitialize(this);
 
         sActivity = this;
+
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        mPrefs.edit().remove("id").remove("name").remove("username").remove("email").remove("phone")
+                .remove("avatar").remove("is_social").apply();
 
         mBtnEmail = (Button) findViewById(R.id.loading_button_email);
         mBtnGoogle = (Button) findViewById(R.id.loading_button_google);
@@ -422,7 +427,6 @@ public class LoadingActivity extends AppCompatActivity implements
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                Util.Log(id+", "+name+", "+username+", "+email+", "+phone+", "+avatar);
                 params.put("id", id);
                 params.put("name", name);
                 params.put("username", username);
@@ -440,10 +444,9 @@ public class LoadingActivity extends AppCompatActivity implements
 
     private void savePreferences(String id, String name, String username, String email,
                                  String phone, String avatar) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        prefs.edit().putString("id", id).putString("name", name).putString("username", username)
+        mPrefs.edit().putString("id", id).putString("name", name).putString("username", username)
                 .putString("email", email).putString("phone", phone).putString("avatar", avatar)
-                .apply();
+                .putBoolean("is_social", true).apply();
     }
 
 }

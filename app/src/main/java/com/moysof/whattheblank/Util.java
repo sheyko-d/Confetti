@@ -24,6 +24,10 @@ public class Util {
             = "http://moyersoftware.com/blank/update_friend_status.php";
     public static final String URL_INVITE_FACEBOOK_FRIENDS
             = "http://moyersoftware.com/blank/invite_facebook_friends.php";
+    public static final String URL_CHECK_PWD
+            = "http://moyersoftware.com/blank/check_password.php";
+    public static final String URL_CHANGE_PWD
+            = "http://moyersoftware.com/blank/change_password.php";
     public static final String URL_GET_FRIENDS = "http://moyersoftware.com/blank/get_friends.php";
     private static final String LOG_TAG = "BlankDebug";
 

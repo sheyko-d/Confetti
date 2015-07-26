@@ -303,7 +303,7 @@ public class RegisterActivity extends AppCompatActivity {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         prefs.edit().putString("id", id).putString("name", name).putString("username", username)
                 .putString("email", email).putString("phone", phone)
-                .putString("avatar", avatar).apply();
+                .putString("avatar", avatar).putBoolean("is_social", false).apply();
     }
 
     private void onLoginSuccess() {

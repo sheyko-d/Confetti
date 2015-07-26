@@ -73,6 +73,10 @@
     <string name="settings_about">About</string>
     <string name="settings_about_cancel_btn">Cancel</string>
     <string name="settings_about_copyright">Copyright © 2015 MoyerSoftware</string>
+    <string name="settings_password_old_hint">Old password</string>
+    <string name="settings_password_new_hint">New password</string>
+    <string name="settings_password_repeat_hint">Repeat password</string>
+    <string name="settings_logout">Log out</string>
 
     <!-- Chat thread (conversation) screen -->
     <string name="thread_edit_txt_hint">Your message</string>
