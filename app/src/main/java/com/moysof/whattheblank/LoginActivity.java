@@ -204,6 +204,18 @@ public class LoginActivity extends AppCompatActivity {
             }
         }) {
             @Override
+            protected VolleyError parseNetworkError(VolleyError volleyError) {
+                if (volleyError.networkResponse != null
+                        && volleyError.networkResponse.data != null) {
+                    VolleyError error
+                            = new VolleyError(new String(volleyError.networkResponse.data));
+                    volleyError = error;
+                }
+
+                return volleyError;
+            }
+
+            @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("email", email);

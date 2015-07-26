@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,6 +15,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDialog;
 import android.view.View;
 import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.share.model.GameRequestContent;
+import com.facebook.share.widget.AppInviteDialog;
+import com.facebook.share.widget.GameRequestDialog;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -27,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
+    private CallbackManager mCallbackManager;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -142,6 +166,106 @@ public class MainActivity extends AppCompatActivity {
             // Otherwise exit app
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void inviteFriends() {
+        FacebookSdk.sdkInitialize(this);
+
+        if (AppInviteDialog.canShow()) {
+
+            mCallbackManager = CallbackManager.Factory.create();
+            GameRequestDialog requestDialog = new GameRequestDialog(this);
+            requestDialog.registerCallback(mCallbackManager,
+                    new FacebookCallback<GameRequestDialog.Result>() {
+                        public void onSuccess(GameRequestDialog.Result result) {
+                            List recipients = result.getRequestRecipients();
+                            int recipientsCount = recipients.size();
+                            JSONArray recipientsJSON = new JSONArray();
+                            for (int i = 0; i < recipientsCount; i++) {
+                                recipientsJSON.put(recipients.get(i));
+                            }
+                            inviteFacebookFriends(recipientsJSON);
+                        }
+
+                        public void onCancel() {
+                        }
+
+                        public void onError(FacebookException error) {
+                        }
+                    });
+
+            GameRequestContent content = new GameRequestContent.Builder()
+                    .setMessage("Come play WhatTheBlank with me")
+                            //.setTo("USER_ID")
+                            //.setActionType(GameRequestContent.ActionType.SEND)
+                            //.setObjectId("YOUR_OBJECT_ID")
+                    .build();
+            requestDialog.show(content);
+        }
+    }
+
+    public void inviteFacebookFriends(final JSONArray recipientsJSON) {
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+
+        final String id = PreferenceManager.getDefaultSharedPreferences(MainActivity.this)
+                .getString("id", "");
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                Util.URL_INVITE_FACEBOOK_FRIENDS, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject responseJSON = new JSONObject(response);
+                            if (responseJSON.getString("result").equals("success")) {
+                            } else {
+                                Util.Log("Unknown server error");
+                                Toast.makeText(MainActivity.this, "Unknown server error",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            Util.Log("JSON error: " + e);
+                            Toast.makeText(MainActivity.this, "JSON error: " + e,
+                                    Toast.LENGTH_LONG).show();
+                        }
+                        Util.Log(response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Util.Log("Server error: " + error);
+                Toast.makeText(MainActivity.this, "Server error: " + error, Toast.LENGTH_LONG).show();
+            }
+        }) {
+            @Override
+            protected VolleyError parseNetworkError(VolleyError volleyError) {
+                if (volleyError.networkResponse != null
+                        && volleyError.networkResponse.data != null) {
+                    VolleyError error
+                            = new VolleyError(new String(volleyError.networkResponse.data));
+                    volleyError = error;
+                }
+
+                return volleyError;
+            }
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("user_id", id);
+                params.put("recipients", recipientsJSON.toString());
+                return params;
+            }
+        };
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
     }
 
 }

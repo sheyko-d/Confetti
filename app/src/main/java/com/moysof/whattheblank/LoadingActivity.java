@@ -136,7 +136,8 @@ public class LoadingActivity extends AppCompatActivity implements
                                                 .getAccessToken(),
                                         new GraphRequest.GraphJSONObjectCallback() {
                                             @Override
-                                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                            public void onCompleted(JSONObject object,
+                                                                    GraphResponse response) {
                                                 Util.Log(response);
                                                 String id;
                                                 String email;
@@ -152,24 +153,18 @@ public class LoadingActivity extends AppCompatActivity implements
                                                 } catch (JSONException e) {
                                                     email = "";
                                                 }
-                                                /*
-                                                 * Username field is deprecated for Facebook API
-                                                 * with versions 2.0 and higher, so just extract
-                                                 * username from email.
-                                                 *
-                                                 * http://stackoverflow.com/a/23527664
-                                                 */
+                                                // Username field is deprecated for Facebook API
+                                                // with versions 2.0 and higher, so just extract
+                                                // username from email.
+                                                //
+                                                // http://stackoverflow.com/a/23527664
                                                 try {
                                                     name = object.getString("name");
                                                 } catch (JSONException e) {
                                                     name = "";
                                                 }
-                                                try {
-                                                    username = email.substring(0,
-                                                            email.indexOf("@"));
-                                                } catch (Exception e) {
-                                                    username = "";
-                                                }
+                                                username = email.substring(0,
+                                                        email.indexOf("@"));
 
                                                 signInOnServer(id, email, name, username,
                                                         "http://graph.facebook.com/" + id
@@ -415,8 +410,19 @@ public class LoadingActivity extends AppCompatActivity implements
             }
         }) {
             @Override
+            protected VolleyError parseNetworkError(VolleyError volleyError) {
+                if (volleyError.networkResponse != null
+                        && volleyError.networkResponse.data != null) {
+                    volleyError = new VolleyError(new String(volleyError.networkResponse.data));
+                }
+
+                return volleyError;
+            }
+
+            @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
+                Util.Log(id+", "+name+", "+username+", "+email+", "+phone+", "+avatar);
                 params.put("id", id);
                 params.put("name", name);
                 params.put("username", username);
@@ -425,6 +431,8 @@ public class LoadingActivity extends AppCompatActivity implements
                 params.put("avatar", avatar);
                 return params;
             }
+
+
         };
         // Add the request to the RequestQueue.
         queue.add(stringRequest);

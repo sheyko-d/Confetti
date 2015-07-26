@@ -20,6 +20,11 @@ public class Util {
             = "http://moyersoftware.com/blank/sign_in_social.php";
     public static final String URL_GET_STATS
             = "http://moyersoftware.com/blank/get_user_stats.php";
+    public static final String URL_UPDATE_FRIEND_STATUS
+            = "http://moyersoftware.com/blank/update_friend_status.php";
+    public static final String URL_INVITE_FACEBOOK_FRIENDS
+            = "http://moyersoftware.com/blank/invite_facebook_friends.php";
+    public static final String URL_GET_FRIENDS = "http://moyersoftware.com/blank/get_friends.php";
     private static final String LOG_TAG = "BlankDebug";
 
     // Methods
@@ -34,8 +39,9 @@ public class Util {
 
     public static String getPhone() {
         try {
-            return ((TelephonyManager) BaseApplication.getAppContext().
+            String phone = ((TelephonyManager) BaseApplication.getAppContext().
                     getSystemService(Context.TELEPHONY_SERVICE)).getLine1Number();
+            return phone != null ? phone : "";
         } catch (Exception e) {
             return "";
         }
