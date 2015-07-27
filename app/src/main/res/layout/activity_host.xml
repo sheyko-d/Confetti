@@ -49,6 +49,7 @@
     </LinearLayout>
 
     <ScrollView
+        android:id="@+id/host_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
@@ -78,7 +79,6 @@
                     android:id="@+id/host_id_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="548976"
                     android:textColor="@color/secondary_text"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -87,7 +87,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingBottom="12dp"
+                android:paddingBottom="4dp"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:paddingTop="12dp">
@@ -99,29 +99,38 @@
                     android:textColor="@color/primary_text"
                     android:textSize="14sp" />
 
-                <EditText
-                    android:id="@+id/host_name_edit_txt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="-3dp"
-                    android:layout_marginRight="-3dp"
-                    android:inputType="text"
-                    android:textColor="@color/primary"
-                    android:textSize="16sp" />
-
                 <com.moysof.whattheblank.typeface.TextRobotoRegular
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/host_desc_name"
                     android:textColor="@color/secondary_text"
                     android:textSize="12sp" />
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/host_name_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="-3dp"
+                    android:layout_marginRight="-3dp"
+                    android:layout_marginTop="-8dp">
+
+                    <EditText
+                        android:id="@+id/host_name_edit_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:maxLength="30"
+                        android:textColor="@color/primary"
+                        android:textSize="16sp" />
+                </android.support.design.widget.TextInputLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingBottom="12dp"
+                android:paddingBottom="4dp"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:paddingTop="12dp">
@@ -133,23 +142,29 @@
                     android:textColor="@color/primary_text"
                     android:textSize="14sp" />
 
-                <EditText
-                    android:id="@+id/host_password_edit_txt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="-3dp"
-                    android:layout_marginRight="-3dp"
-                    android:inputType="number"
-                    android:maxLength="4"
-                    android:textColor="@color/primary"
-                    android:textSize="16sp" />
-
                 <com.moysof.whattheblank.typeface.TextRobotoRegular
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/host_desc_password"
                     android:textColor="@color/secondary_text"
                     android:textSize="12sp" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/host_pwd_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="-3dp"
+                    android:layout_marginRight="-3dp"
+                    android:layout_marginTop="-8dp">
+
+                    <EditText
+                        android:id="@+id/host_pwd_edit_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:textColor="@color/primary"
+                        android:textSize="16sp" />
+                </android.support.design.widget.TextInputLayout>
             </LinearLayout>
 
             <LinearLayout

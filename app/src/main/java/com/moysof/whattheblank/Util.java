@@ -28,6 +28,8 @@ public class Util {
             = "http://moyersoftware.com/blank/check_password.php";
     public static final String URL_CHANGE_PWD
             = "http://moyersoftware.com/blank/change_password.php";
+    public static final String URL_CREATE_GAME
+            = "http://moyersoftware.com/blank/create_game.php";
     public static final String URL_GET_FRIENDS = "http://moyersoftware.com/blank/get_friends.php";
     private static final String LOG_TAG = "BlankDebug";
 

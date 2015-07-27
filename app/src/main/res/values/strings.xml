@@ -115,7 +115,7 @@
     <string name="host_desc_password">Needs to be at least 4 numbers</string>
     <string name="host_title_teams">Number of Teams</string>
     <string name="host_title_players">Number of Players per Team</string>
-    <string name="host_title_cards">Number of Players per Team</string>
+    <string name="host_title_cards">Number of Cards per Players</string>
     <string name="host_title_time">Time per Round</string>
     <string name="host_btn">CREATE GAME</string>
     <string name="host_spinner_pro_badge">PRO</string>
