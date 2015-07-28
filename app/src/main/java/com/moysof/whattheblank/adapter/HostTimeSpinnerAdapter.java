@@ -8,15 +8,16 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.moysof.whattheblank.R;
-import com.moysof.whattheblank.Util;
 
-public class HostSpinnerAdapter extends ArrayAdapter {
+public class HostTimeSpinnerAdapter extends ArrayAdapter {
 
+    private int[] mTimeArray;
     private Context mContext;
 
-    public HostSpinnerAdapter(Context context) {
+    public HostTimeSpinnerAdapter(Context context, int[] timeArray) {
         super(context, 0);
         mContext = context;
+        mTimeArray = timeArray;
     }
 
     @Override
@@ -26,7 +27,6 @@ public class HostSpinnerAdapter extends ArrayAdapter {
 
     static class ViewHolder {
         TextView titleTxt;
-        View proTxt;
     }
 
     private View getViewFromResource(View convertView, int res, int position) {
@@ -40,22 +40,15 @@ public class HostSpinnerAdapter extends ArrayAdapter {
             // we want to bind data to.
             holder = new ViewHolder();
             holder.titleTxt = (TextView) convertView.findViewById(R.id.host_spinner_title_txt);
-            holder.proTxt = convertView.findViewById(R.id.host_spinner_pro_txt);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.titleTxt.setText((position + 1) + "");
-
-        if (holder.proTxt != null) {
-            if (/*TODO: If PRO*/position > 2) {
-                holder.proTxt.setVisibility(View.VISIBLE);
-                holder.titleTxt.setAlpha(0.5f);
-            } else {
-                holder.proTxt.setVisibility(View.GONE);
-                holder.titleTxt.setAlpha(1f);
-            }
+        if (mTimeArray[position] < 60) {
+            holder.titleTxt.setText(mTimeArray[position] + " seconds");
+        } else {
+            holder.titleTxt.setText(mTimeArray[position] / 60 + " minute");
         }
 
         return convertView;
@@ -63,11 +56,11 @@ public class HostSpinnerAdapter extends ArrayAdapter {
 
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
-        return getViewFromResource(convertView, R.layout.item_host_spinner_dropdown, position);
+        return getViewFromResource(convertView, R.layout.item_host_spinner_time_dropdown, position);
     }
 
     @Override
     public int getCount() {
-        return Util.MAX_NUMBER;
+        return mTimeArray.length;
     }
 }

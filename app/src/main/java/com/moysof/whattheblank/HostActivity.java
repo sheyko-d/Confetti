@@ -21,7 +21,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.moysof.whattheblank.adapter.HostSpinnerAdapter;
+import com.moysof.whattheblank.adapter.HostNumberSpinnerAdapter;
+import com.moysof.whattheblank.adapter.HostTimeSpinnerAdapter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,7 +34,8 @@ import java.util.Random;
 
 public class HostActivity extends AppCompatActivity {
 
-    private HostSpinnerAdapter mSpinnerAdapter;
+    private HostNumberSpinnerAdapter mSpinnerNumberAdapter;
+    private HostTimeSpinnerAdapter mSpinnerTimeAdapter;
     private int mGameId;
     private TextInputLayout mNameLayout;
     private TextInputLayout mPasswordLayout;
@@ -44,10 +46,10 @@ public class HostActivity extends AppCompatActivity {
     private Spinner mPlayersSpinner;
     private Spinner mCardsSpinner;
     private Spinner mTimeSpinner;
-    private int mTeamsPos = 1;
-    private int mPlayersPos = 1;
-    private int mCardsPos = 1;
-    private int mTimePos = 1;
+    private int mTeamsPos = 0;
+    private int mPlayersPos = 0;
+    private int mCardsPos = 0;
+    private int[] mTimeArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +66,6 @@ public class HostActivity extends AppCompatActivity {
         mPlayersSpinner = (Spinner) findViewById(R.id.host_players_spinner);
         mCardsSpinner = (Spinner) findViewById(R.id.host_cards_spinner);
         mTimeSpinner = (Spinner) findViewById(R.id.host_time_spinner);
-
 
         mNameLayout.setError(" ");
         mPasswordLayout.setError(" ");
@@ -92,16 +93,18 @@ public class HostActivity extends AppCompatActivity {
     }
 
     private void initSpinners() {
-        mSpinnerAdapter = new HostSpinnerAdapter(this);
-        mTeamsSpinner.setAdapter(mSpinnerAdapter);
-        mPlayersSpinner.setAdapter(mSpinnerAdapter);
-        mCardsSpinner.setAdapter(mSpinnerAdapter);
-        mTimeSpinner.setAdapter(mSpinnerAdapter);
+        mSpinnerNumberAdapter = new HostNumberSpinnerAdapter(this);
+        mTeamsSpinner.setAdapter(mSpinnerNumberAdapter);
+        mPlayersSpinner.setAdapter(mSpinnerNumberAdapter);
+        mCardsSpinner.setAdapter(mSpinnerNumberAdapter);
+
+        mTimeArray = getResources().getIntArray(R.array.time);
+        mSpinnerTimeAdapter = new HostTimeSpinnerAdapter(this, mTimeArray);
+        mTimeSpinner.setAdapter(mSpinnerTimeAdapter);
 
         mTeamsSpinner.setOnItemSelectedListener(mSpinnerItemSelected);
         mPlayersSpinner.setOnItemSelectedListener(mSpinnerItemSelected);
         mCardsSpinner.setOnItemSelectedListener(mSpinnerItemSelected);
-        mTimeSpinner.setOnItemSelectedListener(mSpinnerItemSelected);
     }
 
     AdapterView.OnItemSelectedListener mSpinnerItemSelected = new AdapterView
@@ -109,15 +112,13 @@ public class HostActivity extends AppCompatActivity {
         @Override
         public void onItemSelected(AdapterView<?> parentView, View selectedItemView,
                                    int position, long id) {
-            if (/*TODO: !isPro &&*/ position > 3) {
+            if (/*TODO: !isPro &&*/ position >= 3) {
                 if (parentView.getId() == R.id.host_teams_spinner) {
                     parentView.setSelection(mTeamsPos);
                 } else if (parentView.getId() == R.id.host_players_spinner) {
                     parentView.setSelection(mPlayersPos);
                 } else if (parentView.getId() == R.id.host_cards_spinner) {
                     parentView.setSelection(mCardsPos);
-                } else if (parentView.getId() == R.id.host_time_spinner) {
-                    parentView.setSelection(mTimePos);
                 }
                 //TODO: Redirect to in-app purchase
                 Toast.makeText(HostActivity.this, "Coming soon",
@@ -129,8 +130,6 @@ public class HostActivity extends AppCompatActivity {
                     mPlayersPos = position;
                 } else if (parentView.getId() == R.id.host_cards_spinner) {
                     mCardsPos = position;
-                } else if (parentView.getId() == R.id.host_time_spinner) {
-                    mTimePos = position;
                 }
             }
         }
@@ -153,6 +152,7 @@ public class HostActivity extends AppCompatActivity {
 
         final String name = mNameEditTxt.getText().toString();
         final String password = mPasswordEditTxt.getText().toString();
+        final int time = mTimeArray[mTimeSpinner.getSelectedItemPosition()];
 
         if (TextUtils.isEmpty(name)) {
             mNameLayout.setError("Game name is required");
@@ -194,7 +194,15 @@ public class HostActivity extends AppCompatActivity {
                         JSONObject responseJSON = new JSONObject(response);
                         if (responseJSON.getString("result").equals("success")) {
                             startActivity(new Intent(HostActivity.this, HostLobbyActivity.class)
-                                    .putExtra(HostLobbyActivity.EXTRA_TITLE, name));
+                                    .putExtra(HostLobbyActivity.EXTRA_ID, mGameId + "")
+                                    .putExtra(HostLobbyActivity.EXTRA_NAME, name)
+                                    .putExtra(HostLobbyActivity.EXTRA_PASSWORD, password)
+                                    .putExtra(HostLobbyActivity.EXTRA_NUMBER_TEAMS, mTeamsPos + 1)
+                                    .putExtra(HostLobbyActivity.EXTRA_NUMBER_PLAYERS,
+                                            mPlayersPos + 1)
+                                    .putExtra(HostLobbyActivity.EXTRA_NUMBER_CARDS, mCardsPos + 1)
+                                    .putExtra(HostLobbyActivity.EXTRA_NUMBER_TIME, time));
+                            finish();
                         } else if (responseJSON.getString("result").equals("empty")) {
                             Toast.makeText(HostActivity.this, "Some fields are empty",
                                     Toast.LENGTH_LONG).show();
@@ -242,7 +250,7 @@ public class HostActivity extends AppCompatActivity {
                     params.put("number_teams", (mTeamsPos + 1) + "");
                     params.put("number_players", (mPlayersPos + 1) + "");
                     params.put("number_cards", (mCardsPos + 1) + "");
-                    params.put("number_time", (mTimePos + 1) + "");
+                    params.put("number_time", time + "");
                     return params;
                 }
 

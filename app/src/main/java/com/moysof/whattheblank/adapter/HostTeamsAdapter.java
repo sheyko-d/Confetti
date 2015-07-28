@@ -8,17 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.moysof.whattheblank.HostLobbyActivity;
 import com.moysof.whattheblank.R;
 
 public class HostTeamsAdapter extends
         RecyclerView.Adapter<HostTeamsAdapter.TeamsHolder> {
 
+    private Integer mNumberPlayers;
     private Context mContext;
     private SortedList<Team> teams;
 
-    public HostTeamsAdapter(Context context, SortedList<Team> teams) {
+    public HostTeamsAdapter(Context context, SortedList<Team> teams, Integer numberPlayers) {
         mContext = context;
+        mNumberPlayers = numberPlayers;
         this.teams = teams;
     }
 
@@ -86,9 +87,13 @@ public class HostTeamsAdapter extends
     public void onBindViewHolder(TeamsHolder holder, int position) {
         Team team = teams.get(position);
 
-        holder.titleTxt.setText("Team " + team.getNumber());
-        holder.countTxt.setText(team.getAssignedCount() + " of "
-                + HostLobbyActivity.sTotalPlayersCount + " players assigned");
+        holder.titleTxt.setText("Team " + (team.getNumber() + 1));
+        if (team.getAssignedCount()>0) {
+            holder.countTxt.setText(team.getAssignedCount() + " of "
+                    + mNumberPlayers + " players assigned");
+        } else {
+            holder.countTxt.setText("No players assigned");
+        }
         holder.colorView.setBackgroundColor(team.getColor());
     }
 

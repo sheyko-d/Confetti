@@ -1,5 +1,7 @@
 package com.moysof.whattheblank;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -7,20 +9,47 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class HostLobbyActivity extends AppCompatActivity {
 
-    public static Integer sTotalPlayersCount = 3;
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    public static final String EXTRA_TITLE = "title";
+    public static final String EXTRA_ID = "game_id";
+    public static final String EXTRA_NAME = "name";
+    public static final String EXTRA_PASSWORD = "password";
+    public static final String EXTRA_NUMBER_TEAMS = "number_teams";
+    public static final String EXTRA_NUMBER_PLAYERS = "number_players";
+    public static final String EXTRA_NUMBER_CARDS = "number_cards";
+    public static final String EXTRA_NUMBER_TIME = "number_time";
+    private String mGameId;
+    private String mPassword;
+    private Integer mNumberTeams;
+    private Integer mNumberPlayers;
+    private Integer mNumberCards;
+    private Integer mNumberTime;
+    private RequestQueue mQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +58,13 @@ public class HostLobbyActivity extends AppCompatActivity {
 
         mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
+
+        mGameId = getIntent().getStringExtra(EXTRA_ID);
+        mPassword = getIntent().getStringExtra(EXTRA_PASSWORD);
+        mNumberTeams = getIntent().getIntExtra(EXTRA_NUMBER_TEAMS, 0);
+        mNumberPlayers = getIntent().getIntExtra(EXTRA_NUMBER_PLAYERS, 0);
+        mNumberCards = getIntent().getIntExtra(EXTRA_NUMBER_CARDS, 0);
+        mNumberTime = getIntent().getIntExtra(EXTRA_NUMBER_TIME, 0);
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -40,14 +76,16 @@ public class HostLobbyActivity extends AppCompatActivity {
         findViewById(R.id.join_back_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                showExitDialog();
             }
         });
+
+        mQueue = Volley.newRequestQueue(this);
     }
 
     private void initTabs() {
         ((TextView) findViewById(R.id.join_title_txt)).setText(Html.fromHtml("<b>" + getIntent()
-                .getStringExtra(EXTRA_TITLE) + "</b>"));
+                .getStringExtra(EXTRA_NAME) + "</b>"));
 
         Typeface droidSerifMonoTF = Typeface.createFromAsset(getAssets(),
                 "fonts/BasicTitleFont.ttf");
@@ -92,9 +130,11 @@ public class HostLobbyActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             if (position == 0) {
-                return HostLobbyGameFragment.newInstance();
+                return HostLobbyGameFragment.newInstance(mGameId, mPassword, mNumberTeams,
+                        mNumberPlayers, mNumberCards, mNumberTime, mQueue);
             } else {
-                return HostLobbyPlayersFragment.newInstance();
+                return HostLobbyPlayersFragment.newInstance(mGameId, mNumberTeams, mNumberPlayers,
+                        mQueue);
             }
         }
 
@@ -112,6 +152,104 @@ public class HostLobbyActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        showExitDialog();
+    }
+
+    private void showExitDialog() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this,
+                R.style.MaterialDialogStyle);
+        dialogBuilder.setTitle("Are you sure?");
+        dialogBuilder.setMessage("You'll loose all game progress, if you leave now.");
+
+        dialogBuilder.setPositiveButton("Exit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                closeGame();
+                dialog.cancel();
+            }
+        });
+        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        dialogBuilder.create().show();
+    }
+
+    private void closeGame() {
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        final ProgressDialog progressDialog = ProgressDialog.show(this, "",
+                "Closing game...");
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                Util.URL_CLOSE_GAME, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                progressDialog.cancel();
+                Util.Log(response);
+                try {
+                    JSONObject responseJSON = new JSONObject(response);
+                    if (responseJSON.getString("result").equals("success")) {
+                        finish();
+                    } else if (responseJSON.getString("result").equals("empty")) {
+                        Toast.makeText(HostLobbyActivity.this, "Some fields are empty",
+                                Toast.LENGTH_LONG).show();
+                        finish();
+                    } else {
+                        Toast.makeText(HostLobbyActivity.this, "Unknown server error",
+                                Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                } catch (JSONException e) {
+                    if (Util.isDebugging()) {
+                        Toast.makeText(HostLobbyActivity.this, "JSON error: " + response,
+                                Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(HostLobbyActivity.this, "Unknown server error",
+                                Toast.LENGTH_LONG).show();
+                    }
+                    finish();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressDialog.cancel();
+                Toast.makeText(HostLobbyActivity.this, "Server error",
+                        Toast.LENGTH_LONG).show();
+                Util.Log("Server error: " + error);
+            }
+        }) {
+            @Override
+            protected VolleyError parseNetworkError(VolleyError volleyError) {
+                if (volleyError.networkResponse != null
+                        && volleyError.networkResponse.data != null) {
+                    volleyError = new VolleyError(new String(volleyError.networkResponse.data));
+                }
+
+                return volleyError;
+            }
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("game_id", mGameId);
+                return params;
+            }
+
+
+        };
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
     }
 
 }

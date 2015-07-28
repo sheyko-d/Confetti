@@ -30,6 +30,14 @@ public class Util {
             = "http://moyersoftware.com/blank/change_password.php";
     public static final String URL_CREATE_GAME
             = "http://moyersoftware.com/blank/create_game.php";
+    public static final String URL_CLOSE_GAME
+            = "http://moyersoftware.com/blank/close_game.php";
+    public static final String URL_GET_TEAMS
+            = "http://moyersoftware.com/blank/get_teams.php";
+    public static final String URL_GET_PLAYERS
+            = "http://moyersoftware.com/blank/get_players.php";
+    public static final String URL_ADD_PLAYER
+            = "http://moyersoftware.com/blank/add_player.php";
     public static final String URL_GET_FRIENDS = "http://moyersoftware.com/blank/get_friends.php";
     private static final String LOG_TAG = "BlankDebug";
 

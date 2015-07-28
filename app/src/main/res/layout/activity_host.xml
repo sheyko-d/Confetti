@@ -121,6 +121,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="text"
                         android:maxLength="30"
+                        android:text="Game Sample"
                         android:textColor="@color/primary"
                         android:textSize="16sp" />
                 </android.support.design.widget.TextInputLayout>
@@ -162,6 +163,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"
+                        android:text="1234"
                         android:textColor="@color/primary"
                         android:textSize="16sp" />
                 </android.support.design.widget.TextInputLayout>
@@ -252,6 +254,7 @@
                 <Spinner
                     android:id="@+id/host_time_spinner"
                     android:layout_width="match_parent"
+                    android:entries="@array/time"
                     android:layout_height="wrap_content" />
             </LinearLayout>
 

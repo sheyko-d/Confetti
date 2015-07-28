@@ -1,5 +1,6 @@
 package com.moysof.whattheblank;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.util.SortedList;
@@ -8,13 +9,35 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.moysof.whattheblank.adapter.HostTeamsAdapter;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class HostLobbyGameFragment extends Fragment {
 
+    private static RequestQueue sQueue;
     private HostTeamsAdapter mAdapter;
-    private SortedList mTeams = new SortedList<>(HostTeamsAdapter.Team.class,
+    private static String sGameId;
+    private static String sPassword;
+    private static Integer sNumberTeams;
+    private static Integer sNumberPlayers;
+    private static Integer sNumberCards;
+    private static Integer sNumberTime;
+    public static boolean sForceUpdate = false;
+    private SortedList<HostTeamsAdapter.Team> mTeams = new SortedList<>(HostTeamsAdapter.Team.class,
             new SortedList.Callback<HostTeamsAdapter.Team>() {
                 @Override
                 public int compare(HostTeamsAdapter.Team o1, HostTeamsAdapter.Team o2) {
@@ -57,9 +80,20 @@ public class HostLobbyGameFragment extends Fragment {
                 }
             });
 
-    public static HostLobbyGameFragment newInstance() {
-        HostLobbyGameFragment fragment = new HostLobbyGameFragment();
-        return fragment;
+    public static HostLobbyGameFragment newInstance(String gameId, String password,
+                                                    Integer numberTeams, Integer numberPlayers,
+                                                    Integer numberCards, Integer numberTime,
+                                                    RequestQueue queue) {
+
+        sGameId = gameId;
+        sPassword = password;
+        sNumberTeams = numberTeams;
+        sNumberPlayers = numberPlayers;
+        sNumberCards = numberCards;
+        sNumberTime = numberTime;
+        sQueue = queue;
+
+        return new HostLobbyGameFragment();
     }
 
     public HostLobbyGameFragment() {
@@ -74,17 +108,94 @@ public class HostLobbyGameFragment extends Fragment {
                 .findViewById(R.id.host_lobby_game_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mAdapter = new HostTeamsAdapter(getActivity(), mTeams);
+        ((TextView) rootView.findViewById(R.id.host_lobby_id_txt)).setText(sGameId + "");
+        ((TextView) rootView.findViewById(R.id.host_lobby_password_txt)).setText(sPassword + "");
+
+        mAdapter = new HostTeamsAdapter(getActivity(), mTeams, sNumberPlayers);
         recyclerView.setAdapter(mAdapter);
 
-        mTeams.clear();
-        mTeams.beginBatchedUpdates();
-        mTeams.add(new HostTeamsAdapter.Team(1, 2, getResources().getColor(R.color.green)));
-        mTeams.add(new HostTeamsAdapter.Team(2, 1, getResources().getColor(R.color.yellow)));
-        mTeams.add(new HostTeamsAdapter.Team(3, 3, getResources().getColor(R.color.blue)));
-        mTeams.endBatchedUpdates();
+        getTeams();
 
         return rootView;
+    }
+
+    @Override
+    public void setMenuVisibility(final boolean visible) {
+        super.setMenuVisibility(visible);
+        if (visible && sForceUpdate) {
+            getTeams();
+            sForceUpdate = false;
+        }
+    }
+
+    private void getTeams() {
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                Util.URL_GET_TEAMS, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Util.Log(response);
+                try {
+                    JSONObject responseJSON = new JSONObject(response);
+                    if (responseJSON.getString("result").equals("success")) {
+                        JSONArray teamsJSON = responseJSON.getJSONArray("teams");
+                        int teamsCount = teamsJSON.length();
+                        mTeams.beginBatchedUpdates();
+                        mTeams.clear();
+                        for (int i = 0; i < teamsCount; i++) {
+                            String team_id = teamsJSON.getJSONObject(i).getString("team_id");
+                            int number = teamsJSON.getJSONObject(i).getInt("number");
+                            int count = teamsJSON.getJSONObject(i).getInt("count");
+                            int color = Color.parseColor("#" + teamsJSON.getJSONObject(i)
+                                    .getString("color"));
+                            mTeams.add(new HostTeamsAdapter.Team(number, count, color));
+                        }
+                        mTeams.endBatchedUpdates();
+                    } else if (responseJSON.getString("result").equals("empty")) {
+                        Toast.makeText(getActivity(), "Some fields are empty",
+                                Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getActivity(), "Unknown server error",
+                                Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    if (Util.isDebugging()) {
+                        Toast.makeText(getActivity(), "JSON error: " + response,
+                                Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getActivity(), "Unknown server error",
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getActivity(), "Server error",
+                        Toast.LENGTH_LONG).show();
+                Util.Log("Server error: " + error);
+            }
+        }) {
+            @Override
+            protected VolleyError parseNetworkError(VolleyError volleyError) {
+                if (volleyError.networkResponse != null
+                        && volleyError.networkResponse.data != null) {
+                    volleyError = new VolleyError(new String(volleyError.networkResponse.data));
+                }
+
+                return volleyError;
+            }
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("game_id", sGameId + "");
+                return params;
+            }
+
+        };
+        // Add the request to the RequestQueue.
+        sQueue.add(stringRequest);
     }
 
 }
