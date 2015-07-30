@@ -2,6 +2,7 @@ package com.moysof.whattheblank;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TextInputLayout;
@@ -21,6 +22,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.moysof.whattheblank.adapter.HostNumberSpinnerAdapter;
 import com.moysof.whattheblank.adapter.HostTimeSpinnerAdapter;
 
@@ -32,7 +36,8 @@ import java.util.Map;
 import java.util.Random;
 
 
-public class HostActivity extends AppCompatActivity {
+public class HostActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
     private HostNumberSpinnerAdapter mSpinnerNumberAdapter;
     private HostTimeSpinnerAdapter mSpinnerTimeAdapter;
@@ -50,6 +55,9 @@ public class HostActivity extends AppCompatActivity {
     private int mPlayersPos = 0;
     private int mCardsPos = 0;
     private int[] mTimeArray;
+    private GoogleApiClient mGoogleApiClient;
+    private String mLat;
+    private String mLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +98,46 @@ public class HostActivity extends AppCompatActivity {
 
         mGameId = generateGameId();
         idTxt.setText(mGameId + "");
+
+        buildGoogleApiClient();
+    }
+
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+    }
+
+    @Override
+    public void onConnected(Bundle connectionHint) {
+        Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);
+        if (lastLocation != null) {
+            mLat = String.valueOf(lastLocation.getLatitude());
+            mLng = String.valueOf(lastLocation.getLongitude());
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        mGoogleApiClient.disconnect();
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
     }
 
     private void initSpinners() {
@@ -251,6 +299,10 @@ public class HostActivity extends AppCompatActivity {
                     params.put("number_players", (mPlayersPos + 1) + "");
                     params.put("number_cards", (mCardsPos + 1) + "");
                     params.put("number_time", time + "");
+                    if (mLat != null && mLng != null) {
+                        params.put("lat", mLat);
+                        params.put("lng", mLng);
+                    }
                     return params;
                 }
 
@@ -261,5 +313,4 @@ public class HostActivity extends AppCompatActivity {
         }
 
     }
-
 }

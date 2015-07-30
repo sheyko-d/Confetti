@@ -5,6 +5,7 @@
     android:orientation="vertical">
 
     <com.moysof.whattheblank.typeface.TextRobotoRegular
+        android:id="@+id/join_location_loading_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
@@ -30,18 +31,46 @@
         android:layout_height="1dp"
         android:background="@color/primary" />
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/join_location_refresh_layout"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/join_location_recycler_view"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/join_location_placeholder_layout"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scrollbars="vertical" />
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+            <ImageView
+                android:layout_width="144dp"
+                android:layout_height="144dp"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@null"
+                android:src="@drawable/search_placeholder" />
+
+            <com.moysof.whattheblank.typeface.TextRobotoRegular
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/join_placeholder"
+                android:textColor="@color/placeholder_text"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/join_location_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.moysof.whattheblank.view.EmptyRecyclerView
+                android:id="@+id/join_location_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </FrameLayout>
 
 </LinearLayout>

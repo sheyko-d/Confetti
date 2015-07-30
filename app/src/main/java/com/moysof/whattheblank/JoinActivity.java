@@ -1,6 +1,7 @@
 package com.moysof.whattheblank;
 
 import android.graphics.Typeface;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -13,12 +14,22 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 
-public class JoinActivity extends AppCompatActivity {
+
+public class JoinActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
     private TabLayout mTabLayout;
-    private ViewPager mViewPager;
     private SectionsPagerAdapter mSectionsPagerAdapter;
+    private GoogleApiClient mGoogleApiClient;
+    private RequestQueue mQueue;
+    private JoinLocationFragment mLocationFragment;
+    private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +38,11 @@ public class JoinActivity extends AppCompatActivity {
 
         mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
+
+        // Instantiate the RequestQueue.
+        mQueue = Volley.newRequestQueue(this);
+
+        buildGoogleApiClient();
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -41,6 +57,45 @@ public class JoinActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+    }
+
+    @Override
+    public void onConnected(Bundle connectionHint) {
+        Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);
+        if (lastLocation != null) {
+            String lat = String.valueOf(lastLocation.getLatitude());
+            String lng = String.valueOf(lastLocation.getLongitude());
+            mLocationFragment.searchGames(lat, lng);
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mGoogleApiClient.disconnect();
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
     }
 
     private void initTabs() {
@@ -60,7 +115,7 @@ public class JoinActivity extends AppCompatActivity {
         mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                //mViewPager.setCurrentItem(tab.getPosition());
+                mViewPager.setCurrentItem(tab.getPosition());
             }
 
             @Override
@@ -87,9 +142,10 @@ public class JoinActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             if (position == 0) {
-                return JoinIDFragment.newInstance();
+                return JoinIDFragment.newInstance(mQueue);
             } else {
-                return JoinLocationFragment.newInstance();
+                mLocationFragment = JoinLocationFragment.newInstance(mQueue);
+                return mLocationFragment;
             }
         }
 

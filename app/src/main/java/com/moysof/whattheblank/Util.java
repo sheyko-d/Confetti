@@ -20,6 +20,7 @@ public class Util {
             = "http://moyersoftware.com/blank/sign_in_social.php";
     public static final String URL_GET_STATS
             = "http://moyersoftware.com/blank/get_user_stats.php";
+    public static final String URL_GET_FRIENDS = "http://moyersoftware.com/blank/get_friends.php";
     public static final String URL_UPDATE_FRIEND_STATUS
             = "http://moyersoftware.com/blank/update_friend_status.php";
     public static final String URL_INVITE_FACEBOOK_FRIENDS
@@ -38,8 +39,12 @@ public class Util {
             = "http://moyersoftware.com/blank/get_players.php";
     public static final String URL_ADD_PLAYER
             = "http://moyersoftware.com/blank/add_player.php";
-    public static final String URL_GET_FRIENDS = "http://moyersoftware.com/blank/get_friends.php";
+    public static final String URL_GET_GAMES
+            = "http://moyersoftware.com/blank/get_games.php";
+    public static final String URL_JOIN_GAME
+            = "http://moyersoftware.com/blank/join_game.php";
     private static final String LOG_TAG = "BlankDebug";
+    public static final String SEARCH_ID_REQUESTS = "Util:SEARCH_ID_REQUESTS";
 
     // Methods
     public static void Log(Object text) {

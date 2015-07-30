@@ -2,6 +2,7 @@ package com.moysof.whattheblank.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.preference.PreferenceManager;
 import android.support.v7.util.SortedList;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
@@ -12,9 +13,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.moysof.whattheblank.JoinLobbyActivity;
 import com.moysof.whattheblank.R;
+import com.moysof.whattheblank.Util;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class JoinAdapter extends
         RecyclerView.Adapter<JoinAdapter.GameHolder> {
@@ -131,9 +145,74 @@ public class JoinAdapter extends
 
         @Override
         public void onItemClick(View v, int position) {
-            mContext.startActivity(new Intent(mContext, JoinLobbyActivity.class)
-                    .putExtra(JoinLobbyActivity.EXTRA_TITLE, games.get(position).getName()));
+            String gameId = games.get(position).getGameId();
+            String name = games.get(position).getName();
+            joinGame(gameId, name);
         }
 
     };
+
+    private void joinGame(final String gameId, final String name) {
+        final String id = PreferenceManager.getDefaultSharedPreferences(mContext)
+                .getString("id", "");
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                Util.URL_JOIN_GAME, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject responseJSON = new JSONObject(response);
+                    if (responseJSON.getString("result").equals("success")) {
+                        mContext.startActivity(new Intent(mContext, JoinLobbyActivity.class)
+                                .putExtra(JoinLobbyActivity.EXTRA_TITLE, name));
+                    } else if (responseJSON.getString("result").equals("empty")) {
+                        Toast.makeText(mContext, "Some fields are empty",
+                                Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(mContext, "Unknown server error",
+                                Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    if (Util.isDebugging()) {
+                        Toast.makeText(mContext, "JSON error: " + response,
+                                Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(mContext, "Unknown server error",
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+                Util.Log(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(mContext, "Server error",
+                        Toast.LENGTH_LONG).show();
+                Util.Log("Server error: " + error);
+            }
+        }) {
+            @Override
+            protected VolleyError parseNetworkError(VolleyError volleyError) {
+                if (volleyError.networkResponse != null
+                        && volleyError.networkResponse.data != null) {
+                    volleyError = new VolleyError(new String(volleyError.networkResponse.data));
+                }
+
+                return volleyError;
+            }
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("user_id", id);
+                params.put("game_id", gameId);
+                return params;
+            }
+
+
+        };
+        // Add the request to the RequestQueue.
+        Volley.newRequestQueue(mContext).add(stringRequest);
+    }
 }

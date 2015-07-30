@@ -8,8 +8,11 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
 
-    <!-- To get phone number for registration -->
+    <!-- Required to get phone number for registration -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <!-- Required to get last known location, when hosting a game or joining to game nearby -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
         android:name=".BaseApplication"
@@ -74,7 +77,6 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
-
         <activity
             android:name="com.facebook.FacebookActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />

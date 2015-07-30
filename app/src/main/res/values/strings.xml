@@ -95,13 +95,14 @@
     <string name="join_title_location">Searching near your location…</string>
     <string name="join_header_found">GAMES FOUND</string>
     <string name="join_games_btn">JOIN</string>
+    <string name="join_placeholder">NO GAMES FOUND</string>
 
     <!-- Join a Game (lobby) screen -->
     <string name="join_lobby_tab_game">GAME</string>
     <string name="join_lobby_tab_players">PLAYERS</string>
     <string name="join_lobby_game_header">GAME INFORMATION</string>
     <string name="join_lobby_players_header">Teams</string>
-    <string name="join_lobby_title_players">Number of Player</string>
+    <string name="join_lobby_title_players">Number of Players</string>
     <string name="join_lobby_title_cards">Number of Cards</string>
     <string name="join_lobby_title_time">Time per Round</string>
     <string name="join_lobby_title_wait">PLEASE WAIT WHILE OTHERS JOIN…</string>
