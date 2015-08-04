@@ -115,7 +115,7 @@ public class HostLobbyGameFragment extends Fragment {
         ((TextView) rootView.findViewById(R.id.host_lobby_id_txt)).setText(sGameId + "");
         ((TextView) rootView.findViewById(R.id.host_lobby_password_txt)).setText(sPassword + "");
 
-        mAdapter = new HostTeamsAdapter(getActivity(), mTeams, sNumberPlayers);
+        mAdapter = new HostTeamsAdapter(getActivity(), mTeams, sNumberPlayers, sGameId, this);
         recyclerView.setAdapter(mAdapter);
 
         getTeams();
@@ -147,12 +147,12 @@ public class HostLobbyGameFragment extends Fragment {
                         mTeams.beginBatchedUpdates();
                         mTeams.clear();
                         for (int i = 0; i < teamsCount; i++) {
-                            String teamId = teamsJSON.getJSONObject(i).getString("team_id");
+                            String id = teamsJSON.getJSONObject(i).getString("team_id");
                             int number = teamsJSON.getJSONObject(i).getInt("number");
                             int count = teamsJSON.getJSONObject(i).getInt("count");
-                            int color = Color.parseColor("#" + teamsJSON.getJSONObject(i)
-                                    .getString("color"));
-                            mTeams.add(new HostTeamsAdapter.Team(number, count, color));
+                            String colorHex = teamsJSON.getJSONObject(i)
+                                    .getString("color");
+                            mTeams.add(new HostTeamsAdapter.Team(id, number, count, colorHex));
                         }
                         mTeams.endBatchedUpdates();
                     } else if (responseJSON.getString("result").equals("empty")) {

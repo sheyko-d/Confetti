@@ -191,7 +191,7 @@ public class HostLobbyActivity extends AppCompatActivity {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this,
                 R.style.MaterialDialogStyle);
         dialogBuilder.setTitle("Are you sure?");
-        dialogBuilder.setMessage("You'll loose all game progress, if you leave now.");
+        dialogBuilder.setMessage("You'll loose all game info, if you leave now.");
 
         dialogBuilder.setPositiveButton("Exit", new DialogInterface.OnClickListener() {
             @Override

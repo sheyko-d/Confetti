@@ -278,6 +278,7 @@ public class JoinAdapter extends
                 try {
                     JSONObject responseJSON = new JSONObject(response);
                     if (responseJSON.getString("result").equals("success")) {
+                        String playerId = responseJSON.getString("player_id");
                         mContext.startActivity(new Intent(mContext, JoinLobbyActivity.class)
                                 .putExtra(JoinLobbyActivity.EXTRA_GAME_ID, gameId)
                                 .putExtra(JoinLobbyActivity.EXTRA_TITLE, name)
@@ -285,7 +286,8 @@ public class JoinAdapter extends
                                 .putExtra(JoinLobbyActivity.EXTRA_NUMBER_PLAYERS, playersNumber)
                                 .putExtra(JoinLobbyActivity.EXTRA_NUMBER_CARDS, cardsNumber)
                                 .putExtra(JoinLobbyActivity.EXTRA_TIME, time)
-                                .putExtra(JoinLobbyActivity.EXTRA_ASSIGNED_NUMBER, assignedNumber));
+                                .putExtra(JoinLobbyActivity.EXTRA_ASSIGNED_NUMBER, assignedNumber)
+                                .putExtra(JoinLobbyActivity.EXTRA_PLAYER_ID, playerId));
                     } else if (responseJSON.getString("result").equals("empty")) {
                         Toast.makeText(mContext, "Some fields are empty",
                                 Toast.LENGTH_LONG).show();

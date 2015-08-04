@@ -10,4 +10,27 @@
         <item>60</item>
     </integer-array>
 
+    <string-array name="colors">
+        <item>E57373</item>
+        <item>F48FB1</item>
+        <item>CE93D8</item>
+        <item>B39DDB</item>
+        <item>9FA8DA</item>
+        <item>42A5F5</item>
+        <item>03A9F4</item>
+        <item>00BCD4</item>
+        <item>26A69A</item>
+        <item>4CAF50</item>
+        <item>8BC34A</item>
+        <item>CDDC39</item>
+        <item>FFEB3B</item>
+        <item>FFC107</item>
+        <item>FF9800</item>
+        <item>FF7043</item>
+        <item>BCAAA4</item>
+        <item>9E9E9E</item>
+        <item>90A4AE</item>
+        <item>333333</item>
+    </string-array>
+
 </resources>
