@@ -19,6 +19,13 @@ public class ColorsAdapter extends
     private int mSelectedPos = -1;
     private ArrayList<String> mOtherTeamColors;
 
+    public ColorsAdapter(Context context,  ArrayList<String> colors,
+                         ArrayList<String> otherTeamColors) {
+        mContext = context;
+        mColors = colors.toArray(new String[colors.size()]);
+        mOtherTeamColors = otherTeamColors;
+    }
+
     public ColorsAdapter(Context context, ArrayList<String> otherTeamColors) {
         mContext = context;
         mColors = context.getResources().getStringArray(R.array.colors);
@@ -63,18 +70,20 @@ public class ColorsAdapter extends
     public void onBindViewHolder(Holder holder, int position) {
         holder.colorBg.setBackgroundColor(Color.parseColor("#" + mColors[position]));
 
-        if (mOtherTeamColors.contains(mColors[position])){
-            holder.colorBg.setEnabled(false);
-            holder.blockedImg.setVisibility(View.VISIBLE);
-        } else {
-            holder.colorBg.setEnabled(true);
-            holder.blockedImg.setVisibility(View.GONE);
-        }
-
         if (position == mSelectedPos) {
+            holder.colorBg.setEnabled(false);
             holder.checkbox.setVisibility(View.VISIBLE);
+            holder.blockedImg.setVisibility(View.GONE);
         } else {
             holder.checkbox.setVisibility(View.GONE);
+
+            if (mOtherTeamColors.contains(mColors[position])){
+                holder.colorBg.setEnabled(false);
+                holder.blockedImg.setVisibility(View.VISIBLE);
+            } else {
+                holder.colorBg.setEnabled(true);
+                holder.blockedImg.setVisibility(View.GONE);
+            }
         }
     }
 

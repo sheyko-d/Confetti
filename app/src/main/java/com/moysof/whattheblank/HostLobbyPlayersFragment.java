@@ -1,7 +1,6 @@
 package com.moysof.whattheblank;
 
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -37,13 +36,13 @@ public class HostLobbyPlayersFragment extends Fragment {
     private static String sGameId;
     private static int sNumberTeams;
     private static int sNumberPlayers;
-    private HostPlayersAdapter mAdapter;
+    private static HostPlayersAdapter mAdapter;
     private Button mPlayersBtn;
     private AlertDialog mDialog;
     private TextInputLayout mNameLayout;
     private View mAddProgressBar;
-    private SortedList<HostPlayersAdapter.Player> mPlayers = new SortedList<>(HostPlayersAdapter
-            .Player.class, new SortedList.Callback<HostPlayersAdapter.Player>() {
+    public static SortedList<HostPlayersAdapter.Player> sPlayers = new SortedList<>
+            (HostPlayersAdapter.Player.class, new SortedList.Callback<HostPlayersAdapter.Player>() {
         @Override
         public int compare(HostPlayersAdapter.Player o1, HostPlayersAdapter.Player o2) {
             return o1.getTeamColor().compareTo(o2.getTeamColor());
@@ -81,7 +80,7 @@ public class HostLobbyPlayersFragment extends Fragment {
         @Override
         public boolean areItemsTheSame(HostPlayersAdapter.Player item1,
                                        HostPlayersAdapter.Player item2) {
-            return item1.getPlayerId().equals(item2.getPlayerId());
+            return item1.getId().equals(item2.getId());
         }
     });
 
@@ -116,7 +115,7 @@ public class HostLobbyPlayersFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setEmptyView(rootView.findViewById(R.id.host_players_placeholder_layout));
 
-        mAdapter = new HostPlayersAdapter(getActivity(), mPlayers);
+        mAdapter = new HostPlayersAdapter(getActivity(), sPlayers, sGameId, this);
         recyclerView.setAdapter(mAdapter);
 
         getPlayers();
@@ -135,6 +134,8 @@ public class HostLobbyPlayersFragment extends Fragment {
         mAddProgressBar = dialogView.findViewById(R.id.host_players_add_progress_bar);
         mNameLayout = (TextInputLayout) dialogView
                 .findViewById(R.id.host_players_add_layout);
+        mNameLayout.setError(" ");
+        mNameLayout.setError(null);
         dialogBuilder.setView(dialogView);
         dialogBuilder.setPositiveButton("OK", null);
         dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -176,6 +177,7 @@ public class HostLobbyPlayersFragment extends Fragment {
                     if (responseJSON.getString("result").equals("success")) {
                         mDialog.cancel();
                         HostLobbyGameFragment.sForceUpdate = true;
+                        HostLobbyGameFragment.getTeams();
                         getPlayers();
                     } else if (responseJSON.getString("result").equals("empty")) {
                         Toast.makeText(getActivity(), "Some fields are empty",
@@ -239,20 +241,19 @@ public class HostLobbyPlayersFragment extends Fragment {
                     if (responseJSON.getString("result").equals("success")) {
                         JSONArray playersJSON = responseJSON.getJSONArray("players");
                         int playersCount = playersJSON.length();
-                        mPlayers.beginBatchedUpdates();
-                        mPlayers.clear();
+                        sPlayers.beginBatchedUpdates();
+                        sPlayers.clear();
                         for (int i = 0; i < playersCount; i++) {
                             String playerId = playersJSON.getJSONObject(i).getString("player_id");
                             String name = playersJSON.getJSONObject(i).getString("name");
                             String username = playersJSON.getJSONObject(i).getString("username");
                             String avatar = playersJSON.getJSONObject(i).getString("avatar");
                             String teamId = playersJSON.getJSONObject(i).getString("team_id");
-                            int color = Color.parseColor("#" + playersJSON.getJSONObject(i)
-                                    .getString("color"));
-                            mPlayers.add(new HostPlayersAdapter.Player(playerId, name, username,
+                            String color = playersJSON.getJSONObject(i).getString("color");
+                            sPlayers.add(new HostPlayersAdapter.Player(playerId, name, username,
                                     color, avatar));
                         }
-                        mPlayers.endBatchedUpdates();
+                        sPlayers.endBatchedUpdates();
 
                         mPlayersBtn.setEnabled(playersCount < sNumberPlayers * sNumberTeams);
                     } else if (responseJSON.getString("result").equals("empty")) {

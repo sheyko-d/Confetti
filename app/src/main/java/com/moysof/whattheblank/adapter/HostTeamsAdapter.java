@@ -2,14 +2,11 @@ package com.moysof.whattheblank.adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.util.SortedList;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +18,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.moysof.whattheblank.HostLobbyActivity;
 import com.moysof.whattheblank.HostLobbyGameFragment;
-import com.moysof.whattheblank.JoinLobbyActivity;
 import com.moysof.whattheblank.R;
 import com.moysof.whattheblank.Util;
 
@@ -105,7 +100,7 @@ public class HostTeamsAdapter extends
 
         @Override
         public void onClick(View v) {
-            joinClickListener.onItemClick(v, getAdapterPosition());
+            pickColorClickListener.onItemClick(v, getAdapterPosition());
         }
     }
 
@@ -144,7 +139,8 @@ public class HostTeamsAdapter extends
     private AlertDialog mDialog;
     private View mProgressBar;
     private RecyclerView mRecyclerView;
-    OnItemClickListener joinClickListener = new OnItemClickListener() {
+    
+    OnItemClickListener pickColorClickListener = new OnItemClickListener() {
 
         @Override
         public void onItemClick(View v, final int position) {

@@ -34,7 +34,7 @@ public class MyGcmListenerService extends GcmListenerService {
     @Override
     public void onMessageReceived(String from, Bundle data) {
         String type = data.getString("type");
-        Integer assignedNumber = 0;
+        Integer assignedNumber = -1;
         if (data.containsKey("assigned_number")) {
             assignedNumber = Integer.parseInt(data.getString("assigned_number"));
         }

@@ -50,10 +50,10 @@ public class JoinLobbyGameFragment extends Fragment {
     }
 
     public void updateAssignedNumber(int assignedNumber) {
-        Util.Log("updateAssignedNumber = "+assignedNumber);
-
-        sAssignedNumber = assignedNumber;
-        mPlayersTxt.setText(sAssignedNumber + " of " + mTotalPlayersCount);
+        if (assignedNumber != -1) {
+            sAssignedNumber = assignedNumber;
+            mPlayersTxt.setText(sAssignedNumber + " of " + mTotalPlayersCount);
+        }
     }
 
 }

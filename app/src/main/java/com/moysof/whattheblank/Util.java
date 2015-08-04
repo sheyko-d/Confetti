@@ -47,6 +47,8 @@ public class Util {
             = "http://moyersoftware.com/blank/leave_game.php";
     public static final String URL_CHANGE_TEAM_COLOR
             = "http://moyersoftware.com/blank/change_team_color.php";
+    public static final String URL_CHANGE_PLAYERS_TEAM
+            = "http://moyersoftware.com/blank/change_players_team.php";
     private static final String LOG_TAG = "BlankDebug";
     public static final String SEARCH_ID_REQUESTS = "Util:SEARCH_ID_REQUESTS";
 

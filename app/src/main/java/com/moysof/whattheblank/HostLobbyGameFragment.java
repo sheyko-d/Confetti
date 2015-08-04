@@ -1,6 +1,5 @@
 package com.moysof.whattheblank;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.util.SortedList;
@@ -30,17 +29,18 @@ import java.util.Map;
 public class HostLobbyGameFragment extends Fragment {
 
     private static RequestQueue sQueue;
-    private HostTeamsAdapter mAdapter;
+    private static HostTeamsAdapter mAdapter;
     private static String sGameId;
     private static String sPassword;
     private static Integer sNumberTeams;
-    private static Integer sNumberPlayers;
+    public static Integer sNumberPlayers;
     private static Integer sNumberCards;
     private static Integer sNumberTime;
     public static boolean sForceUpdate = false;
-    private Button mHostBtn;
-    private SortedList<HostTeamsAdapter.Team> mTeams = new SortedList<>(HostTeamsAdapter.Team.class,
-            new SortedList.Callback<HostTeamsAdapter.Team>() {
+    private static Button sHostBtn;
+    private static HostLobbyGameFragment sFragment;
+    public static SortedList<HostTeamsAdapter.Team> sTeams = new SortedList<>(HostTeamsAdapter.Team
+            .class, new SortedList.Callback<HostTeamsAdapter.Team>() {
                 @Override
                 public int compare(HostTeamsAdapter.Team o1, HostTeamsAdapter.Team o2) {
                     return o1.getNumber().compareTo(o2.getNumber());
@@ -99,6 +99,7 @@ public class HostLobbyGameFragment extends Fragment {
     }
 
     public HostLobbyGameFragment() {
+        sFragment = this;
     }
 
     @Override
@@ -106,7 +107,7 @@ public class HostLobbyGameFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_host_lobby_game, container, false);
 
-        mHostBtn = (Button) rootView.findViewById(R.id.host_btn);
+        sHostBtn = (Button) rootView.findViewById(R.id.host_btn);
 
         RecyclerView recyclerView = (RecyclerView) rootView
                 .findViewById(R.id.host_lobby_game_recycler_view);
@@ -115,7 +116,7 @@ public class HostLobbyGameFragment extends Fragment {
         ((TextView) rootView.findViewById(R.id.host_lobby_id_txt)).setText(sGameId + "");
         ((TextView) rootView.findViewById(R.id.host_lobby_password_txt)).setText(sPassword + "");
 
-        mAdapter = new HostTeamsAdapter(getActivity(), mTeams, sNumberPlayers, sGameId, this);
+        mAdapter = new HostTeamsAdapter(getActivity(), sTeams, sNumberPlayers, sGameId, this);
         recyclerView.setAdapter(mAdapter);
 
         getTeams();
@@ -132,7 +133,7 @@ public class HostLobbyGameFragment extends Fragment {
         }
     }
 
-    public void getTeams() {
+    public static void getTeams() {
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
                 Util.URL_GET_TEAMS, new Response.Listener<String>() {
@@ -144,40 +145,41 @@ public class HostLobbyGameFragment extends Fragment {
                     if (responseJSON.getString("result").equals("success")) {
                         JSONArray teamsJSON = responseJSON.getJSONArray("teams");
                         int teamsCount = teamsJSON.length();
-                        mTeams.beginBatchedUpdates();
-                        mTeams.clear();
+                        sTeams.beginBatchedUpdates();
+                        sTeams.clear();
                         for (int i = 0; i < teamsCount; i++) {
                             String id = teamsJSON.getJSONObject(i).getString("team_id");
                             int number = teamsJSON.getJSONObject(i).getInt("number");
                             int count = teamsJSON.getJSONObject(i).getInt("count");
                             String colorHex = teamsJSON.getJSONObject(i)
                                     .getString("color");
-                            mTeams.add(new HostTeamsAdapter.Team(id, number, count, colorHex));
+                            sTeams.add(new HostTeamsAdapter.Team(id, number, count, colorHex));
                         }
-                        mTeams.endBatchedUpdates();
+                        sTeams.endBatchedUpdates();
                     } else if (responseJSON.getString("result").equals("empty")) {
-                        Toast.makeText(getActivity(), "Some fields are empty",
+                        Toast.makeText(sFragment.getActivity(), "Some fields are empty",
                                 Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(getActivity(), "Unknown server error",
+                        Toast.makeText(sFragment.getActivity(), "Unknown server error",
                                 Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     if (Util.isDebugging()) {
-                        Toast.makeText(getActivity(), "JSON error: " + response,
+                        Toast.makeText(sFragment.getActivity(), "JSON error: " + response,
                                 Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(getActivity(), "Unknown server error",
+                        Toast.makeText(sFragment.getActivity(), "Unknown server error",
                                 Toast.LENGTH_LONG).show();
                     }
                 }
 
-                mHostBtn.setEnabled(mTeams.size() >= sNumberTeams * sNumberPlayers);
+                sHostBtn.setEnabled(HostLobbyPlayersFragment.sPlayers.size() >= sNumberTeams
+                        * sNumberPlayers);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getActivity(), "Server error",
+                Toast.makeText(sFragment.getActivity(), "Server error",
                         Toast.LENGTH_LONG).show();
                 Util.Log("Server error: " + error);
             }

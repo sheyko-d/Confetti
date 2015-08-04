@@ -1,14 +1,26 @@
 package com.moysof.whattheblank.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.util.SortedList;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.moysof.whattheblank.HostLobbyGameFragment;
+import com.moysof.whattheblank.HostLobbyPlayersFragment;
 import com.moysof.whattheblank.R;
 import com.moysof.whattheblank.Util;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -16,16 +28,28 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 public class HostPlayersAdapter extends
         RecyclerView.Adapter<HostPlayersAdapter.PlayersHolder> {
 
+    private HostLobbyPlayersFragment mPlayersFragment;
+    private String mGameId;
     private ImageLoader mImageLoader;
     private Context mContext;
-    private SortedList<Player> teams;
+    private SortedList<Player> players;
 
-    public HostPlayersAdapter(Context context, SortedList<Player> teams) {
+    public HostPlayersAdapter(Context context, SortedList<Player> players, String gameId,
+                              HostLobbyPlayersFragment playersFragment) {
         mContext = context;
-        this.teams = teams;
+        this.players = players;
+        mGameId = gameId;
+        mPlayersFragment = playersFragment;
 
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().cacheInMemory(true)
                 .cacheOnDisk(true)
@@ -40,23 +64,23 @@ public class HostPlayersAdapter extends
 
     public static class Player {
 
-        public String playerId;
+        public String id;
         public String name;
         public String username;
-        public Integer teamColor;
+        public String teamColorHex;
         public String avatar;
 
-        public Player(String playerId, String name, String username, Integer teamColor,
+        public Player(String id, String name, String username, String teamColorHex,
                       String avatar) {
-            this.playerId = playerId;
+            this.id = id;
             this.name = name;
             this.username = username;
-            this.teamColor = teamColor;
+            this.teamColorHex = teamColorHex;
             this.avatar = avatar;
         }
 
-        public String getPlayerId() {
-            return playerId;
+        public String getId() {
+            return id;
         }
 
         public String getName() {
@@ -67,8 +91,12 @@ public class HostPlayersAdapter extends
             return username;
         }
 
+        public String getTeamColorHex() {
+            return teamColorHex;
+        }
+
         public Integer getTeamColor() {
-            return teamColor;
+            return Color.parseColor("#" + teamColorHex);
         }
 
         public String getAvatar() {
@@ -96,7 +124,7 @@ public class HostPlayersAdapter extends
 
         @Override
         public void onClick(View v) {
-            joinClickListener.onItemClick(v, getAdapterPosition());
+            pickColorClickListener.onItemClick(v, getAdapterPosition());
         }
     }
 
@@ -115,7 +143,7 @@ public class HostPlayersAdapter extends
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(PlayersHolder holder, int position) {
-        Player player = teams.get(position);
+        Player player = players.get(position);
 
         Util.Log("avatar = " + player.getAvatar());
         mImageLoader.displayImage(player.getAvatar(), holder.avatarImg);
@@ -126,14 +154,140 @@ public class HostPlayersAdapter extends
 
     @Override
     public int getItemCount() {
-        return teams.size();
+        return players.size();
     }
 
-    OnItemClickListener joinClickListener = new OnItemClickListener() {
+
+    private AlertDialog mDialog;
+    private View mProgressBar;
+    private RecyclerView mRecyclerView;
+
+    OnItemClickListener pickColorClickListener = new OnItemClickListener() {
 
         @Override
-        public void onItemClick(View v, int position) {
-        }
+        public void onItemClick(View v, final int position) {
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mContext,
+                    R.style.MaterialDialogStyle);
+            dialogBuilder.setTitle("Change Player's Team");
 
+            View dialogView = LayoutInflater.from(mContext).inflate(R.layout.dialog_team_color,
+                    null);
+            mRecyclerView = (RecyclerView) dialogView.findViewById
+                    (R.id.colors_recycler_view);
+            mProgressBar = dialogView.findViewById(R.id.colors_progress_bar);
+            GridLayoutManager layoutManager = new GridLayoutManager(mContext, 4);
+            mRecyclerView.setLayoutManager(layoutManager);
+            mRecyclerView.setHasFixedSize(true);
+
+            int teamsCount = HostLobbyGameFragment.sTeams.size();
+            ArrayList<String> teamColors = new ArrayList<>();
+            ArrayList<String> otherTeamColors = new ArrayList<>();
+            for (int i = 0; i < teamsCount; i++) {
+                teamColors.add(HostLobbyGameFragment.sTeams.get(i).getColorHex());
+            }
+
+            // Block already fully filled teams
+            for (int i = 0; i < teamsCount; i++) {
+                if (HostLobbyGameFragment.sTeams.get(i).getAssignedCount()
+                        >= HostLobbyGameFragment.sNumberPlayers) {
+                    otherTeamColors.add(HostLobbyGameFragment.sTeams.get(i).getColorHex());
+                }
+            }
+
+            final ColorsAdapter adapter = new ColorsAdapter(mContext, teamColors, otherTeamColors);
+            adapter.setTeamColor(players.get(position).getTeamColorHex());
+            mRecyclerView.setAdapter(adapter);
+
+            dialogBuilder.setView(dialogView);
+            dialogBuilder.setPositiveButton("OK", null);
+            dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            mDialog = dialogBuilder.create();
+            mDialog.show();
+            mDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                    .setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            changePlayerTeam(mGameId, players.get(position).getId(),
+                                    adapter.getTeamColor());
+                        }
+                    });
+        }
     };
+
+    private void changePlayerTeam(final String gameId, final String playerId, final String color) {
+        mProgressBar.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.INVISIBLE);
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                Util.URL_CHANGE_PLAYERS_TEAM, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject responseJSON = new JSONObject(response);
+                    if (responseJSON.getString("result").equals("success")) {
+                        mDialog.cancel();
+                        mPlayersFragment.getPlayers();
+                    } else if (responseJSON.getString("result").equals("empty")) {
+                        Toast.makeText(mContext, "Some fields are empty",
+                                Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(mContext, "Unknown server error",
+                                Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    if (Util.isDebugging()) {
+                        Toast.makeText(mContext, "JSON error: " + response,
+                                Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(mContext, "Unknown server error",
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                Util.Log(response);
+                mProgressBar.setVisibility(View.GONE);
+                mRecyclerView.setVisibility(View.VISIBLE);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(mContext, "Server error",
+                        Toast.LENGTH_LONG).show();
+                Util.Log("Server error: " + error);
+
+                mProgressBar.setVisibility(View.GONE);
+                mRecyclerView.setVisibility(View.VISIBLE);
+            }
+        }) {
+            @Override
+            protected VolleyError parseNetworkError(VolleyError volleyError) {
+                if (volleyError.networkResponse != null
+                        && volleyError.networkResponse.data != null) {
+                    volleyError = new VolleyError(new String(volleyError.networkResponse.data));
+                }
+
+                return volleyError;
+            }
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("game_id", gameId);
+                params.put("player_id", playerId);
+                params.put("color", color);
+                return params;
+            }
+
+
+        };
+        // Add the request to the RequestQueue.
+        Volley.newRequestQueue(mContext).add(stringRequest);
+    }
 }
