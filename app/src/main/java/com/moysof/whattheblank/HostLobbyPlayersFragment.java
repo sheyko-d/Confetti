@@ -227,7 +227,7 @@ public class HostLobbyPlayersFragment extends Fragment {
         sQueue.add(stringRequest);
     }
 
-    private void getPlayers() {
+    public void getPlayers() {
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
                 Util.URL_GET_PLAYERS, new Response.Listener<String>() {

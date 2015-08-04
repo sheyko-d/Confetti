@@ -35,7 +35,6 @@
         android:layout_width="80dp"
         android:layout_height="48dp"
         android:text="@string/join_games_btn"
-        android:textColor="@android:color/white"
         android:textSize="20sp"
         android:theme="@style/ButtonGreen" />
 </LinearLayout>

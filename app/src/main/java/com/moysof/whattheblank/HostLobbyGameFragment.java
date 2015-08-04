@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +38,7 @@ public class HostLobbyGameFragment extends Fragment {
     private static Integer sNumberCards;
     private static Integer sNumberTime;
     public static boolean sForceUpdate = false;
+    private Button mHostBtn;
     private SortedList<HostTeamsAdapter.Team> mTeams = new SortedList<>(HostTeamsAdapter.Team.class,
             new SortedList.Callback<HostTeamsAdapter.Team>() {
                 @Override
@@ -104,6 +106,8 @@ public class HostLobbyGameFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_host_lobby_game, container, false);
 
+        mHostBtn = (Button) rootView.findViewById(R.id.host_btn);
+
         RecyclerView recyclerView = (RecyclerView) rootView
                 .findViewById(R.id.host_lobby_game_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -128,7 +132,7 @@ public class HostLobbyGameFragment extends Fragment {
         }
     }
 
-    private void getTeams() {
+    public void getTeams() {
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
                 Util.URL_GET_TEAMS, new Response.Listener<String>() {
@@ -143,7 +147,7 @@ public class HostLobbyGameFragment extends Fragment {
                         mTeams.beginBatchedUpdates();
                         mTeams.clear();
                         for (int i = 0; i < teamsCount; i++) {
-                            String team_id = teamsJSON.getJSONObject(i).getString("team_id");
+                            String teamId = teamsJSON.getJSONObject(i).getString("team_id");
                             int number = teamsJSON.getJSONObject(i).getInt("number");
                             int count = teamsJSON.getJSONObject(i).getInt("count");
                             int color = Color.parseColor("#" + teamsJSON.getJSONObject(i)
@@ -167,6 +171,8 @@ public class HostLobbyGameFragment extends Fragment {
                                 Toast.LENGTH_LONG).show();
                     }
                 }
+
+                mHostBtn.setEnabled(mTeams.size() >= sNumberTeams * sNumberPlayers);
             }
         }, new Response.ErrorListener() {
             @Override

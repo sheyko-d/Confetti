@@ -151,6 +151,8 @@ public class LoginActivity extends AppCompatActivity {
     private void logInOnServer(final String email, final String password) {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
+        final String token = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this)
+                .getString("token", "");
 
         final ProgressDialog progressDialog = ProgressDialog.show(this, "",
                 "Connecting...");
@@ -207,9 +209,7 @@ public class LoginActivity extends AppCompatActivity {
             protected VolleyError parseNetworkError(VolleyError volleyError) {
                 if (volleyError.networkResponse != null
                         && volleyError.networkResponse.data != null) {
-                    VolleyError error
-                            = new VolleyError(new String(volleyError.networkResponse.data));
-                    volleyError = error;
+                    volleyError = new VolleyError(new String(volleyError.networkResponse.data));
                 }
 
                 return volleyError;
@@ -220,6 +220,7 @@ public class LoginActivity extends AppCompatActivity {
                 Map<String, String> params = new HashMap<>();
                 params.put("email", email);
                 params.put("password", password);
+                params.put("token", token);
                 return params;
             }
         };

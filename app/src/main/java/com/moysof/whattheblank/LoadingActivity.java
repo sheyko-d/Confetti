@@ -316,12 +316,6 @@ public class LoadingActivity extends AppCompatActivity implements
 
                     signInOnServer(id, email, name, username, personPhotoUrl);
 
-
-                    // by default the profile url gives 50x50 px image only
-                    // we can replace the value with whatever dimension we want by
-                    // replacing sz=X
-
-
                 } else {
                     Toast.makeText(getApplicationContext(),
                             "Person information is null", Toast.LENGTH_LONG).show();
@@ -368,6 +362,7 @@ public class LoadingActivity extends AppCompatActivity implements
     private void signInOnServer(final String id, final String email, final String name,
                                 final String username, final String avatar) {
         final String phone = Util.getPhone();
+        final String token = mPrefs.getString("token", "");
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -433,6 +428,7 @@ public class LoadingActivity extends AppCompatActivity implements
                 params.put("email", email);
                 params.put("phone", phone);
                 params.put("avatar", avatar);
+                params.put("token", token);
                 return params;
             }
 

@@ -25,19 +25,20 @@
 
     <style name="Button.Base.BasicTitle" parent="Widget.AppCompat.Button">
         <item name="android:textSize">@dimen/btn_basic_title_txt_size</item>
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">@drawable/button_txt_color</item>
         <item name="android:height">@dimen/btn_basic_title_height</item>
         <item name="elevation">@dimen/btn_elevation</item>
     </style>
 
     <style name="Button.Base.BasicTitle.Small" parent="Button.Base.BasicTitle">
+        <item name="android:textColor">@drawable/button_txt_color</item>
         <item name="android:textSize">@dimen/btn_basic_title_small_txt_size</item>
         <item name="android:height">@dimen/btn_basic_title_small_height</item>
     </style>
 
     <style name="Button.Base.Roboto" parent="Widget.AppCompat.Button">
         <item name="android:textSize">@dimen/btn_roboto_txt_size</item>
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">@drawable/button_txt_color</item>
         <item name="android:height">@dimen/btn_roboto_height</item>
         <item name="android:textAllCaps">false</item>
         <item name="elevation">@dimen/btn_elevation</item>
@@ -64,11 +65,11 @@
     </style>
 
     <style name="ButtonPurple" parent="Button.Base.Roboto">
-        <item name="colorButtonNormal">@color/primary</item>
+        <item name="colorButtonNormal">@drawable/btn_purple_selector</item>
     </style>
 
     <style name="ButtonPurple.Small" parent="Button.Base.BasicTitle.Small">
-        <item name="colorButtonNormal">@color/primary</item>
+        <item name="colorButtonNormal">@drawable/btn_purple_selector</item>
     </style>
 
     <style name="MaterialDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">

@@ -5,6 +5,7 @@
     <string name="app_name_condensed">WhatTheBlank</string>
     <string name="url_website">www.moyersoftware.com</string>
     <string name="facebook_app_id">943466632343086</string>
+    <string name="gcm_sender_id">23881468737</string>
 
     <!-- Loading screen -->
     <string name="loading_btn_email">Register with Email</string>
@@ -95,7 +96,9 @@
     <string name="join_title_location">Searching near your location…</string>
     <string name="join_header_found">GAMES FOUND</string>
     <string name="join_games_btn">JOIN</string>
+    <string name="join_games_full_btn">FULL</string>
     <string name="join_placeholder">NO GAMES FOUND</string>
+    <string name="join_password_hint">Game Password</string>
 
     <!-- Join a Game (lobby) screen -->
     <string name="join_lobby_tab_game">GAME</string>

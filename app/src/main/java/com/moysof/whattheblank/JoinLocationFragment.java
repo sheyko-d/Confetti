@@ -32,13 +32,13 @@ public class JoinLocationFragment extends Fragment {
     private JoinAdapter mAdapter;
     private TextView mLoadingTxt;
     private SwipeRefreshLayout mRefreshLayout;
-    private String mLat;
-    private String mLng;
+    public static String sLat;
+    public static String sLng;
     private SortedList<JoinAdapter.Game> mGames = new SortedList<>(JoinAdapter.Game.class,
             new SortedList.Callback<JoinAdapter.Game>() {
                 @Override
                 public int compare(JoinAdapter.Game o1, JoinAdapter.Game o2) {
-                    return o1.getGameId().compareTo(o2.getGameId());
+                    return o1.getName().compareTo(o2.getName());
                 }
 
                 @Override
@@ -112,109 +112,109 @@ public class JoinLocationFragment extends Fragment {
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (mLat != null && mLng != null) {
-                    searchGames(mLat, mLng);
-                } else {
-                    Toast.makeText(getActivity(), "Can't get your location", Toast.LENGTH_LONG)
-                            .show();
-                }
+                searchGames();
             }
         });
     }
 
-    public void searchGames(final String lat, final String lng) {
-        mLat = lat;
-        mLng = lng;
+    public void searchGames() {
+        if (sLat != null && sLng != null) {
+            final String id = PreferenceManager.getDefaultSharedPreferences(getActivity())
+                    .getString("id", "");
 
-        final String id = PreferenceManager.getDefaultSharedPreferences(getActivity())
-                .getString("id", "");
+            mLoadingTxt.setText(R.string.join_title_location);
 
-        mLoadingTxt.setText(R.string.join_title_location);
+            // Request a string response from the provided URL.
+            StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                    Util.URL_GET_GAMES, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONObject responseJSON = new JSONObject(response);
+                        if (responseJSON.getString("result").equals("success")) {
+                            JSONArray gamesJSON = responseJSON.getJSONArray("games");
+                            int gamesCount = gamesJSON.length();
+                            mGames.clear();
+                            mGames.beginBatchedUpdates();
+                            for (int i = 0; i < gamesCount; i++) {
+                                int type = gamesJSON.getJSONObject(i).getInt("type");
+                                String gameId = gamesJSON.getJSONObject(i).getString("game_id");
+                                String name = gamesJSON.getJSONObject(i).getString("name");
+                                int password = gamesJSON.getJSONObject(i).getInt("password");
+                                String username = gamesJSON.getJSONObject(i).getString("username");
+                                int teamsMax = gamesJSON.getJSONObject(i).getInt("teams_max");
+                                int playersMax = gamesJSON.getJSONObject(i).getInt("players_max");
+                                int cardsMax = gamesJSON.getJSONObject(i).getInt("cards_max");
+                                int time = gamesJSON.getJSONObject(i).getInt("time");
+                                int assignedNumber = gamesJSON.getJSONObject(i)
+                                        .getInt("assigned_number");
 
-        // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                Util.URL_GET_GAMES, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject responseJSON = new JSONObject(response);
-                    if (responseJSON.getString("result").equals("success")) {
-                        JSONArray gamesJSON = responseJSON.getJSONArray("games");
-                        int gamesCount = gamesJSON.length();
-                        mGames.clear();
-                        mGames.beginBatchedUpdates();
-                        for (int i = 0; i < gamesCount; i++) {
-                            int type = gamesJSON.getJSONObject(i).getInt("type");
-                            String gameId = gamesJSON.getJSONObject(i).getString("game_id");
-                            String hostId = gamesJSON.getJSONObject(i).getString("host_id");
-                            String name = gamesJSON.getJSONObject(i).getString("name");
-                            String username = gamesJSON.getJSONObject(i).getString("username");
-                            String password = gamesJSON.getJSONObject(i).getString("pwd");
-                            String teamsMax = gamesJSON.getJSONObject(i).getString("teams_max");
-                            String playersMax = gamesJSON.getJSONObject(i)
-                                    .getString("players_max");
-                            String cardsMax = gamesJSON.getJSONObject(i).getString("cards_max");
-                            String time = gamesJSON.getJSONObject(i).getString("time");
-                            mGames.add(new JoinAdapter.Game(type, gameId, name, username));
+                                mGames.add(new JoinAdapter.Game(type, gameId, name, password,
+                                        username, teamsMax, playersMax, cardsMax, time,
+                                        assignedNumber));
+                            }
+                            mGames.endBatchedUpdates();
+
+                            mLoadingTxt.setText("Found " + mGames.size() + " games near your location");
+                        } else if (responseJSON.getString("result").equals("empty")) {
+                            Toast.makeText(getActivity(), "Some fields are empty",
+                                    Toast.LENGTH_LONG).show();
+                            mLoadingTxt.setText("Can't find games");
+                        } else {
+                            Toast.makeText(getActivity(), "Unknown server error",
+                                    Toast.LENGTH_LONG).show();
+                            mLoadingTxt.setText("Can't find games");
                         }
-                        mGames.endBatchedUpdates();
-
-                        mLoadingTxt.setText("Found " + mGames.size() + " games near your location");
-                    } else if (responseJSON.getString("result").equals("empty")) {
-                        Toast.makeText(getActivity(), "Some fields are empty",
-                                Toast.LENGTH_LONG).show();
-                        mLoadingTxt.setText("Can't find games");
-                    } else {
-                        Toast.makeText(getActivity(), "Unknown server error",
-                                Toast.LENGTH_LONG).show();
+                    } catch (JSONException e) {
+                        if (Util.isDebugging()) {
+                            Toast.makeText(getActivity(), "JSON error: " + response,
+                                    Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getActivity(), "Unknown server error",
+                                    Toast.LENGTH_LONG).show();
+                        }
                         mLoadingTxt.setText("Can't find games");
                     }
-                } catch (JSONException e) {
-                    if (Util.isDebugging()) {
-                        Toast.makeText(getActivity(), "JSON error: " + response,
-                                Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(getActivity(), "Unknown server error",
-                                Toast.LENGTH_LONG).show();
-                    }
+                    Util.Log(response);
+                    mRefreshLayout.setRefreshing(false);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getActivity(), "Server error",
+                            Toast.LENGTH_LONG).show();
+                    Util.Log("Server error: " + error);
                     mLoadingTxt.setText("Can't find games");
+                    mRefreshLayout.setRefreshing(false);
                 }
-                Util.Log(response);
-                mRefreshLayout.setRefreshing(false);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getActivity(), "Server error",
-                        Toast.LENGTH_LONG).show();
-                Util.Log("Server error: " + error);
-                mLoadingTxt.setText("Can't find games");
-                mRefreshLayout.setRefreshing(false);
-            }
-        }) {
-            @Override
-            protected VolleyError parseNetworkError(VolleyError volleyError) {
-                if (volleyError.networkResponse != null
-                        && volleyError.networkResponse.data != null) {
-                    volleyError = new VolleyError(new String(volleyError.networkResponse.data));
+            }) {
+                @Override
+                protected VolleyError parseNetworkError(VolleyError volleyError) {
+                    if (volleyError.networkResponse != null
+                            && volleyError.networkResponse.data != null) {
+                        volleyError = new VolleyError(new String(volleyError.networkResponse.data));
+                    }
+
+                    return volleyError;
                 }
 
-                return volleyError;
-            }
-
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("user_id", id);
-                params.put("lat", lat);
-                params.put("lng", lng);
-                return params;
-            }
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("user_id", id);
+                    params.put("lat", sLat);
+                    params.put("lng", sLng);
+                    return params;
+                }
 
 
-        };
-        // Add the request to the RequestQueue.
-        sQueue.add(stringRequest);
+            };
+            // Add the request to the RequestQueue.
+            sQueue.add(stringRequest);
+        } else {
+            Toast.makeText(getActivity(), "Can't get your location", Toast.LENGTH_LONG)
+                    .show();
+        }
     }
 
 }

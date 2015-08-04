@@ -220,6 +220,8 @@ public class RegisterActivity extends AppCompatActivity {
     private void signInOnServer(final String email, final String name, final String username,
                                 final String password) {
         final String phone = Util.getPhone();
+        final String token = PreferenceManager.getDefaultSharedPreferences(RegisterActivity.this)
+                .getString("token", "");
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -275,9 +277,7 @@ public class RegisterActivity extends AppCompatActivity {
             protected VolleyError parseNetworkError(VolleyError volleyError) {
                 if (volleyError.networkResponse != null
                         && volleyError.networkResponse.data != null) {
-                    VolleyError error
-                            = new VolleyError(new String(volleyError.networkResponse.data));
-                    volleyError = error;
+                    volleyError = new VolleyError(new String(volleyError.networkResponse.data));
                 }
 
                 return volleyError;
@@ -291,6 +291,7 @@ public class RegisterActivity extends AppCompatActivity {
                 params.put("email", email);
                 params.put("password", password);
                 params.put("phone", phone);
+                params.put("token", token);
                 return params;
             }
         };

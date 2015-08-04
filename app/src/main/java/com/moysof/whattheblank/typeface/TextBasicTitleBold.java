@@ -2,11 +2,13 @@ package com.moysof.whattheblank.typeface;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.text.Html;
+import android.support.v7.widget.AppCompatTextView;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
-public class TextBasicTitleBold extends TextView {
+public class TextBasicTitleBold extends AppCompatTextView {
 
     public TextBasicTitleBold(Context context) {
         super(context);
@@ -27,7 +29,10 @@ public class TextBasicTitleBold extends TextView {
             Typeface tf = Typeface.createFromAsset(getContext().getAssets(),
                     "fonts/BasicTitleFont.ttf");
             setTypeface(tf);
-            setText(Html.fromHtml("<b>" + getText() + "</b>"));
+            Spannable span = new SpannableString(getText());
+            span.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, getText().length(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            setText(span);
         }
     }
 }

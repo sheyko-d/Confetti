@@ -137,7 +137,7 @@ public class JoinIDFragment extends Fragment {
         });
     }
 
-    private void searchGames() {
+    public void searchGames() {
         final String idQuery = mIdEditTxt.getText().toString();
 
         sQueue.cancelAll(Util.SEARCH_ID_REQUESTS);
@@ -163,16 +163,19 @@ public class JoinIDFragment extends Fragment {
                             for (int i = 0; i < gamesCount; i++) {
                                 int type = gamesJSON.getJSONObject(i).getInt("type");
                                 String gameId = gamesJSON.getJSONObject(i).getString("game_id");
-                                String hostId = gamesJSON.getJSONObject(i).getString("host_id");
                                 String name = gamesJSON.getJSONObject(i).getString("name");
+                                int password = gamesJSON.getJSONObject(i).getInt("password");
                                 String username = gamesJSON.getJSONObject(i).getString("username");
-                                String password = gamesJSON.getJSONObject(i).getString("pwd");
-                                String teamsMax = gamesJSON.getJSONObject(i).getString("teams_max");
-                                String playersMax = gamesJSON.getJSONObject(i)
-                                        .getString("players_max");
-                                String cardsMax = gamesJSON.getJSONObject(i).getString("cards_max");
-                                String time = gamesJSON.getJSONObject(i).getString("time");
-                                mGames.add(new JoinAdapter.Game(type, gameId, name, username));
+                                int teamsMax = gamesJSON.getJSONObject(i).getInt("teams_max");
+                                int playersMax = gamesJSON.getJSONObject(i).getInt("players_max");
+                                int cardsMax = gamesJSON.getJSONObject(i).getInt("cards_max");
+                                int time = gamesJSON.getJSONObject(i).getInt("time");
+                                int assignedNumber = gamesJSON.getJSONObject(i)
+                                        .getInt("assigned_number");
+
+                                mGames.add(new JoinAdapter.Game(type, gameId, name, password,
+                                        username, teamsMax, playersMax, cardsMax, time,
+                                        assignedNumber));
                             }
                             mGames.endBatchedUpdates();
                         } else if (responseJSON.getString("result").equals("empty")) {

@@ -254,6 +254,9 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                         } else if (responseJSON.getString("result").equals("empty")) {
                             Toast.makeText(HostActivity.this, "Some fields are empty",
                                     Toast.LENGTH_LONG).show();
+                        } else if (responseJSON.getString("result").equals("exists")) {
+                            Toast.makeText(HostActivity.this, "Game with this ID already exists",
+                                    Toast.LENGTH_LONG).show();
                         } else {
                             Toast.makeText(HostActivity.this, "Unknown server error",
                                     Toast.LENGTH_LONG).show();

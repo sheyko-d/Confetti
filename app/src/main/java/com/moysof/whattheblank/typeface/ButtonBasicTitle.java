@@ -2,10 +2,10 @@ package com.moysof.whattheblank.typeface;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
-import android.widget.Button;
 
-public class ButtonBasicTitle extends Button {
+public class ButtonBasicTitle extends AppCompatButton {
 
     public ButtonBasicTitle(Context context) {
         super(context);

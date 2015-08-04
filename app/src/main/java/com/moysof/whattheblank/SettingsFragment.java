@@ -108,7 +108,7 @@ public class SettingsFragment extends Fragment {
                 R.style.MaterialDialogStyle);
         dialogBuilder.setTitle("Change Password");
         View dialogView
-                = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_password, null);
+                = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_change_password, null);
         final EditText oldEditTxt = (EditText) dialogView
                 .findViewById(R.id.settings_password_old_edit_txt);
         final EditText newEditTxt = (EditText) dialogView

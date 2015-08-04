@@ -2,10 +2,10 @@ package com.moysof.whattheblank.typeface;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
-public class TextRobotoRegular extends TextView {
+public class TextRobotoRegular extends AppCompatTextView {
 
     public TextRobotoRegular(Context context) {
         super(context);

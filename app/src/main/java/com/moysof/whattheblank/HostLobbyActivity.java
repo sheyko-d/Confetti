@@ -1,7 +1,11 @@
 package com.moysof.whattheblank;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -43,6 +47,8 @@ public class HostLobbyActivity extends AppCompatActivity {
     public static final String EXTRA_NUMBER_PLAYERS = "number_players";
     public static final String EXTRA_NUMBER_CARDS = "number_cards";
     public static final String EXTRA_NUMBER_TIME = "number_time";
+    public static final String TYPE_JOINED_GAME = "joined_game";
+    public static final String BROADCAST_JOINED_GAME = "com.moysof.hashtagnews:JOINED_GAME";
     private String mGameId;
     private String mPassword;
     private Integer mNumberTeams;
@@ -50,6 +56,8 @@ public class HostLobbyActivity extends AppCompatActivity {
     private Integer mNumberCards;
     private Integer mNumberTime;
     private RequestQueue mQueue;
+    private HostLobbyGameFragment mGameFragment;
+    private HostLobbyPlayersFragment mPlayersFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +89,25 @@ public class HostLobbyActivity extends AppCompatActivity {
         });
 
         mQueue = Volley.newRequestQueue(this);
+
+        // Add a receiver to listen for incoming messages
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(BROADCAST_JOINED_GAME);
+        registerReceiver(mJoinedReceiver, filter);
     }
+
+    BroadcastReceiver mJoinedReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (mViewPager.getCurrentItem() == 0) {
+                mGameFragment.getTeams();
+                mPlayersFragment.getPlayers();
+            } else {
+                mPlayersFragment.getPlayers();
+                mGameFragment.getTeams();
+            }
+        }
+    };
 
     private void initTabs() {
         ((TextView) findViewById(R.id.join_title_txt)).setText(Html.fromHtml("<b>" + getIntent()
@@ -130,11 +156,13 @@ public class HostLobbyActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             if (position == 0) {
-                return HostLobbyGameFragment.newInstance(mGameId, mPassword, mNumberTeams,
+                mGameFragment = HostLobbyGameFragment.newInstance(mGameId, mPassword, mNumberTeams,
                         mNumberPlayers, mNumberCards, mNumberTime, mQueue);
+                return mGameFragment;
             } else {
-                return HostLobbyPlayersFragment.newInstance(mGameId, mNumberTeams, mNumberPlayers,
-                        mQueue);
+                mPlayersFragment = HostLobbyPlayersFragment.newInstance(mGameId, mNumberTeams,
+                        mNumberPlayers, mQueue);
+                return mPlayersFragment;
             }
         }
 
