@@ -27,6 +27,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.moysof.whattheblank.adapter.HostNumberSpinnerAdapter;
 import com.moysof.whattheblank.adapter.HostTimeSpinnerAdapter;
+import com.moysof.whattheblank.util.Util;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,8 +52,8 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     private Spinner mPlayersSpinner;
     private Spinner mCardsSpinner;
     private Spinner mTimeSpinner;
-    private int mTeamsPos = 0;
-    private int mPlayersPos = 0;
+    private int mTeamsPos = 1;
+    private int mPlayersPos = 1;
     private int mCardsPos = 0;
     private int[] mTimeArray;
     private GoogleApiClient mGoogleApiClient;
@@ -125,13 +126,13 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
         mGoogleApiClient.connect();
     }
 
     @Override
-    public void onStop(){
+    public void onStop() {
         super.onStop();
         mGoogleApiClient.disconnect();
     }
@@ -145,6 +146,8 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
         mTeamsSpinner.setAdapter(mSpinnerNumberAdapter);
         mPlayersSpinner.setAdapter(mSpinnerNumberAdapter);
         mCardsSpinner.setAdapter(mSpinnerNumberAdapter);
+        mTeamsSpinner.setSelection(1);
+        mPlayersSpinner.setSelection(1);
 
         mTimeArray = getResources().getIntArray(R.array.time);
         mSpinnerTimeAdapter = new HostTimeSpinnerAdapter(this, mTimeArray);
@@ -220,6 +223,13 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
             mPasswordLayout.setError(null);
         }
 
+        //TODO: Uncomment
+        /*if (mPlayersPos * mTeamsPos < 1) {
+            Toast.makeText(HostActivity.this, "Game should be played with at least 4 people",
+                    Toast.LENGTH_LONG).show();
+            containsErrors = true;
+        }*/
+
         if (containsErrors) {
             mScrollView.smoothScrollTo(0, 0);
         } else {
@@ -241,6 +251,7 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                     try {
                         JSONObject responseJSON = new JSONObject(response);
                         if (responseJSON.getString("result").equals("success")) {
+                            String playerId = responseJSON.getString("player_id");
                             startActivity(new Intent(HostActivity.this, HostLobbyActivity.class)
                                     .putExtra(HostLobbyActivity.EXTRA_ID, mGameId + "")
                                     .putExtra(HostLobbyActivity.EXTRA_NAME, name)
@@ -249,7 +260,8 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
                                     .putExtra(HostLobbyActivity.EXTRA_NUMBER_PLAYERS,
                                             mPlayersPos + 1)
                                     .putExtra(HostLobbyActivity.EXTRA_NUMBER_CARDS, mCardsPos + 1)
-                                    .putExtra(HostLobbyActivity.EXTRA_NUMBER_TIME, time));
+                                    .putExtra(HostLobbyActivity.EXTRA_NUMBER_TIME, time)
+                                    .putExtra(HostLobbyActivity.EXTRA_PLAYER_ID, playerId));
                             finish();
                         } else if (responseJSON.getString("result").equals("empty")) {
                             Toast.makeText(HostActivity.this, "Some fields are empty",

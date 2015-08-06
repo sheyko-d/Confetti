@@ -55,16 +55,16 @@
                 android:orientation="vertical">
 
                 <com.moysof.whattheblank.typeface.TextRobotoRegular
+                    android:id="@+id/play_name_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Dan Trevor"
                     android:textColor="@color/primary_text"
                     android:textSize="14sp" />
 
                 <com.moysof.whattheblank.typeface.TextRobotoRegular
+                    android:id="@+id/play_username_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="\@dtizzle"
                     android:textColor="@color/secondary_text"
                     android:textSize="12sp" />
             </LinearLayout>

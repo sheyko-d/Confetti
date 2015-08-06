@@ -21,6 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.moysof.whattheblank.adapter.JoinAdapter;
+import com.moysof.whattheblank.util.Util;
 import com.moysof.whattheblank.view.EmptyRecyclerView;
 
 import org.json.JSONArray;
@@ -41,7 +42,7 @@ public class JoinIDFragment extends Fragment {
             new SortedList.Callback<JoinAdapter.Game>() {
                 @Override
                 public int compare(JoinAdapter.Game o1, JoinAdapter.Game o2) {
-                    return o1.getGameId().compareTo(o2.getGameId());
+                    return o2.getTimestamp().compareTo(o1.getTimestamp());
                 }
 
                 @Override
@@ -172,10 +173,12 @@ public class JoinIDFragment extends Fragment {
                                 int time = gamesJSON.getJSONObject(i).getInt("time");
                                 int assignedNumber = gamesJSON.getJSONObject(i)
                                         .getInt("assigned_number");
+                                String timestamp = gamesJSON.getJSONObject(i)
+                                        .getString("timestamp");
 
                                 mGames.add(new JoinAdapter.Game(type, gameId, name, password,
                                         username, teamsMax, playersMax, cardsMax, time,
-                                        assignedNumber));
+                                        assignedNumber, timestamp));
                             }
                             mGames.endBatchedUpdates();
                         } else if (responseJSON.getString("result").equals("empty")) {

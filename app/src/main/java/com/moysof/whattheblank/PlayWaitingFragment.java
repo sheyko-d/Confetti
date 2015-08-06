@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.moysof.whattheblank.util.Util;
+
 public class PlayWaitingFragment extends Fragment {
 
     private ViewGroup mOrderLayout;

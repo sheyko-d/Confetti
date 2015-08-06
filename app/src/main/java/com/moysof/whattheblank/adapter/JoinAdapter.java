@@ -28,7 +28,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.moysof.whattheblank.JoinLobbyActivity;
 import com.moysof.whattheblank.R;
-import com.moysof.whattheblank.Util;
+import com.moysof.whattheblank.util.Util;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -62,10 +62,11 @@ public class JoinAdapter extends
         public Integer numberCards;
         public Integer time;
         public Integer assignedNumber;
+        public String timestamp;
 
         public Game(Integer type, String gameId, String name, Integer password, String username,
                     Integer numberTeams, Integer numberPlayers, Integer numberCards, Integer time,
-                    Integer assignedNumber) {
+                    Integer assignedNumber, String timestamp) {
             this.type = type;
             this.gameId = gameId;
             this.name = name;
@@ -76,6 +77,7 @@ public class JoinAdapter extends
             this.numberCards = numberCards;
             this.time = time;
             this.assignedNumber = assignedNumber;
+            this.timestamp = timestamp;
         }
 
         public Integer getType() {
@@ -116,6 +118,10 @@ public class JoinAdapter extends
 
         public Integer getAssignedNumber() {
             return assignedNumber;
+        }
+
+        public String getTimestamp() {
+            return timestamp;
         }
     }
 
@@ -180,8 +186,7 @@ public class JoinAdapter extends
         Boolean enabled = game.getAssignedNumber() < game.getTeamsNumber()
                 * game.getPlayersNumber();
         holder.joinBtn.setEnabled(enabled);
-        holder.joinBtn.setText(enabled ? mContext.getString(R.string.join_games_btn)
-                : mContext.getString(R.string.join_games_full_btn));
+        holder.joinBtn.setText(enabled ? mContext.getString(R.string.join_games_btn) : mContext.getString(R.string.join_games_full_btn));
         holder.nameTxt.setText(game.getName());
     }
 
@@ -194,73 +199,78 @@ public class JoinAdapter extends
 
         @Override
         public void onItemClick(View v, int position) {
-            showJoinDialog(position);
+            join(position);
         }
 
-        private void showJoinDialog(final int position) {
-            final int password = games.get(position).getPassword();
+        private void join(final int position) {
+            final String gameId = games.get(position).getGameId();
+            final String name = games.get(position).getName();
+            final int teamsNumber = games.get(position).getTeamsNumber();
+            final int playersNumber = games.get(position).getPlayersNumber();
+            final int cardsNumber = games.get(position).getCardsNumber();
+            final int time = games.get(position).getTime();
+            final int assignedNumber = games.get(position).getAssignedNumber() + 1;
 
-            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mContext,
-                    R.style.MaterialDialogStyle);
-            dialogBuilder.setTitle("Join a Game");
+            if (getItemViewType(position) == ITEM_TYPE_GAME) {
+                final int password = games.get(position).getPassword();
 
-            View dialogView
-                    = LayoutInflater.from(mContext).inflate(R.layout.dialog_join_game, null);
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mContext,
+                        R.style.MaterialDialogStyle);
+                dialogBuilder.setTitle("Join a Game");
 
-            final EditText passwordEditTxt = (EditText) dialogView
-                    .findViewById(R.id.join_password_edit_txt);
-            final TextInputLayout passwordLayout = (TextInputLayout) dialogView
-                    .findViewById(R.id.join_password_layout);
+                View dialogView
+                        = LayoutInflater.from(mContext).inflate(R.layout.dialog_join_game, null);
 
-            passwordEditTxt.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
+                final EditText passwordEditTxt = (EditText) dialogView
+                        .findViewById(R.id.join_password_edit_txt);
+                final TextInputLayout passwordLayout = (TextInputLayout) dialogView
+                        .findViewById(R.id.join_password_layout);
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    if (passwordEditTxt.getText().toString().length() >= 4) {
-                        if (passwordEditTxt.getText().toString().equals(password + "")) {
-                            passwordLayout.setError(null);
-
-                            String gameId = games.get(position).getGameId();
-                            String name = games.get(position).getName();
-                            int teamsNumber = games.get(position).getTeamsNumber();
-                            int playersNumber = games.get(position).getPlayersNumber();
-                            int cardsNumber = games.get(position).getCardsNumber();
-                            int time = games.get(position).getTime();
-                            int assignedNumber = games.get(position).getAssignedNumber() + 1;
-
-                            mDialog.cancel();
-
-                            joinGame(gameId, name, teamsNumber, playersNumber, cardsNumber,
-                                    time, assignedNumber);
-                        } else {
-                            passwordLayout.setError("Password is incorrect");
-                        }
-                    } else {
-                        passwordLayout.setError(null);
+                passwordEditTxt.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                     }
-                }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                }
-            });
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        if (passwordEditTxt.getText().toString().length() >= 4) {
+                            if (passwordEditTxt.getText().toString().equals(password + "")) {
+                                passwordLayout.setError(null);
 
-            passwordLayout.setError(" ");
-            passwordLayout.setError(null);
+                                mDialog.cancel();
 
-            dialogBuilder.setView(dialogView);
-            dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
+                                joinGame(gameId, name, teamsNumber, playersNumber, cardsNumber,
+                                        time, assignedNumber);
+                            } else {
+                                passwordLayout.setError("Password is incorrect");
+                            }
+                        } else {
+                            passwordLayout.setError(null);
+                        }
+                    }
 
-            mDialog = dialogBuilder.create();
-            mDialog.show();
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                    }
+                });
+
+                passwordLayout.setError(" ");
+                passwordLayout.setError(null);
+
+                dialogBuilder.setView(dialogView);
+                dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                mDialog = dialogBuilder.create();
+                mDialog.show();
+            } else {
+                joinGame(gameId, name, teamsNumber, playersNumber, cardsNumber, time,
+                        assignedNumber);
+            }
         }
     };
 

@@ -21,7 +21,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.moysof.whattheblank.FriendsFragment;
 import com.moysof.whattheblank.MainActivity;
 import com.moysof.whattheblank.R;
-import com.moysof.whattheblank.Util;
+import com.moysof.whattheblank.util.Util;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;

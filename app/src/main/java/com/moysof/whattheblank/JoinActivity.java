@@ -4,9 +4,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,13 +19,13 @@ import android.text.Html;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.moysof.whattheblank.util.Util;
 
 
 public class JoinActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
@@ -37,12 +39,7 @@ public class JoinActivity extends AppCompatActivity implements GoogleApiClient.C
     private JoinLocationFragment mLocationFragment;
     private ViewPager mViewPager;
     private boolean mSearchedGames;
-    public static final String BROADCAST_CREATED_GAME = "com.moysof.hashtagnews:CREATED_GAME";
-    public static final String BROADCAST_CLOSED_GAME = "com.moysof.hashtagnews:CLOSED_GAME";
-    public static final String TYPE_CREATED_GAME = "created_game";
-    public static final String TYPE_CLOSED_GAME = "closed_game";
-    private String mLat;
-    private String mLng;
+    private SharedPreferences mPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +48,10 @@ public class JoinActivity extends AppCompatActivity implements GoogleApiClient.C
 
         mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
+
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        JoinLocationFragment.sLat = mPrefs.getString("lat", "");
+        JoinLocationFragment.sLng = mPrefs.getString("lng", "");
 
         // Instantiate the RequestQueue.
         mQueue = Volley.newRequestQueue(this);
@@ -73,15 +74,15 @@ public class JoinActivity extends AppCompatActivity implements GoogleApiClient.C
 
         // Add a receiver to listen for creating games
         IntentFilter filter = new IntentFilter();
-        filter.addAction(BROADCAST_CREATED_GAME);
-        filter.addAction(BROADCAST_CLOSED_GAME);
+        filter.addAction(Util.BROADCAST_CREATED_GAME);
+        filter.addAction(Util.BROADCAST_CLOSED_GAME);
         registerReceiver(mCreatedReceiver, filter);
     }
 
     BroadcastReceiver mCreatedReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (mViewPager.getCurrentItem()==0) {
+            if (mViewPager.getCurrentItem() == 0) {
                 mIdFragment.searchGames();
                 mLocationFragment.searchGames();
             } else {
@@ -107,6 +108,9 @@ public class JoinActivity extends AppCompatActivity implements GoogleApiClient.C
             if (lastLocation != null) {
                 JoinLocationFragment.sLat = String.valueOf(lastLocation.getLatitude());
                 JoinLocationFragment.sLng = String.valueOf(lastLocation.getLongitude());
+
+                mPrefs.edit().putString("lat", JoinLocationFragment.sLat)
+                        .putString("lng", JoinLocationFragment.sLng).apply();
 
                 mSearchedGames = true;
             }

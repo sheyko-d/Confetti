@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.util.SortedList;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.moysof.whattheblank.adapter.JoinAdapter;
+import com.moysof.whattheblank.util.Util;
 import com.moysof.whattheblank.view.EmptyRecyclerView;
 
 import org.json.JSONArray;
@@ -38,7 +40,7 @@ public class JoinLocationFragment extends Fragment {
             new SortedList.Callback<JoinAdapter.Game>() {
                 @Override
                 public int compare(JoinAdapter.Game o1, JoinAdapter.Game o2) {
-                    return o1.getName().compareTo(o2.getName());
+                    return o2.getTimestamp().compareTo(o1.getTimestamp());
                 }
 
                 @Override
@@ -118,7 +120,7 @@ public class JoinLocationFragment extends Fragment {
     }
 
     public void searchGames() {
-        if (sLat != null && sLng != null) {
+        if (!TextUtils.isEmpty(sLat) && !TextUtils.isEmpty(sLng)) {
             final String id = PreferenceManager.getDefaultSharedPreferences(getActivity())
                     .getString("id", "");
 
@@ -148,14 +150,21 @@ public class JoinLocationFragment extends Fragment {
                                 int time = gamesJSON.getJSONObject(i).getInt("time");
                                 int assignedNumber = gamesJSON.getJSONObject(i)
                                         .getInt("assigned_number");
+                                String timestamp = gamesJSON.getJSONObject(i)
+                                        .getString("timestamp");
 
                                 mGames.add(new JoinAdapter.Game(type, gameId, name, password,
                                         username, teamsMax, playersMax, cardsMax, time,
-                                        assignedNumber));
+                                        assignedNumber, timestamp));
                             }
                             mGames.endBatchedUpdates();
 
-                            mLoadingTxt.setText("Found " + mGames.size() + " games near your location");
+                            if (mGames.size() > 0) {
+                                mLoadingTxt.setText("Found " + mGames.size()
+                                        + " games near your location");
+                            } else {
+                                mLoadingTxt.setText("Didn't find any games near your location");
+                            }
                         } else if (responseJSON.getString("result").equals("empty")) {
                             Toast.makeText(getActivity(), "Some fields are empty",
                                     Toast.LENGTH_LONG).show();

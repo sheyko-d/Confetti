@@ -38,6 +38,7 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
+import com.moysof.whattheblank.util.Util;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -173,7 +174,7 @@ public class LoadingActivity extends AppCompatActivity implements
 
                                                 signInOnServer(id, email, name, username,
                                                         "http://graph.facebook.com/" + id
-                                                                + "/picture?type=normal");
+                                                                + "/picture?width=500");
                                             }
 
                                         });
@@ -312,7 +313,7 @@ public class LoadingActivity extends AppCompatActivity implements
 
                     personPhotoUrl = personPhotoUrl.substring(0,
                             personPhotoUrl.length() - 2)
-                            + 100;
+                            + 500;
 
                     signInOnServer(id, email, name, username, personPhotoUrl);
 

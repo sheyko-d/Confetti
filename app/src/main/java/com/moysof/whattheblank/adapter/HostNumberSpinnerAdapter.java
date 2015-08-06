@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.moysof.whattheblank.R;
-import com.moysof.whattheblank.Util;
+import com.moysof.whattheblank.util.Util;
 
 public class HostNumberSpinnerAdapter extends ArrayAdapter {
 

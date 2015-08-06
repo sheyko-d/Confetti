@@ -1,4 +1,4 @@
-package com.moysof.whattheblank;
+package com.moysof.whattheblank.util;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -6,6 +6,8 @@ import android.content.res.Resources;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
+
+import com.moysof.whattheblank.BaseApplication;
 
 public class Util {
 
@@ -49,8 +51,26 @@ public class Util {
             = "http://moyersoftware.com/blank/change_team_color.php";
     public static final String URL_CHANGE_PLAYERS_TEAM
             = "http://moyersoftware.com/blank/change_players_team.php";
+    public static final String URL_START_GAME
+            = "http://moyersoftware.com/blank/start_game.php";
+    public static final String URL_UPLOAD_CARDS
+            = "http://moyersoftware.com/blank/upload_cards.php";
+    public static final String URL_BEGIN_GAME
+            = "http://moyersoftware.com/blank/begin_game.php";
+
     private static final String LOG_TAG = "BlankDebug";
     public static final String SEARCH_ID_REQUESTS = "Util:SEARCH_ID_REQUESTS";
+
+    public static final String BROADCAST_JOINED_GAME = "com.moysof.hashtagnews:JOINED_GAME";
+    public static final String BROADCAST_CREATED_GAME = "com.moysof.hashtagnews:CREATED_GAME";
+    public static final String BROADCAST_CLOSED_GAME = "com.moysof.hashtagnews:CLOSED_GAME";
+    public static final String BROADCAST_STARTED_GAME = "com.moysof.hashtagnews:STARTED_GAME";
+    public static final String BROADCAST_BEGIN_GAME = "com.moysof.hashtagnews:BEGIN_GAME";
+    public static final String TYPE_JOINED_GAME = "joined_game";
+    public static final String TYPE_CREATED_GAME = "created_game";
+    public static final String TYPE_CLOSED_GAME = "closed_game";
+    public static final String TYPE_STARTED_GAME = "started_game";
+    public static final String TYPE_BEGIN_GAME = "begin_game";
 
     // Methods
     public static void Log(Object text) {

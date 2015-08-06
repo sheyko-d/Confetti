@@ -31,4 +31,16 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:4.2.0'
     compile 'com.mcxiaoke.volley:library-aar:1.0.+'
     compile "com.google.android.gms:play-services:7.5.+"
+    compile group: 'org.apache.httpcomponents', name: 'httpclient-android', version: '4.3.5.1'
+    compile('org.apache.httpcomponents:httpmime:4.3') {
+        exclude module: "httpclient"
+    }
+}
+
+android {
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+    }
 }

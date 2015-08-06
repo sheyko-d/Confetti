@@ -1,5 +1,7 @@
 package com.moysof.whattheblank;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.util.SortedList;
@@ -17,7 +19,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.moysof.whattheblank.adapter.HostTeamsAdapter;
+import com.moysof.whattheblank.util.Util;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,55 +41,56 @@ public class HostLobbyGameFragment extends Fragment {
     private static Integer sNumberCards;
     private static Integer sNumberTime;
     public static boolean sForceUpdate = false;
-    private static Button sHostBtn;
+    public static Button sHostBtn;
     private static HostLobbyGameFragment sFragment;
+    private static String sPlayerId;
     public static SortedList<HostTeamsAdapter.Team> sTeams = new SortedList<>(HostTeamsAdapter.Team
             .class, new SortedList.Callback<HostTeamsAdapter.Team>() {
-                @Override
-                public int compare(HostTeamsAdapter.Team o1, HostTeamsAdapter.Team o2) {
-                    return o1.getNumber().compareTo(o2.getNumber());
-                }
+        @Override
+        public int compare(HostTeamsAdapter.Team o1, HostTeamsAdapter.Team o2) {
+            return o1.getNumber().compareTo(o2.getNumber());
+        }
 
-                @Override
-                public void onInserted(int position, int count) {
-                    mAdapter.notifyItemRangeInserted(position, count);
-                }
+        @Override
+        public void onInserted(int position, int count) {
+            mAdapter.notifyItemRangeInserted(position, count);
+        }
 
-                @Override
-                public void onRemoved(int position, int count) {
-                    mAdapter.notifyItemRangeRemoved(position, count);
-                }
+        @Override
+        public void onRemoved(int position, int count) {
+            mAdapter.notifyItemRangeRemoved(position, count);
+        }
 
-                @Override
-                public void onMoved(int fromPosition, int toPosition) {
-                    mAdapter.notifyItemMoved(fromPosition, toPosition);
-                }
+        @Override
+        public void onMoved(int fromPosition, int toPosition) {
+            mAdapter.notifyItemMoved(fromPosition, toPosition);
+        }
 
-                @Override
-                public void onChanged(int position, int count) {
-                    mAdapter.notifyItemRangeChanged(position, count);
-                }
+        @Override
+        public void onChanged(int position, int count) {
+            mAdapter.notifyItemRangeChanged(position, count);
+        }
 
-                @Override
-                public boolean areContentsTheSame(HostTeamsAdapter.Team oldItem,
-                                                  HostTeamsAdapter.Team newItem) {
-                    // return whether the items' visual representations are the same or not.
-                    return oldItem.getNumber().equals(newItem.getNumber()) && oldItem
-                            .getAssignedCount().equals(newItem.getAssignedCount())
-                            && oldItem.getColor().equals(oldItem.getColor());
-                }
+        @Override
+        public boolean areContentsTheSame(HostTeamsAdapter.Team oldItem,
+                                          HostTeamsAdapter.Team newItem) {
+            // return whether the items' visual representations are the same or not.
+            return oldItem.getNumber().equals(newItem.getNumber()) && oldItem
+                    .getAssignedCount().equals(newItem.getAssignedCount())
+                    && oldItem.getColor().equals(oldItem.getColor());
+        }
 
-                @Override
-                public boolean areItemsTheSame(HostTeamsAdapter.Team item1,
-                                               HostTeamsAdapter.Team item2) {
-                    return item1.getNumber().equals(item2.getNumber());
-                }
-            });
+        @Override
+        public boolean areItemsTheSame(HostTeamsAdapter.Team item1,
+                                       HostTeamsAdapter.Team item2) {
+            return item1.getNumber().equals(item2.getNumber());
+        }
+    });
 
     public static HostLobbyGameFragment newInstance(String gameId, String password,
                                                     Integer numberTeams, Integer numberPlayers,
                                                     Integer numberCards, Integer numberTime,
-                                                    RequestQueue queue) {
+                                                    RequestQueue queue, String playerId) {
 
         sGameId = gameId;
         sPassword = password;
@@ -94,6 +99,7 @@ public class HostLobbyGameFragment extends Fragment {
         sNumberCards = numberCards;
         sNumberTime = numberTime;
         sQueue = queue;
+        sPlayerId = playerId;
 
         return new HostLobbyGameFragment();
     }
@@ -108,6 +114,12 @@ public class HostLobbyGameFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_host_lobby_game, container, false);
 
         sHostBtn = (Button) rootView.findViewById(R.id.host_btn);
+        sHostBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startGame();
+            }
+        });
 
         RecyclerView recyclerView = (RecyclerView) rootView
                 .findViewById(R.id.host_lobby_game_recycler_view);
@@ -116,12 +128,88 @@ public class HostLobbyGameFragment extends Fragment {
         ((TextView) rootView.findViewById(R.id.host_lobby_id_txt)).setText(sGameId + "");
         ((TextView) rootView.findViewById(R.id.host_lobby_password_txt)).setText(sPassword + "");
 
+        sTeams.clear();
         mAdapter = new HostTeamsAdapter(getActivity(), sTeams, sNumberPlayers, sGameId, this);
         recyclerView.setAdapter(mAdapter);
 
         getTeams();
 
         return rootView;
+    }
+
+    private void startGame() {
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
+
+        final ProgressDialog progressDialog = ProgressDialog.show(getActivity(), "",
+                "Starting game...");
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                Util.URL_START_GAME, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                progressDialog.cancel();
+                Util.Log(response);
+                try {
+                    JSONObject responseJSON = new JSONObject(response);
+                    if (responseJSON.getString("result").equals("success")) {
+                        startActivity(new Intent(getActivity(), StartGameActivity.class)
+                                .putExtra(StartGameActivity.EXTRA_GAME_ID, sGameId)
+                                .putExtra(StartGameActivity.EXTRA_PLAYER_ID, sPlayerId)
+                                .putExtra(StartGameActivity.EXTRA_IS_HOST, true)
+                                .putExtra(StartGameActivity.EXTRA_PENDING_COUNT,
+                                        HostLobbyPlayersFragment.sPendingPlayers.length())
+                                .putExtra(StartGameActivity.EXTRA_PENDING_PLAYERS,
+                                        HostLobbyPlayersFragment.sPendingPlayers.toString()));
+                        getActivity().finish();
+                    } else if (responseJSON.getString("result").equals("empty")) {
+                        Toast.makeText(getActivity(), "Some fields are empty",
+                                Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getActivity(), "Unknown server error",
+                                Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    if (Util.isDebugging()) {
+                        Toast.makeText(getActivity(), "JSON error: " + response,
+                                Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getActivity(), "Unknown server error",
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressDialog.cancel();
+                Toast.makeText(getActivity(), "Server error",
+                        Toast.LENGTH_LONG).show();
+                Util.Log("Server error: " + error);
+            }
+        }) {
+            @Override
+            protected VolleyError parseNetworkError(VolleyError volleyError) {
+                if (volleyError.networkResponse != null
+                        && volleyError.networkResponse.data != null) {
+                    volleyError = new VolleyError(new String(volleyError.networkResponse.data));
+                }
+
+                return volleyError;
+            }
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("game_id", sGameId);
+                return params;
+            }
+
+
+        };
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
     }
 
     @Override
@@ -173,8 +261,6 @@ public class HostLobbyGameFragment extends Fragment {
                     }
                 }
 
-                sHostBtn.setEnabled(HostLobbyPlayersFragment.sPlayers.size() >= sNumberTeams
-                        * sNumberPlayers);
             }
         }, new Response.ErrorListener() {
             @Override

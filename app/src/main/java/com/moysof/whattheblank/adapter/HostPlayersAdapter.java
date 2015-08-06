@@ -22,7 +22,7 @@ import com.android.volley.toolbox.Volley;
 import com.moysof.whattheblank.HostLobbyGameFragment;
 import com.moysof.whattheblank.HostLobbyPlayersFragment;
 import com.moysof.whattheblank.R;
-import com.moysof.whattheblank.Util;
+import com.moysof.whattheblank.util.Util;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;

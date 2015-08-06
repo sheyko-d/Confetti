@@ -1,20 +1,21 @@
 package com.moysof.whattheblank;
 
 import android.app.ProgressDialog;
-import android.preference.PreferenceManager;
-import android.support.v7.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.TypedValue;
@@ -28,7 +29,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.moysof.whattheblank.util.Util;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -58,6 +61,7 @@ public class JoinLobbyActivity extends AppCompatActivity {
     private JoinLobbyGameFragment mGameFragment;
     private JoinLobbyPlayersFragment mPlayersFragment;
     private String mPlayerId;
+    private SharedPreferences mPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +79,8 @@ public class JoinLobbyActivity extends AppCompatActivity {
         mGameId = getIntent().getStringExtra(EXTRA_GAME_ID);
         mPlayerId = getIntent().getStringExtra(EXTRA_PLAYER_ID);
 
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
@@ -91,32 +97,10 @@ public class JoinLobbyActivity extends AppCompatActivity {
 
         // Add a receiver to listen for joining players, or closing the game by host
         IntentFilter filter = new IntentFilter();
-        filter.addAction(HostLobbyActivity.BROADCAST_JOINED_GAME);
-        filter.addAction(JoinActivity.BROADCAST_CLOSED_GAME);
-        registerReceiver(mJoinedReceiver, filter);
-    }
-
-    private void showExitDialog() {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this,
-                R.style.MaterialDialogStyle);
-        dialogBuilder.setTitle("Are you sure?");
-        dialogBuilder.setMessage("You'll loose all game progress, if you leave now.");
-
-        dialogBuilder.setPositiveButton("Exit", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                closeGame();
-                dialog.cancel();
-            }
-        });
-        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        dialogBuilder.create().show();
+        filter.addAction(Util.BROADCAST_JOINED_GAME);
+        filter.addAction(Util.BROADCAST_CLOSED_GAME);
+        filter.addAction(Util.BROADCAST_STARTED_GAME);
+        registerReceiver(mReceiver, filter);
     }
 
     private void closeGame() {
@@ -190,16 +174,16 @@ public class JoinLobbyActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    BroadcastReceiver mJoinedReceiver = new BroadcastReceiver() {
+    BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(HostLobbyActivity.BROADCAST_JOINED_GAME)) {
+            if (intent.getAction().equals(Util.BROADCAST_JOINED_GAME)) {
                 // Some other player joined the game
                 mAssignedNumber = intent.getIntExtra(HostLobbyActivity.EXTRA_NUMBER_PLAYERS, 0);
 
                 mGameFragment.updateAssignedNumber(mAssignedNumber);
                 mPlayersFragment.getPlayers();
-            } else {
+            } else if (intent.getAction().equals(Util.BROADCAST_CLOSED_GAME)) {
                 // Host has left the game
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(JoinLobbyActivity.this,
                         R.style.MaterialDialogStyle);
@@ -214,6 +198,23 @@ public class JoinLobbyActivity extends AppCompatActivity {
                     }
                 });
                 dialogBuilder.create().show();
+            } else if (intent.getAction().equals(Util.BROADCAST_STARTED_GAME)) {
+                Intent startIntent = new Intent(JoinLobbyActivity.this, StartGameActivity.class);
+                startIntent.putExtra(StartGameActivity.EXTRA_GAME_ID, mGameId);
+                startIntent.putExtra(StartGameActivity.EXTRA_PLAYER_ID, mPlayerId);
+
+                try {
+                    startIntent.putExtra(StartGameActivity.EXTRA_PENDING_PLAYERS, new JSONArray()
+                            .put(new JSONObject().put("id", mPlayerId)
+                                    .put("name", mPrefs.getString("name", ""))
+                                    .put("username", mPrefs.getString("username", ""))
+                                    .put("avatar", mPrefs.getString("avatar", ""))).toString());
+                    startIntent.putExtra(StartGameActivity.EXTRA_PENDING_COUNT, 1);
+                } catch (Exception e) {
+                    Util.Log("Pending player exception = " + e);
+                }
+                startActivity(startIntent);
+                finish();
             }
         }
     };
@@ -293,6 +294,29 @@ public class JoinLobbyActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         showExitDialog();
+    }
+
+    private void showExitDialog() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this,
+                R.style.MaterialDialogStyle);
+        dialogBuilder.setTitle("Are you sure?");
+        dialogBuilder.setMessage("You'll loose all game progress, if you leave now.");
+
+        dialogBuilder.setPositiveButton("Exit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                closeGame();
+                dialog.cancel();
+            }
+        });
+        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        dialogBuilder.create().show();
     }
 
 }

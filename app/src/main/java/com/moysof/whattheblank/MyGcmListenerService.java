@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.gms.gcm.GcmListenerService;
+import com.moysof.whattheblank.util.Util;
 
 public class MyGcmListenerService extends GcmListenerService {
 
@@ -33,22 +34,28 @@ public class MyGcmListenerService extends GcmListenerService {
     // [START receive_message]
     @Override
     public void onMessageReceived(String from, Bundle data) {
+        Util.Log("message received");
+
         String type = data.getString("type");
         Integer assignedNumber = -1;
         if (data.containsKey("assigned_number")) {
             assignedNumber = Integer.parseInt(data.getString("assigned_number"));
         }
 
-        Util.Log("messageReceived = " + data.toString() + "( number = " + assignedNumber + ")");
+        Util.Log("messageReceived = " + data.toString());
 
         if (type != null) {
-            if (type.equals(HostLobbyActivity.TYPE_JOINED_GAME)) {
-                sendBroadcast(new Intent(HostLobbyActivity.BROADCAST_JOINED_GAME)
+            if (type.equals(Util.TYPE_JOINED_GAME)) {
+                sendBroadcast(new Intent(Util.BROADCAST_JOINED_GAME)
                         .putExtra(HostLobbyActivity.EXTRA_NUMBER_PLAYERS, assignedNumber));
-            } else if (type.equals(JoinActivity.TYPE_CREATED_GAME)) {
-                sendBroadcast(new Intent(JoinActivity.BROADCAST_CREATED_GAME));
-            } else if (type.equals(JoinActivity.TYPE_CLOSED_GAME)) {
-                sendBroadcast(new Intent(JoinActivity.BROADCAST_CLOSED_GAME));
+            } else if (type.equals(Util.TYPE_CREATED_GAME)) {
+                sendBroadcast(new Intent(Util.BROADCAST_CREATED_GAME));
+            } else if (type.equals(Util.TYPE_CLOSED_GAME)) {
+                sendBroadcast(new Intent(Util.BROADCAST_CLOSED_GAME));
+            } else if (type.equals(Util.TYPE_STARTED_GAME)) {
+                sendBroadcast(new Intent(Util.BROADCAST_STARTED_GAME));
+            } else if (type.equals(Util.TYPE_BEGIN_GAME)) {
+                sendBroadcast(new Intent(Util.BROADCAST_BEGIN_GAME));
             }
         }
     }

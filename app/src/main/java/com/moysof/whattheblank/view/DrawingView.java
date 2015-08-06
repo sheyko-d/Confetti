@@ -11,24 +11,26 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.moysof.whattheblank.R;
+import com.moysof.whattheblank.util.Util;
 
 public class DrawingView extends View {
     private Context mContext;
     private Paint paint = new Paint();
     private Path path = new Path();
     private boolean mClear = false;
-
+    private boolean mIsEmpty = true;
 
     public DrawingView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
+        mIsEmpty = true;
         setupPaint();
     }
 
     // Setup paint with color and stroke styles
     private void setupPaint() {
         paint.setAntiAlias(true);
-        paint.setStrokeWidth(25f);
+        paint.setStrokeWidth(Util.convertDpToPixel(8));
         paint.setColor(Color.BLACK);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeJoin(Paint.Join.ROUND);
@@ -38,6 +40,7 @@ public class DrawingView extends View {
 
     public void clear() {
         mClear = true;
+        mIsEmpty = true;
         invalidate();
     }
 
@@ -67,6 +70,8 @@ public class DrawingView extends View {
                 eventX++;
                 path.lineTo(eventX, eventY);
 
+                mIsEmpty = false;
+
                 return true;
             case MotionEvent.ACTION_MOVE:
 
@@ -81,5 +86,9 @@ public class DrawingView extends View {
         // Makes our view repaint and call onDraw
         invalidate();
         return true;
+    }
+
+    public Boolean isEmpty(){
+        return mIsEmpty;
     }
 }
