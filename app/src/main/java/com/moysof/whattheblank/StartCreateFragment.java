@@ -47,6 +47,7 @@ public class StartCreateFragment extends Fragment {
     private static int sCardNum;
     private static String sGameId;
     private static String sPlayerId;
+    private static int sNumberCards;
     private ImageLoader mImageLoader;
     private View mRootView;
     private DrawingView mDrawingView;
@@ -55,10 +56,12 @@ public class StartCreateFragment extends Fragment {
     private static String sUsername;
     private static String sAvatar;
     private static int sPendingCount;
+    public static String sTeams;
 
     public static StartCreateFragment newInstance(int cardNum, String gameId, String playerId,
                                                   Boolean isHost, String name, String username,
-                                                  String avatar, int pendingCount) {
+                                                  String avatar, int pendingCount,
+                                                  int numberCards) {
         sCardNum = cardNum;
         sGameId = gameId;
         sPlayerId = playerId;
@@ -67,6 +70,7 @@ public class StartCreateFragment extends Fragment {
         sUsername = username;
         sAvatar = avatar;
         sPendingCount = pendingCount;
+        sNumberCards = numberCards;
 
         return new StartCreateFragment();
     }
@@ -90,7 +94,7 @@ public class StartCreateFragment extends Fragment {
                 .setText(sUsername);
         initAvatar();
 
-        pageNumTxt.setText("Card " + sCardNum + " of 3");
+        pageNumTxt.setText("Card " + sCardNum + " of " + sNumberCards);
 
         acceptBtn.setOnClickListener(mCardClickListener);
         clearBtn.setOnClickListener(mCardClickListener);
@@ -115,7 +119,7 @@ public class StartCreateFragment extends Fragment {
         if (mDrawingView.isEmpty()) {
             Toast.makeText(getActivity(), "Card can't be empty", Toast.LENGTH_LONG).show();
         } else if (saveCard()) {
-            if (StartGameActivity.sViewPager.getCurrentItem() == 3) {
+            if (StartGameActivity.sViewPager.getCurrentItem() == sNumberCards) {
                 uploadCardsToServer();
             } else {
                 openNextPage();
@@ -152,12 +156,15 @@ public class StartCreateFragment extends Fragment {
 
             MultipartEntityBuilder builder = MultipartEntityBuilder.create();
             builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-            int cardsCount = 3;
+            int cardsCount = sNumberCards;
             for (int i = 0; i < cardsCount; i++) {
                 builder.addPart("card" + i, new FileBody(new File(Environment
                         .getExternalStorageDirectory() + "/.WhatTheBlank/card" + i + ".png")));
             }
             builder.addPart("game_id", new StringBody(sGameId, ContentType.TEXT_PLAIN));
+            builder.addPart("number_cards", new StringBody(sNumberCards + "",
+                    ContentType.TEXT_PLAIN));
+
             String playerId;
             try {
                 playerId = StartGameActivity.sPendingPlayers
@@ -211,6 +218,7 @@ public class StartCreateFragment extends Fragment {
                 } else {
                     JSONArray teams;
                     try {
+                        sTeams = new JSONObject(mResult).getString("teams");
                         teams = new JSONObject(mResult).getJSONArray("teams");
                         for (int i = 0; i < teams.length(); i++) {
                             StartWaitingFragment.addTeamCircle(Color.parseColor("#" + teams

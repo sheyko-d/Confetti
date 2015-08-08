@@ -1,7 +1,11 @@
 package com.moysof.whattheblank;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -58,7 +62,19 @@ public class PlayGameWaitActivity extends AppCompatActivity {
         mPlayerId = getIntent().getStringExtra(EXTRA_PLAYER_ID);
 
         initAvatar();
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Util.BROADCAST_PLAY_AGAIN);
+        registerReceiver(mReceiver, filter);
     }
+
+    BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            PlayGameWaitActivity.this.setResult(PlayWonFragment.RESULT_PLAY_AGAIN);
+            finish();
+        }
+    };
 
     private void initAvatar() {
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().cacheInMemory(true)
@@ -73,7 +89,6 @@ public class PlayGameWaitActivity extends AppCompatActivity {
 
         mImageLoader.displayImage(getIntent().getStringExtra(EXTRA_HOST_AVATAR), mImg);
     }
-
 
 
     @Override
@@ -130,6 +145,7 @@ public class PlayGameWaitActivity extends AppCompatActivity {
                 try {
                     JSONObject responseJSON = new JSONObject(response);
                     if (responseJSON.getString("result").equals("success")) {
+                        StartGameActivity.sActivity.finish();
                         finish();
                     } else if (responseJSON.getString("result").equals("empty")) {
                         Toast.makeText(PlayGameWaitActivity.this, "Some fields are empty",

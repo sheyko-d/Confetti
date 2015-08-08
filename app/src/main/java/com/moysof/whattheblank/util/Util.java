@@ -9,6 +9,8 @@ import android.util.Log;
 
 import com.moysof.whattheblank.BaseApplication;
 
+import java.text.DecimalFormat;
+
 public class Util {
 
     // Max number of teams, players per team, or cards per player
@@ -23,6 +25,8 @@ public class Util {
     public static final String URL_GET_STATS
             = "http://moyersoftware.com/blank/get_user_stats.php";
     public static final String URL_GET_FRIENDS = "http://moyersoftware.com/blank/get_friends.php";
+    public static final String URL_GET_INVITE_FRIENDS
+            = "http://moyersoftware.com/blank/get_invite_friends.php";
     public static final String URL_UPDATE_FRIEND_STATUS
             = "http://moyersoftware.com/blank/update_friend_status.php";
     public static final String URL_INVITE_FACEBOOK_FRIENDS
@@ -57,6 +61,12 @@ public class Util {
             = "http://moyersoftware.com/blank/upload_cards.php";
     public static final String URL_BEGIN_GAME
             = "http://moyersoftware.com/blank/begin_game.php";
+    public static final String URL_UPDATE_CARDS_TIME
+            = "http://moyersoftware.com/blank/update_cards_time.php";
+    public static final String URL_ADD_FRIEND
+            = "http://moyersoftware.com/blank/add_friend.php";
+    public static final String URL_PLAY_AGAIN
+            = "http://moyersoftware.com/blank/play_again.php";
 
     private static final String LOG_TAG = "BlankDebug";
     public static final String SEARCH_ID_REQUESTS = "Util:SEARCH_ID_REQUESTS";
@@ -66,11 +76,14 @@ public class Util {
     public static final String BROADCAST_CLOSED_GAME = "com.moysof.hashtagnews:CLOSED_GAME";
     public static final String BROADCAST_STARTED_GAME = "com.moysof.hashtagnews:STARTED_GAME";
     public static final String BROADCAST_BEGIN_GAME = "com.moysof.hashtagnews:BEGIN_GAME";
+    public static final String BROADCAST_TIMER_TICK = "com.moysof.hashtagnews:TIMER_TICK";
+    public static final String BROADCAST_PLAY_AGAIN = "com.moysof.hashtagnews:PLAY_AGAIN";
     public static final String TYPE_JOINED_GAME = "joined_game";
     public static final String TYPE_CREATED_GAME = "created_game";
     public static final String TYPE_CLOSED_GAME = "closed_game";
     public static final String TYPE_STARTED_GAME = "started_game";
     public static final String TYPE_BEGIN_GAME = "begin_game";
+    public static final String TYPE_PLAY_AGAIN = "play_again";
 
     // Methods
     public static void Log(Object text) {
@@ -95,8 +108,27 @@ public class Util {
     public static int convertDpToPixel(float dp) {
         Resources resources = BaseApplication.getAppContext().getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
-        int px = (int) (dp * (metrics.densityDpi / 160f));
-        return px;
+        return (int) (dp * (metrics.densityDpi / 160f));
+    }
+
+    public static String formatTimer(int sec) {
+        if (sec < 60) {
+            return "0:" + new DecimalFormat("00").format(sec);
+        } else {
+            return "1:00";
+        }
+    }
+
+    public static String formatTime(int sec) {
+        String ending = "s";
+        if ((sec + "").endsWith("1")) {
+            ending = "";
+        }
+        if (sec < 60) {
+            return sec + " second" + ending;
+        } else {
+            return "1 minute";
+        }
     }
 
 }

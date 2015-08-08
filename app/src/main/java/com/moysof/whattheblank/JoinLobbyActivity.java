@@ -202,6 +202,7 @@ public class JoinLobbyActivity extends AppCompatActivity {
                 Intent startIntent = new Intent(JoinLobbyActivity.this, StartGameActivity.class);
                 startIntent.putExtra(StartGameActivity.EXTRA_GAME_ID, mGameId);
                 startIntent.putExtra(StartGameActivity.EXTRA_PLAYER_ID, mPlayerId);
+                startIntent.putExtra(StartGameActivity.EXTRA_NUMBER_CARDS, mNumberCards);
 
                 try {
                     startIntent.putExtra(StartGameActivity.EXTRA_PENDING_PLAYERS, new JSONArray()

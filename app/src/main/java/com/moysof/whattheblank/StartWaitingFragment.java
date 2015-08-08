@@ -33,6 +33,8 @@ public class StartWaitingFragment extends Fragment {
     private static boolean sIsHost;
     public static ViewGroup sOrderLayout;
     private Button mWaitingBtn;
+    private String mCards;
+    private int mTime = 0;
 
     public static StartWaitingFragment newInstance(String gameId, String playerId, Boolean isHost) {
         sGameId = gameId;
@@ -65,7 +67,6 @@ public class StartWaitingFragment extends Fragment {
     }
 
 
-
     private void beginGame() {
         final ProgressDialog progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Loading...");
@@ -83,20 +84,22 @@ public class StartWaitingFragment extends Fragment {
                         if (sIsHost) {
                             mWaitingBtn.setEnabled(false);
                             mWaitingBtn.setText("WAITING FOR PLAYERS...");
+
+                            mCards = responseJSON.getString("cards");
+                            mTime = responseJSON.getInt("time");
                         } else {
                             String hostName = responseJSON.getString("host_name");
                             String hostUsername = responseJSON.getString("host_username");
                             String hostAvatar = responseJSON.getString("host_avatar");
 
-                            startActivity(new Intent(getActivity(), PlayGameWaitActivity.class)
-                                    .putExtra(PlayGameWaitActivity.EXTRA_HOST_NAME, hostName)
+                            startActivityForResult(new Intent(getActivity(), PlayGameWaitActivity
+                                    .class).putExtra(PlayGameWaitActivity.EXTRA_HOST_NAME, hostName)
                                     .putExtra(PlayGameWaitActivity.EXTRA_HOST_USERNAME,
                                             hostUsername)
                                     .putExtra(PlayGameWaitActivity.EXTRA_HOST_AVATAR, hostAvatar)
                                     .putExtra(PlayGameWaitActivity.EXTRA_GAME_ID, sGameId)
                                     .putExtra(PlayGameWaitActivity.EXTRA_IS_HOST, sIsHost)
-                                    .putExtra(PlayGameWaitActivity.EXTRA_PLAYER_ID, sPlayerId));
-                            getActivity().finish();
+                                    .putExtra(PlayGameWaitActivity.EXTRA_PLAYER_ID, sPlayerId), 0);
                         }
                     } else if (responseJSON.getString("result").equals("empty")) {
                         Toast.makeText(getActivity(), "Some fields are empty",
@@ -151,8 +154,11 @@ public class StartWaitingFragment extends Fragment {
     }
 
     public void openPlayScreen() {
-        startActivity(new Intent(getActivity(), PlayGameActivity.class));
-        getActivity().finish();
+        startActivityForResult(new Intent(getActivity(), PlayGameActivity.class)
+                .putExtra(PlayGameActivity.EXTRA_TEAMS, StartCreateFragment.sTeams)
+                .putExtra(PlayGameActivity.EXTRA_CARDS, mCards)
+                .putExtra(PlayGameActivity.EXTRA_GAME_ID, sGameId)
+                .putExtra(PlayGameActivity.EXTRA_TIME, mTime), 0);
     }
 
     public static void addTeamCircle(int color) {

@@ -161,7 +161,8 @@ public class HostLobbyGameFragment extends Fragment {
                                 .putExtra(StartGameActivity.EXTRA_PENDING_COUNT,
                                         HostLobbyPlayersFragment.sPendingPlayers.length())
                                 .putExtra(StartGameActivity.EXTRA_PENDING_PLAYERS,
-                                        HostLobbyPlayersFragment.sPendingPlayers.toString()));
+                                        HostLobbyPlayersFragment.sPendingPlayers.toString())
+                                .putExtra(StartGameActivity.EXTRA_NUMBER_CARDS, sNumberCards));
                         getActivity().finish();
                     } else if (responseJSON.getString("result").equals("empty")) {
                         Toast.makeText(getActivity(), "Some fields are empty",

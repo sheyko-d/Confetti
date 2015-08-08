@@ -56,6 +56,8 @@ public class MyGcmListenerService extends GcmListenerService {
                 sendBroadcast(new Intent(Util.BROADCAST_STARTED_GAME));
             } else if (type.equals(Util.TYPE_BEGIN_GAME)) {
                 sendBroadcast(new Intent(Util.BROADCAST_BEGIN_GAME));
+            } else if (type.equals(Util.TYPE_PLAY_AGAIN)) {
+                sendBroadcast(new Intent(Util.BROADCAST_PLAY_AGAIN));
             }
         }
     }

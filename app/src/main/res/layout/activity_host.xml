@@ -1,5 +1,4 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -33,6 +32,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:background="?selectableItemBackground"
+                android:contentDescription="@null"
                 android:src="@drawable/ic_btn_back" />
 
             <com.moysof.whattheblank.typeface.TextBasicTitleBold
@@ -41,6 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="2dp"
+                android:layout_marginStart="2dp"
                 android:text="@string/host_title"
                 android:textColor="@android:color/white"
                 android:textSize="20sp" />
@@ -121,7 +122,6 @@
                         android:layout_height="wrap_content"
                         android:inputType="text"
                         android:maxLength="30"
-                        android:text="Game Sample"
                         android:textColor="@color/primary"
                         android:textSize="16sp" />
                 </android.support.design.widget.TextInputLayout>
@@ -163,7 +163,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"
-                        android:text="1234"
                         android:textColor="@color/primary"
                         android:textSize="16sp" />
                 </android.support.design.widget.TextInputLayout>
@@ -254,8 +253,8 @@
                 <Spinner
                     android:id="@+id/host_time_spinner"
                     android:layout_width="match_parent"
-                    android:entries="@array/time"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:entries="@array/time" />
             </LinearLayout>
 
             <com.moysof.whattheblank.typeface.ButtonBasicTitle

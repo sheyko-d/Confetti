@@ -83,10 +83,11 @@
     <string name="thread_edit_txt_hint">Your message</string>
 
     <!-- Friends screen -->
-    <string name="friends_requests_header">ADDED YOU</string>
+    <string name="friends_requests_header">PENDING FRIENDS</string>
     <string name="friends_friends_header">FRIENDS</string>
-    <string name="friends_facebook_header">FACEBOOK FRIENDS</string>
-    <string name="friends_facebook_btn">INVITE</string>
+    <string name="friends_facebook_header">SOCIAL MEDIA FRIENDS</string>
+    <string name="friends_facebook_btn">INVITE FROM FACEBOOK</string>
+    <string name="friends_btn">FIND FRIENDS</string>
 
     <!-- Join a Game screen -->
     <string name="join_title">JOIN A GAME</string>
@@ -137,7 +138,7 @@
 
     <!-- Start Game (creating cards) screen -->
     <string name="start_ready_title">Are you ready to play!?</string>
-    <string name="start_ready_desc">First things first… You have 3 cards to create! Write a word,
+    <string name="start_ready_desc">First things first… You have %1$d card(s) to create! Write a word,
         phrase, noun, verb, ANYTHING you desire using your finger. When you are done, click on the
         green check mark to go to your next card.</string>
     <string name="start_ready_btn">START</string>
@@ -155,11 +156,14 @@
 
     <!-- Play Game (card) screen -->
     <string name="play_title_start">Pass the phone to %1$s so that the game can begin.\n\nEach team
-        has 30 seconds to guess each card until all the cards are gone. Swipe right or left to skip
+        has %2$s to guess each card until all the cards are gone. Swipe right or left to skip
         the card. Click the green check if your team guessed correctly.</string>
 
     <!-- Play Game (winner) screen -->
-    <string name="play_title_won">CONGRATULATIONS %1$s! You won!\n\nPlay again?</string>
+    <string name="play_title_won">CONGRATULATIONS %1$s! You won!
+        &lt;br&gt;&lt;br&gt;Play again?</string>
+    <string name="play_title_won_draw">CONGRATULATIONS %1$s! Draw!
+        &lt;br&gt;&lt;br&gt;Play again?</string>
     <string name="start_won_play_btn">PLAY</string>
     <string name="start_won_quit_btn">QUIT</string>
 

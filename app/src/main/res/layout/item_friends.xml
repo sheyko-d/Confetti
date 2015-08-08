@@ -20,6 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:layout_weight="1"
         android:orientation="vertical">
 
@@ -28,7 +29,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
-            android:text="Dan Trevor"
             android:textColor="@color/primary_text"
             android:textSize="16sp" />
 
@@ -38,7 +38,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:includeFontPadding="false"
-            android:text="Sammy's not answering!"
             android:textColor="@color/secondary_text"
             android:textSize="14sp" />
     </LinearLayout>

@@ -5,12 +5,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 public class StartReadyFragment extends Fragment {
 
-    public static StartReadyFragment newInstance() {
-        StartReadyFragment fragment = new StartReadyFragment();
-        return fragment;
+    private static int sNumberCards;
+
+    public static StartReadyFragment newInstance(int numberCards) {
+        sNumberCards = numberCards;
+
+        return new StartReadyFragment();
     }
 
     public StartReadyFragment() {
@@ -20,6 +24,9 @@ public class StartReadyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_start_ready, container, false);
+
+        ((TextView) rootView.findViewById(R.id.start_ready_desc_txt)).setText
+                (String.format(getResources().getString(R.string.start_ready_desc), sNumberCards));
 
 
         StartGameActivity.sViewPager.setSwipeEnabled(false);

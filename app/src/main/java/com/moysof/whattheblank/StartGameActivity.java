@@ -40,6 +40,7 @@ public class StartGameActivity extends AppCompatActivity {
     public static String EXTRA_IS_HOST = "is_host";
     public static String EXTRA_PENDING_PLAYERS = "pending_players";
     public static String EXTRA_PENDING_COUNT = "pending_count";
+    public static String EXTRA_NUMBER_CARDS = "number_cards";
     private String mGameId;
     private String mPlayerId;
     private boolean mIsHost;
@@ -48,6 +49,7 @@ public class StartGameActivity extends AppCompatActivity {
     public static int sCurrentPlayerNum = 0;
     private StartWaitingFragment mWaitingFragment;
     public static StartGameActivity sActivity;
+    private int mNumberCards;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,7 @@ public class StartGameActivity extends AppCompatActivity {
         mPlayerId = getIntent().getStringExtra(EXTRA_PLAYER_ID);
         mIsHost = getIntent().getBooleanExtra(EXTRA_IS_HOST, false);
         sPendingCount = getIntent().getIntExtra(EXTRA_PENDING_COUNT, 0);
+        mNumberCards = getIntent().getIntExtra(EXTRA_NUMBER_CARDS, 0);
 
         try {
             sPendingPlayers = new JSONArray(getIntent().getStringExtra(EXTRA_PENDING_PLAYERS));
@@ -79,11 +82,18 @@ public class StartGameActivity extends AppCompatActivity {
         // Add a receiver to listen for closing the game by host
         IntentFilter filter = new IntentFilter();
         filter.addAction(Util.BROADCAST_CLOSED_GAME);
-        filter.addAction(Util.BROADCAST_JOINED_GAME);
         if (mIsHost) {
             filter.addAction(Util.BROADCAST_BEGIN_GAME);
         }
         registerReceiver(mReceiver, filter);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == PlayWonFragment.RESULT_PLAY_AGAIN) {
+            sCurrentPlayerNum = 0;
+            sViewPager.setAdapter(sAdapter);
+        }
     }
 
     BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -104,8 +114,6 @@ public class StartGameActivity extends AppCompatActivity {
                     }
                 });
                 dialogBuilder.create().show();
-            } else if (intent.getAction().equals(Util.BROADCAST_JOINED_GAME)) {
-                //TODO: Handle exit of some player
             } else if (intent.getAction().equals(Util.BROADCAST_BEGIN_GAME)) {
                 mWaitingFragment.openPlayScreen();
             }
@@ -120,10 +128,11 @@ public class StartGameActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
+            Util.Log("start cards = " + position + " == " + (mNumberCards + 1));
             // getItem is called to instantiate the fragment for the given page.
             if (position == 0) {
-                return StartReadyFragment.newInstance();
-            } else if (position == 4) {
+                return StartReadyFragment.newInstance(mNumberCards);
+            } else if (position == mNumberCards + 1) {
                 mWaitingFragment = StartWaitingFragment.newInstance(mGameId, mPlayerId, mIsHost);
                 return mWaitingFragment;
             } else {
@@ -142,13 +151,13 @@ public class StartGameActivity extends AppCompatActivity {
                     Util.Log("Can't get player info");
                 }
                 return StartCreateFragment.newInstance(position, mGameId, mPlayerId,
-                        mIsHost, name, username, avatar, sPendingCount);
+                        mIsHost, name, username, avatar, sPendingCount, mNumberCards);
             }
         }
 
         @Override
         public int getCount() {
-            return 5;
+            return mNumberCards + 2;
         }
 
     }

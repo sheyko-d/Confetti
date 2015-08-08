@@ -143,15 +143,21 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private void initSpinners() {
         mSpinnerNumberAdapter = new HostNumberSpinnerAdapter(this);
-        mTeamsSpinner.setAdapter(mSpinnerNumberAdapter);
         mPlayersSpinner.setAdapter(mSpinnerNumberAdapter);
+        mTeamsSpinner.setAdapter(mSpinnerNumberAdapter);
         mCardsSpinner.setAdapter(mSpinnerNumberAdapter);
+        // Default 2 teams
         mTeamsSpinner.setSelection(1);
+        // Default 2 players per team
         mPlayersSpinner.setSelection(1);
+        // Default 3 cards per player
+        mCardsSpinner.setSelection(2);
 
         mTimeArray = getResources().getIntArray(R.array.time);
         mSpinnerTimeAdapter = new HostTimeSpinnerAdapter(this, mTimeArray);
         mTimeSpinner.setAdapter(mSpinnerTimeAdapter);
+        // Default 3 cards per player
+        mTimeSpinner.setSelection(3);
 
         mTeamsSpinner.setOnItemSelectedListener(mSpinnerItemSelected);
         mPlayersSpinner.setOnItemSelectedListener(mSpinnerItemSelected);
@@ -223,12 +229,15 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
             mPasswordLayout.setError(null);
         }
 
-        //TODO: Uncomment
-        /*if (mPlayersPos * mTeamsPos < 1) {
+        if (mTeamsPos == 0) {
+            Toast.makeText(HostActivity.this, "There should be at least 2 teams",
+                    Toast.LENGTH_LONG).show();
+            containsErrors = true;
+        } else if (mPlayersPos * mTeamsPos < 1) {
             Toast.makeText(HostActivity.this, "Game should be played with at least 4 people",
                     Toast.LENGTH_LONG).show();
             containsErrors = true;
-        }*/
+        }
 
         if (containsErrors) {
             mScrollView.smoothScrollTo(0, 0);

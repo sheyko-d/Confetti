@@ -121,10 +121,10 @@ public class FriendsFragment extends Fragment {
         mAdapter = new FriendsAdapter((MainActivity) getActivity(), this, mQueue, mFriends);
         mRecycler.setAdapter(mAdapter);
 
-        loadFacebookFriends();
+        loadFriends();
     }
 
-    public void loadFacebookFriends() {
+    public void loadFriends() {
         final String id = PreferenceManager.getDefaultSharedPreferences(getActivity())
                 .getString("id", "");
 
@@ -142,9 +142,10 @@ public class FriendsFragment extends Fragment {
                                 mFriends.beginBatchedUpdates();
                                 mFriends.clear();
                                 Boolean containsPendingHeader = false;
-                                Boolean containsFriendsHeader = false;
                                 for (int i = 0; i < friendsCount; i++) {
                                     String id = friendsJSON.getJSONObject(i).getString("id");
+                                    String friendId = friendsJSON.getJSONObject(i)
+                                            .getString("friend_id");
                                     String name = friendsJSON.getJSONObject(i).getString("name");
                                     String username = friendsJSON.getJSONObject(i)
                                             .getString("username");
@@ -154,13 +155,9 @@ public class FriendsFragment extends Fragment {
                                             .getString("status");
                                     Boolean isFacebook = friendsJSON.getJSONObject(i)
                                             .getBoolean("is_facebook");
-                                    if (isFacebook) {
-                                        mFriends.add(new FriendsAdapter.Friend(id, avatar, name,
-                                                username, FriendsAdapter
-                                                .ITEM_TYPE_FACEBOOK_FRIEND));
-                                    } else if (status.equals(TYPE_FRIEND_PENDING)) {
-                                        mFriends.add(new FriendsAdapter.Friend(id, avatar, name,
-                                                username, FriendsAdapter
+                                    if (status.equals(TYPE_FRIEND_PENDING)) {
+                                        mFriends.add(new FriendsAdapter.Friend(id, friendId, avatar,
+                                                name, username, FriendsAdapter
                                                 .ITEM_TYPE_REQUESTS_FRIEND));
                                         if (!containsPendingHeader) {
                                             mFriends.add(new FriendsAdapter.Friend(getString
@@ -168,18 +165,23 @@ public class FriendsFragment extends Fragment {
                                                     FriendsAdapter.ITEM_TYPE_REQUESTS_HEADER));
                                             containsPendingHeader = true;
                                         }
+                                    } else if (isFacebook) {
+                                        mFriends.add(new FriendsAdapter.Friend(id, friendId, avatar,
+                                                name, username, FriendsAdapter
+                                                .ITEM_TYPE_FACEBOOK_FRIEND));
                                     } else {
-                                        mFriends.add(new FriendsAdapter.Friend(id, avatar, name,
-                                                username, FriendsAdapter.ITEM_TYPE_FRIENDS_FRIEND));
+                                        mFriends.add(new FriendsAdapter.Friend(id, friendId, avatar,
+                                                name, username,
+                                                FriendsAdapter.ITEM_TYPE_FRIENDS_FRIEND));
 
-                                        if (!containsFriendsHeader) {
-                                            mFriends.add(new FriendsAdapter.Friend(getString
-                                                    (R.string.friends_friends_header),
-                                                    FriendsAdapter.ITEM_TYPE_FRIENDS_HEADER));
-                                            containsFriendsHeader = true;
-                                        }
                                     }
                                 }
+
+                                mFriends.add(new FriendsAdapter.Friend(getString
+                                        (R.string.friends_friends_header),
+                                        FriendsAdapter.ITEM_TYPE_FRIENDS_HEADER));
+                                mFriends.add(new FriendsAdapter.Friend(FriendsAdapter
+                                        .ITEM_TYPE_FRIENDS_ADD_BUTTON));
 
                                 mFriends.add(new FriendsAdapter.Friend(getString
                                         (R.string.friends_facebook_header),
@@ -213,9 +215,7 @@ public class FriendsFragment extends Fragment {
             protected VolleyError parseNetworkError(VolleyError volleyError) {
                 if (volleyError.networkResponse != null
                         && volleyError.networkResponse.data != null) {
-                    VolleyError error
-                            = new VolleyError(new String(volleyError.networkResponse.data));
-                    volleyError = error;
+                    volleyError = new VolleyError(new String(volleyError.networkResponse.data));
                 }
 
                 return volleyError;
@@ -239,7 +239,7 @@ public class FriendsFragment extends Fragment {
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                loadFacebookFriends();
+                loadFriends();
             }
         });
     }
