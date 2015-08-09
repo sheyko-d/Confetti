@@ -71,8 +71,8 @@ public class HomeFragment extends Fragment {
 
     private void initStats() {
         mStatGamesTotal.setText(mPrefs.getString("games_played", "0"));
-        mStatTimeSolved.setText(mPrefs.getString("time_solved", "0") + " sec");
-        mStatRanking.setText("top " + mPrefs.getString("ranking", "0") + "%");
+        mStatTimeSolved.setText(mPrefs.getString("time_solved", "—"));
+        mStatRanking.setText(mPrefs.getString("ranking", "—"));
 
         loadStats();
     }
@@ -100,8 +100,8 @@ public class HomeFragment extends Fragment {
                                         .putString("ranking", ranking).apply();
 
                                 mStatGamesTotal.setText(gamesPlayed);
-                                mStatTimeSolved.setText(timeSolved + " sec");
-                                mStatRanking.setText("top " + ranking + "%");
+                                mStatTimeSolved.setText(timeSolved);
+                                mStatRanking.setText(ranking);
                             } else {
                                 Util.Log("Unknown server error");
                             }

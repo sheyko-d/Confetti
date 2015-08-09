@@ -129,8 +129,9 @@ public class PlayGameActivity extends AppCompatActivity {
             int cardsCount = cards.length();
             for (int i = 0; i < cardsCount; i++) {
                 String id = cards.getJSONObject(i).getString("id");
+                String playerId = cards.getJSONObject(i).getString("player_id");
                 String img = cards.getJSONObject(i).getString("img");
-                sCards.add(new Card(id, img));
+                sCards.add(new Card(id, playerId, img));
             }
         } catch (Exception e) {
             Util.Log("Can't get cards");
@@ -217,16 +218,22 @@ public class PlayGameActivity extends AppCompatActivity {
     public static class Card {
 
         public String id;
+        public String playerId;
         public String img;
         public Integer solvedTime = -1;
 
-        public Card(String id, String img) {
+        public Card(String id, String playerId, String img) {
             this.id = id;
+            this.playerId = playerId;
             this.img = img;
         }
 
         public String getId() {
             return id;
+        }
+
+        public String getPlayerId() {
+            return playerId;
         }
 
         public String getImage() {

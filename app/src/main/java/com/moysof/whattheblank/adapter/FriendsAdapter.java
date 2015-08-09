@@ -1,7 +1,10 @@
 package com.moysof.whattheblank.adapter;
 
+import android.content.ContentResolver;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.util.SortedList;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,6 +38,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -103,10 +107,12 @@ public class FriendsAdapter extends
                     }
                 }
             });
+    private ArrayList<ContactsAdapter.Contact> mContacts = new ArrayList<>();
     private ProgressBar mProgressBar;
     private RecyclerView mRecyclerView;
     private InviteFriendsAdapter mAdapter;
     private String mMyId;
+    private ContactsAdapter mContactsAdapter;
 
     public FriendsAdapter(MainActivity activity, FriendsFragment fragment, RequestQueue queue,
                           SortedList<Friend> friends) {
@@ -191,9 +197,9 @@ public class FriendsAdapter extends
         public ImageView avatarImg;
         public TextView nameTxt;
         public TextView usernameTxt;
-        public TextView timeTxt;
         public Button facebookBtn;
         public Button friendsBtn;
+        public Button inviteBtn;
         private ImageButton addBtn;
 
         public FriendHolder(View v) {
@@ -203,12 +209,15 @@ public class FriendsAdapter extends
             usernameTxt = (TextView) v.findViewById(R.id.friends_username_txt);
             facebookBtn = (Button) v.findViewById(R.id.friends_facebook_btn);
             friendsBtn = (Button) v.findViewById(R.id.friends_btn);
+            inviteBtn = (Button) v.findViewById(R.id.friends_invite_btn);
             addBtn = (ImageButton) v.findViewById(R.id.friends_add_btn);
 
             if (facebookBtn != null) {
                 facebookBtn.setOnClickListener(this);
             } else if (friendsBtn != null) {
                 friendsBtn.setOnClickListener(this);
+            } else if (inviteBtn != null) {
+                inviteBtn.setOnClickListener(this);
             } else if (addBtn != null) {
                 addBtn.setOnClickListener(this);
             }
@@ -216,7 +225,8 @@ public class FriendsAdapter extends
 
         @Override
         public void onClick(View v) {
-            if (v.getId() == R.id.friends_facebook_btn || v.getId() == R.id.friends_btn) {
+            if (v.getId() == R.id.friends_facebook_btn || v.getId() == R.id.friends_btn
+                    || v.getId() == R.id.friends_invite_btn) {
                 inviteClickListener.onItemClick(v, getAdapterPosition());
             } else {
                 addClickListener.onItemClick(v, getAdapterPosition());
@@ -287,6 +297,28 @@ public class FriendsAdapter extends
         public void onItemClick(View v, int position) {
             if (v.getId() == R.id.friends_facebook_btn) {
                 mActivity.inviteFriends();
+            } else if (v.getId() == R.id.friends_invite_btn) {
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mActivity,
+                        R.style.MaterialDialogStyle);
+                dialogBuilder.setTitle("Invite Contacts");
+                View dialogView = LayoutInflater.from(mActivity)
+                        .inflate(R.layout.dialog_contacts, null);
+                RecyclerView recyclerView = (RecyclerView) dialogView.findViewById
+                        (R.id.contacts_recycler_view);
+                LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity);
+                recyclerView.setLayoutManager(layoutManager);
+                mContactsAdapter = new ContactsAdapter(mActivity, mContacts);
+                recyclerView.setAdapter(mContactsAdapter);
+                loadContacts();
+                dialogBuilder.setView(dialogView);
+
+                dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                dialogBuilder.create().show();
             } else {
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mActivity,
                         R.style.MaterialDialogStyle);
@@ -311,6 +343,33 @@ public class FriendsAdapter extends
                     }
                 });
                 dialogBuilder.create().show();
+            }
+        }
+
+        private void loadContacts() {
+            ContentResolver cr = mActivity.getContentResolver();
+            Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
+                    null, null, null, null);
+            if (cur.getCount() > 0) {
+                while (cur.moveToNext()) {
+                    String id = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID));
+                    String name = cur.getString(cur.getColumnIndex(ContactsContract.Contacts
+                            .DISPLAY_NAME));
+                    if (Integer.parseInt(cur.getString(
+                            cur.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
+                        Cursor pCur = cr.query(
+                                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                                null,
+                                ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
+                                new String[]{id}, null);
+                        while (pCur.moveToNext()) {
+                            String phone = pCur.getString(pCur.getColumnIndex(ContactsContract
+                                    .CommonDataKinds.Phone.NUMBER));
+                            mContacts.add(new ContactsAdapter.Contact(name, phone));
+                        }
+                        pCur.close();
+                    }
+                }
             }
         }
 
@@ -347,6 +406,8 @@ public class FriendsAdapter extends
                             Toast.LENGTH_LONG).show();
                 }
                 Util.Log(response);
+
+                mFragment.loadFriends();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -376,8 +437,6 @@ public class FriendsAdapter extends
         };
         // Add the request to the RequestQueue.
         mQueue.add(stringRequest);
-
-        mFragment.loadFriends();
     }
 
     public void loadInviteFriends() {

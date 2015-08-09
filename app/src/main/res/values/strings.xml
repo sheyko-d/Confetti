@@ -88,6 +88,7 @@
     <string name="friends_facebook_header">SOCIAL MEDIA FRIENDS</string>
     <string name="friends_facebook_btn">INVITE FROM FACEBOOK</string>
     <string name="friends_btn">FIND FRIENDS</string>
+    <string name="friends_invite_btn">INVITE CONTACTS</string>
 
     <!-- Join a Game screen -->
     <string name="join_title">JOIN A GAME</string>
@@ -100,6 +101,7 @@
     <string name="join_games_full_btn">FULL</string>
     <string name="join_placeholder">NO GAMES FOUND</string>
     <string name="join_password_hint">Game Password</string>
+    <string name="activity_title_join">Play WhatTheBlank?</string>
 
     <!-- Join a Game (lobby) screen -->
     <string name="join_lobby_tab_game">GAME</string>

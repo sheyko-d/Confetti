@@ -32,6 +32,9 @@
     <!-- Required to vibrate, if game timer has run out -->
     <uses-permission android:name="android.permission.VIBRATE" />
 
+    <!-- Required to get a contacts list, needed for SMS invites -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
     <application
         android:name=".BaseApplication"
         android:allowBackup="true"
@@ -73,7 +76,17 @@
             android:name=".JoinActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden" />
+            android:label="@string/activity_title_join"
+            android:windowSoftInputMode="stateHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:host="moyersoftware.com"
+                    android:scheme="http"/>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".JoinLobbyActivity"
             android:screenOrientation="portrait"

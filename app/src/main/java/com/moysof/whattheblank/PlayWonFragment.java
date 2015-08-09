@@ -116,6 +116,7 @@ public class PlayWonFragment extends Fragment {
             try {
                 JSONObject card = new JSONObject();
                 card.put("id", PlayGameActivity.sSolvedCards.get(i).getId());
+                card.put("player_id", PlayGameActivity.sSolvedCards.get(i).getPlayerId());
                 card.put("time", PlayGameActivity.sSolvedCards.get(i).getSolvedTime());
                 cards.put(card);
             } catch (Exception e) {
@@ -176,16 +177,14 @@ public class PlayWonFragment extends Fragment {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("cards", cards.toString());
+                params.put("game_id", sGameId);
                 return params;
             }
-
 
         };
         // Add the request to the RequestQueue.
         Volley.newRequestQueue(getActivity()).add(stringRequest);
     }
-
-
 
     private void playAgain() {
         final ProgressDialog progressDialog = ProgressDialog.show(getActivity(), "",
