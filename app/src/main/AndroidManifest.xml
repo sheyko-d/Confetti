@@ -35,6 +35,9 @@
     <!-- Required to get a contacts list, needed for SMS invites -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
+    <!-- Required for purchasing of PRO version -->
+    <uses-permission android:name="com.android.vending" />
+
     <application
         android:name=".BaseApplication"
         android:allowBackup="true"

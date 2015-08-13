@@ -140,6 +140,7 @@ public class PlayGameActivity extends AppCompatActivity {
     }
 
     public void switchToNextTeam() {
+        shuffleCards();
         if (mCurrentTeamNum == sTeams.size() - 1) {
             mCurrentTeamNum = 0;
         } else {
