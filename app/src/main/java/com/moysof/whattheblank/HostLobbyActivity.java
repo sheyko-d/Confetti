@@ -157,11 +157,13 @@ public class HostLobbyActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             if (position == 0) {
-                return HostLobbyGameFragment.newInstance(mGameId, mPassword, mNumberTeams,
-                        mNumberPlayers, mNumberCards, mNumberTime, mQueue, mPlayerId);
-            } else {
                 mPlayersFragment = HostLobbyPlayersFragment.newInstance(mGameId, mNumberTeams,
                         mNumberPlayers, mQueue, mPlayerId);
+
+                return HostLobbyGameFragment.newInstance(mGameId, mPassword, mNumberTeams,
+                        mNumberPlayers, mNumberCards, mNumberTime, mQueue, mPlayerId,
+                        mPlayersFragment);
+            } else {
                 return mPlayersFragment;
             }
         }

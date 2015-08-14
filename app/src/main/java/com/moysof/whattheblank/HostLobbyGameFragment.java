@@ -44,6 +44,7 @@ public class HostLobbyGameFragment extends Fragment {
     public static Button sHostBtn;
     private static HostLobbyGameFragment sFragment;
     private static String sPlayerId;
+    private static HostLobbyPlayersFragment sPlayersFragment;
     public static SortedList<HostTeamsAdapter.Team> sTeams = new SortedList<>(HostTeamsAdapter.Team
             .class, new SortedList.Callback<HostTeamsAdapter.Team>() {
         @Override
@@ -90,7 +91,8 @@ public class HostLobbyGameFragment extends Fragment {
     public static HostLobbyGameFragment newInstance(String gameId, String password,
                                                     Integer numberTeams, Integer numberPlayers,
                                                     Integer numberCards, Integer numberTime,
-                                                    RequestQueue queue, String playerId) {
+                                                    RequestQueue queue, String playerId,
+                                                    HostLobbyPlayersFragment playersFragment) {
 
         sGameId = gameId;
         sPassword = password;
@@ -100,6 +102,7 @@ public class HostLobbyGameFragment extends Fragment {
         sNumberTime = numberTime;
         sQueue = queue;
         sPlayerId = playerId;
+        sPlayersFragment = playersFragment;
 
         return new HostLobbyGameFragment();
     }
@@ -129,7 +132,8 @@ public class HostLobbyGameFragment extends Fragment {
         ((TextView) rootView.findViewById(R.id.host_lobby_password_txt)).setText(sPassword + "");
 
         sTeams.clear();
-        mAdapter = new HostTeamsAdapter(getActivity(), sTeams, sNumberPlayers, sGameId, this);
+        mAdapter = new HostTeamsAdapter(getActivity(), sTeams, sNumberPlayers, sGameId,
+                sPlayersFragment);
         recyclerView.setAdapter(mAdapter);
 
         getTeams();

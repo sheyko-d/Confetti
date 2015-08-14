@@ -19,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.moysof.whattheblank.HostLobbyGameFragment;
+import com.moysof.whattheblank.HostLobbyPlayersFragment;
 import com.moysof.whattheblank.R;
 import com.moysof.whattheblank.util.Util;
 
@@ -32,19 +33,19 @@ import java.util.Map;
 public class HostTeamsAdapter extends
         RecyclerView.Adapter<HostTeamsAdapter.TeamsHolder> {
 
-    private HostLobbyGameFragment mGameFragment;
+    private HostLobbyPlayersFragment mPlayersFragment;
     private String mGameId;
     private Integer mNumberPlayers;
     private Context mContext;
     private SortedList<Team> teams;
 
     public HostTeamsAdapter(Context context, SortedList<Team> teams, Integer numberPlayers,
-                            String gameId, HostLobbyGameFragment gameFragment) {
+                            String gameId, HostLobbyPlayersFragment playersFragment) {
         mContext = context;
         mNumberPlayers = numberPlayers;
         this.teams = teams;
         mGameId = gameId;
-        mGameFragment = gameFragment;
+        mPlayersFragment = playersFragment;
     }
 
     public static class Team {
@@ -204,7 +205,10 @@ public class HostTeamsAdapter extends
                     JSONObject responseJSON = new JSONObject(response);
                     if (responseJSON.getString("result").equals("success")) {
                         mDialog.cancel();
-                        mGameFragment.getTeams();
+                        HostLobbyGameFragment.getTeams();
+                        if (mPlayersFragment!=null) {
+                            mPlayersFragment.getPlayers();
+                        }
                     } else if (responseJSON.getString("result").equals("empty")) {
                         Toast.makeText(mContext, "Some fields are empty",
                                 Toast.LENGTH_LONG).show();
