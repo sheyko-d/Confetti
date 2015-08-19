@@ -249,6 +249,8 @@ public class HostLobbyGameFragment extends Fragment {
                             sTeams.add(new HostTeamsAdapter.Team(id, number, count, colorHex));
                         }
                         sTeams.endBatchedUpdates();
+
+                        sPlayersFragment.getPlayers();
                     } else if (responseJSON.getString("result").equals("empty")) {
                         Toast.makeText(sFragment.getActivity(), "Some fields are empty",
                                 Toast.LENGTH_LONG).show();

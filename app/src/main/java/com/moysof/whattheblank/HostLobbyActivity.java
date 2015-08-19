@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,6 +65,8 @@ public class HostLobbyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
 
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
 
@@ -101,11 +104,9 @@ public class HostLobbyActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (mViewPager.getCurrentItem()==0) {
-                HostLobbyGameFragment.getTeams();
                 mPlayersFragment.getPlayers();
             } else {
                 mPlayersFragment.getPlayers();
-                HostLobbyGameFragment.getTeams();
             }
         }
     };

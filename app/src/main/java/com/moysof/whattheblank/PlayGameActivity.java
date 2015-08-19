@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -64,6 +65,8 @@ public class PlayGameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_game);
 
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         mActivity = this;
 
         mGameId = getIntent().getStringExtra(EXTRA_GAME_ID);
@@ -76,10 +79,11 @@ public class PlayGameActivity extends AppCompatActivity {
             for (int i = 0; i < teamsCount; i++) {
                 String id = teams.getJSONObject(i).getString("id");
                 String colorHex = teams.getJSONObject(i).getString("color");
-                sTeams.add(new Team(id, colorHex, i + 1));
+                String players = teams.getJSONObject(i).getString("players");
+                sTeams.add(new Team(id, colorHex, i + 1, players));
             }
         } catch (Exception e) {
-            Util.Log("Can't get teams");
+            Util.Log("Can't get teams " + e);
         }
 
         mHandler = new Handler();
@@ -134,7 +138,7 @@ public class PlayGameActivity extends AppCompatActivity {
                 sCards.add(new Card(id, playerId, img));
             }
         } catch (Exception e) {
-            Util.Log("Can't get cards");
+            Util.Log("Can't get cards " + e);
         }
         sAdapter.notifyDataSetChanged();
     }
@@ -257,11 +261,13 @@ public class PlayGameActivity extends AppCompatActivity {
         public String colorHex;
         public Integer score = 0;
         public Integer number;
+        public String players;
 
-        public Team(String id, String colorHex, Integer number) {
+        public Team(String id, String colorHex, Integer number, String players) {
             this.id = id;
             this.colorHex = colorHex;
             this.number = number;
+            this.players = players;
         }
 
         public String getId() {
@@ -282,6 +288,10 @@ public class PlayGameActivity extends AppCompatActivity {
 
         public Integer getNumber() {
             return number;
+        }
+
+        public String getPlayers() {
+            return players;
         }
 
         public void addPoint() {

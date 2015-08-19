@@ -157,9 +157,10 @@
     <string name="play_wait_title">The game is being played on the Host\'s phone!</string>
 
     <!-- Play Game (card) screen -->
-    <string name="play_title_start">Pass the phone to %1$s so that the game can begin.\n\nEach team
-        has %2$s to guess each card until all the cards are gone. Swipe right or left to skip
-        the card. Click the green check if your team guessed correctly.</string>
+    <string name="play_title_start">Pass the phone to %1$s so that the game can begin.</string>
+    <string name="play_title_start_2">Each team has %1$s to guess each card until all the cards are
+        gone. Swipe right or left to skip the card. Click the green check if your team guessed
+        correctly.</string>
 
     <!-- Play Game (winner) screen -->
     <string name="play_title_won">CONGRATULATIONS %1$s! You won!

@@ -120,9 +120,7 @@ public class HomeFragment extends Fragment {
             protected VolleyError parseNetworkError(VolleyError volleyError) {
                 if (volleyError.networkResponse != null
                         && volleyError.networkResponse.data != null) {
-                    VolleyError error
-                            = new VolleyError(new String(volleyError.networkResponse.data));
-                    volleyError = error;
+                    volleyError = new VolleyError(new String(volleyError.networkResponse.data));
                 }
 
                 return volleyError;

@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
@@ -45,6 +46,8 @@ public class JoinActivity extends AppCompatActivity implements GoogleApiClient.C
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
         mViewPager = (ViewPager) findViewById(R.id.view_pager);

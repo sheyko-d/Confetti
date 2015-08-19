@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.moysof.whattheblank.R;
+import com.moysof.whattheblank.util.Util;
 
 public class HostTimeSpinnerAdapter extends ArrayAdapter {
 
@@ -45,11 +46,7 @@ public class HostTimeSpinnerAdapter extends ArrayAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        if (mTimeArray[position] < 60) {
-            holder.titleTxt.setText(mTimeArray[position] + " seconds");
-        } else {
-            holder.titleTxt.setText(mTimeArray[position] / 60 + " minute");
-        }
+        holder.titleTxt.setText(Util.formatTime(mTimeArray[position]));
 
         return convertView;
     }

@@ -129,6 +129,11 @@ public class HostTeamsAdapter extends
         } else {
             holder.countTxt.setText("No players assigned");
         }
+        if (team.getAssignedCount() > mNumberPlayers) {
+            holder.countTxt.setTextColor(mContext.getResources().getColor(R.color.red));
+        } else {
+            holder.countTxt.setTextColor(mContext.getResources().getColor(R.color.secondary_text));
+        }
         holder.colorView.setBackgroundColor(team.getColor());
     }
 
@@ -140,7 +145,7 @@ public class HostTeamsAdapter extends
     private AlertDialog mDialog;
     private View mProgressBar;
     private RecyclerView mRecyclerView;
-    
+
     OnItemClickListener pickColorClickListener = new OnItemClickListener() {
 
         @Override
@@ -206,9 +211,6 @@ public class HostTeamsAdapter extends
                     if (responseJSON.getString("result").equals("success")) {
                         mDialog.cancel();
                         HostLobbyGameFragment.getTeams();
-                        if (mPlayersFragment!=null) {
-                            mPlayersFragment.getPlayers();
-                        }
                     } else if (responseJSON.getString("result").equals("empty")) {
                         Toast.makeText(mContext, "Some fields are empty",
                                 Toast.LENGTH_LONG).show();

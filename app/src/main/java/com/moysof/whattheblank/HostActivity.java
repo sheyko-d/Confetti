@@ -9,6 +9,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ScrollView;
@@ -64,6 +65,8 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         TextView idTxt = (TextView) findViewById(R.id.host_id_txt);
         mNameEditTxt = (EditText) findViewById(R.id.host_name_edit_txt);
@@ -156,8 +159,6 @@ public class HostActivity extends AppCompatActivity implements GoogleApiClient.C
         mTimeArray = getResources().getIntArray(R.array.time);
         mSpinnerTimeAdapter = new HostTimeSpinnerAdapter(this, mTimeArray);
         mTimeSpinner.setAdapter(mSpinnerTimeAdapter);
-        // Default 3 cards per player
-        mTimeSpinner.setSelection(3);
 
         mTeamsSpinner.setOnItemSelectedListener(mSpinnerItemSelected);
         mPlayersSpinner.setOnItemSelectedListener(mSpinnerItemSelected);

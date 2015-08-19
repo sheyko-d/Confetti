@@ -189,7 +189,6 @@ public class HostLobbyPlayersFragment extends Fragment {
                         mDialog.cancel();
                         HostLobbyGameFragment.sForceUpdate = true;
                         HostLobbyGameFragment.getTeams();
-                        getPlayers();
                     } else if (responseJSON.getString("result").equals("empty")) {
                         Toast.makeText(getActivity(), "Some fields are empty",
                                 Toast.LENGTH_LONG).show();
@@ -264,7 +263,6 @@ public class HostLobbyPlayersFragment extends Fragment {
                             String name = playersJSON.getJSONObject(i).getString("name");
                             String username = playersJSON.getJSONObject(i).getString("username");
                             String avatar = playersJSON.getJSONObject(i).getString("avatar");
-                            String teamId = playersJSON.getJSONObject(i).getString("team_id");
                             String color = playersJSON.getJSONObject(i).getString("color");
                             Boolean isManual = playersJSON.getJSONObject(i).getBoolean("is_manual");
                             if (isManual) {
@@ -277,9 +275,19 @@ public class HostLobbyPlayersFragment extends Fragment {
                         }
                         sPlayers.endBatchedUpdates();
 
+                        Boolean teamsCountIsCorrect = true;
+                        int teamsCount = HostLobbyGameFragment.sTeams.size();
+                        for (int i = 0; i < teamsCount; i++) {
+                            if (HostLobbyGameFragment.sTeams.get(i).getAssignedCount()
+                                    > sNumberPlayers) {
+                                teamsCountIsCorrect = false;
+                            }
+                        }
+
                         mPlayersBtn.setEnabled(playersCount < sNumberPlayers * sNumberTeams);
 
-                        HostLobbyGameFragment.sHostBtn.setEnabled(HostLobbyPlayersFragment.sPlayers
+                        HostLobbyGameFragment.sHostBtn.setEnabled(teamsCountIsCorrect
+                                && HostLobbyPlayersFragment.sPlayers
                                 .size() >= sNumberTeams * sNumberPlayers);
                     } else if (responseJSON.getString("result").equals("empty")) {
                         Toast.makeText(getActivity(), "Some fields are empty",

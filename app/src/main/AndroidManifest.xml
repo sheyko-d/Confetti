@@ -110,7 +110,8 @@
         <activity
             android:name=".PlayGameActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.NoActionBar.Fullscreen" />
+            android:theme="@style/AppTheme.NoActionBar.Fullscreen" >
+        </activity>
         <activity
             android:name=".PlayGameWaitActivity"
             android:screenOrientation="landscape"

@@ -181,20 +181,12 @@ public class HostPlayersAdapter extends
 
             int teamsCount = HostLobbyGameFragment.sTeams.size();
             ArrayList<String> teamColors = new ArrayList<>();
-            ArrayList<String> otherTeamColors = new ArrayList<>();
             for (int i = 0; i < teamsCount; i++) {
                 teamColors.add(HostLobbyGameFragment.sTeams.get(i).getColorHex());
             }
 
-            // Block already fully filled teams
-            for (int i = 0; i < teamsCount; i++) {
-                if (HostLobbyGameFragment.sTeams.get(i).getAssignedCount()
-                        >= HostLobbyGameFragment.sNumberPlayers) {
-                    otherTeamColors.add(HostLobbyGameFragment.sTeams.get(i).getColorHex());
-                }
-            }
-
-            final ColorsAdapter adapter = new ColorsAdapter(mContext, teamColors, otherTeamColors);
+            final ColorsAdapter adapter = new ColorsAdapter(mContext, teamColors,
+                    new ArrayList<String>());
             adapter.setTeamColor(players.get(position).getTeamColorHex());
             mRecyclerView.setAdapter(adapter);
 
@@ -233,7 +225,7 @@ public class HostPlayersAdapter extends
                     JSONObject responseJSON = new JSONObject(response);
                     if (responseJSON.getString("result").equals("success")) {
                         mDialog.cancel();
-                        mPlayersFragment.getPlayers();
+                        HostLobbyGameFragment.getTeams();
                     } else if (responseJSON.getString("result").equals("empty")) {
                         Toast.makeText(mContext, "Some fields are empty",
                                 Toast.LENGTH_LONG).show();

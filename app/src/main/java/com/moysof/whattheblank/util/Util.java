@@ -115,19 +115,38 @@ public class Util {
         if (sec < 60) {
             return "0:" + new DecimalFormat("00").format(sec);
         } else {
-            return "1:00";
+            int minutes = 0;
+            while (sec % 60 == 1) {
+                sec = -60;
+                minutes++;
+            }
+            return minutes + ":" + sec;
         }
     }
 
     public static String formatTime(int sec) {
-        String ending = "s";
+        String secEnding = "s";
         if ((sec + "").endsWith("1")) {
-            ending = "";
+            secEnding = "";
         }
         if (sec < 60) {
-            return sec + " second" + ending;
+            return sec + " second" + secEnding;
         } else {
-            return "1 minute";
+            int minutes = (int) Math.floor(sec / 60);
+            sec = sec % 60;
+
+            String minEnding = "s";
+            if ((minutes + "").endsWith("1")) {
+                minEnding = "";
+            }
+            if (sec == 0) {
+                return minutes + " minute" + minEnding;
+            } else {
+                if ((sec + "").endsWith("1")) {
+                    secEnding = "";
+                }
+                return minutes + " minute" + minEnding + ", " + sec + " second" + secEnding;
+            }
         }
     }
 

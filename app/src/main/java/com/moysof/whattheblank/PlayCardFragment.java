@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.text.TextUtils;
@@ -81,10 +82,21 @@ public class PlayCardFragment extends Fragment {
     BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(Util.BROADCAST_TIMER_TICK)) {
-                PlayGameActivity.sTime = Util.formatTimer(intent.getIntExtra(EXTRA_TIME, 0));
-                mTimerTxt.setText(PlayGameActivity.sTime);
-                mUsedTime++;
+            try {
+                if (intent.getAction().equals(Util.BROADCAST_TIMER_TICK)) {
+                    PlayGameActivity.sTime = Util.formatTimer(intent.getIntExtra(EXTRA_TIME, 0));
+                    if (intent.getIntExtra(EXTRA_TIME, 0) > 5) {
+                        mTimerTxt.setTextColor(getResources().getColor(R.color.primary));
+                    } else {
+                        mTimerTxt.setTextColor(getResources().getColor(R.color.red));
+                        ((Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE))
+                                .vibrate(100);
+
+                    }
+                    mTimerTxt.setText(PlayGameActivity.sTime);
+                    mUsedTime++;
+                }
+            } catch (Exception e) {
             }
         }
     };
@@ -145,7 +157,6 @@ public class PlayCardFragment extends Fragment {
 
         PlayGameActivity.sCards.remove((int) (PlayGameActivity.sViewPager.getCurrentItem() - 1));
         if (PlayGameActivity.sCards.size() > 0) {
-            Util.Log("open first page");
 
             PlayGameActivity.sDontStopTimer = true;
             int currentPos = PlayGameActivity.sViewPager.getCurrentItem();
