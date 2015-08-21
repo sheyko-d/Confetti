@@ -7,7 +7,7 @@
     android:paddingRight="24dp"
     android:paddingTop="16dp">
 
-    <com.moysof.whattheblank.typeface.TextRobotoRegular
+    <com.moysof.blank.typeface.TextRobotoRegular
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:autoLink="web"
@@ -16,7 +16,7 @@
         android:textColorLink="@color/primary"
         android:textSize="14sp" />
 
-    <com.moysof.whattheblank.typeface.TextRobotoRegular
+    <com.moysof.blank.typeface.TextRobotoRegular
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

@@ -16,7 +16,7 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <com.moysof.whattheblank.typeface.TextRobotoRegular
+        <com.moysof.blank.typeface.TextRobotoRegular
             android:id="@+id/contacts_name_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
             android:textColor="@color/primary_text"
             android:textSize="16sp" />
 
-        <com.moysof.whattheblank.typeface.TextRobotoLight
+        <com.moysof.blank.typeface.TextRobotoLight
             android:id="@+id/contacts_phone_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

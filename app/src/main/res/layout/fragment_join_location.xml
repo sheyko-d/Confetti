@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.moysof.whattheblank.typeface.TextRobotoRegular
+    <com.moysof.blank.typeface.TextRobotoRegular
         android:id="@+id/join_location_loading_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,7 +15,7 @@
         android:textColor="@color/primary_text"
         android:textSize="14sp" />
 
-    <com.moysof.whattheblank.typeface.TextBasicTitleBold
+    <com.moysof.blank.typeface.TextBasicTitleBold
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="12dp"
@@ -51,7 +51,7 @@
                 android:contentDescription="@null"
                 android:src="@drawable/search_placeholder" />
 
-            <com.moysof.whattheblank.typeface.TextRobotoRegular
+            <com.moysof.blank.typeface.TextRobotoRegular
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -65,7 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.moysof.whattheblank.view.EmptyRecyclerView
+            <com.moysof.blank.view.EmptyRecyclerView
                 android:id="@+id/join_location_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

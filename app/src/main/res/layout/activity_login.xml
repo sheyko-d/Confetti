@@ -61,7 +61,7 @@
         </LinearLayout>
     </ScrollView>
 
-    <com.moysof.whattheblank.typeface.ButtonRobotoLight
+    <com.moysof.blank.typeface.ButtonRobotoLight
         android:id="@+id/login_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
         android:text="@string/login_btn"
         android:theme="@style/ButtonPurple" />
 
-    <com.moysof.whattheblank.typeface.ButtonRobotoLight
+    <com.moysof.blank.typeface.ButtonRobotoLight
         android:id="@+id/login_register_btn"
         android:layout_width="match_parent"
         android:layout_height="36dp"

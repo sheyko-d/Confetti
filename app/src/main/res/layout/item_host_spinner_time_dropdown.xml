@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.moysof.whattheblank.typeface.TextRobotoRegular
+    <com.moysof.blank.typeface.TextRobotoRegular
         android:id="@+id/host_spinner_title_txt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

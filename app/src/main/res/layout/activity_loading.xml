@@ -23,7 +23,7 @@
             android:src="@drawable/logo_short_purple" />
     </FrameLayout>
 
-    <com.moysof.whattheblank.typeface.ButtonRobotoLight
+    <com.moysof.blank.typeface.ButtonRobotoLight
         android:id="@+id/loading_button_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
         android:textSize="18sp"
         android:theme="@style/ButtonEmail" />
 
-    <com.moysof.whattheblank.typeface.ButtonRobotoLight
+    <com.moysof.blank.typeface.ButtonRobotoLight
         android:id="@+id/loading_button_google"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
         android:textSize="18sp"
         android:theme="@style/ButtonGoogle" />
 
-    <com.moysof.whattheblank.typeface.ButtonRobotoLight
+    <com.moysof.blank.typeface.ButtonRobotoLight
         android:id="@+id/loading_button_facebook"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

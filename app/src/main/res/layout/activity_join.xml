@@ -35,7 +35,7 @@
                 android:background="?selectableItemBackground"
                 android:src="@drawable/ic_btn_back" />
 
-            <com.moysof.whattheblank.typeface.TextBasicTitleBold
+            <com.moysof.blank.typeface.TextBasicTitleBold
                 android:id="@+id/join_title_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

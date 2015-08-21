@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.moysof.whattheblank">
+    package="com.moysof.blank">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -39,13 +39,13 @@
     <uses-permission android:name="com.android.vending" />
 
     <application
-        android:name=".BaseApplication"
+        android:name="com.moysof.blank.BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".LauncherActivity"
+            android:name="com.moysof.blank.LauncherActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.White">
             <intent-filter>
@@ -55,28 +55,28 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoadingActivity"
+            android:name="com.moysof.blank.LoadingActivity"
             android:label="@string/app_name_condensed"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.White" />
         <activity
-            android:name=".LoginActivity"
+            android:name="com.moysof.blank.LoginActivity"
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.White"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".RegisterActivity"
+            android:name="com.moysof.blank.RegisterActivity"
             android:label="@string/title_activity_register"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.White"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.moysof.blank.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".JoinActivity"
+            android:name="com.moysof.blank.JoinActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/activity_title_join"
@@ -91,29 +91,29 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".JoinLobbyActivity"
+            android:name="com.moysof.blank.JoinLobbyActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".HostActivity"
+            android:name="com.moysof.blank.HostActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".HostLobbyActivity"
+            android:name="com.moysof.blank.HostLobbyActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".StartGameActivity"
+            android:name="com.moysof.blank.StartGameActivity"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar.Fullscreen" />
         <activity
-            android:name=".PlayGameActivity"
+            android:name="com.moysof.blank.PlayGameActivity"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar.Fullscreen" >
         </activity>
         <activity
-            android:name=".PlayGameWaitActivity"
+            android:name="com.moysof.blank.PlayGameWaitActivity"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar.Fullscreen" />
 
@@ -144,17 +144,17 @@
         </receiver>
 
         <service
-            android:name=".RegistrationIntentService"
+            android:name="com.moysof.blank.RegistrationIntentService"
             android:exported="false" />
         <service
-            android:name=".MyGcmListenerService"
+            android:name="com.moysof.blank.MyGcmListenerService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
         <service
-            android:name=".MyInstanceIDListenerService"
+            android:name="com.moysof.blank.MyInstanceIDListenerService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.gms.iid.InstanceID" />

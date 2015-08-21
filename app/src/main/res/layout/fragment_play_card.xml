@@ -53,14 +53,14 @@
                 android:layout_alignParentBottom="true"
                 android:orientation="vertical">
 
-                <com.moysof.whattheblank.typeface.TextBasicTitleBold
+                <com.moysof.blank.typeface.TextBasicTitleBold
                     android:id="@+id/play_card_round_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/primary"
                     android:textSize="16sp" />
 
-                <com.moysof.whattheblank.typeface.TextBasicTitleBold
+                <com.moysof.blank.typeface.TextBasicTitleBold
                     android:id="@+id/play_card_count_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -69,7 +69,7 @@
                     android:textSize="16sp" />
             </LinearLayout>
 
-            <com.moysof.whattheblank.typeface.TextBasicTitleBold
+            <com.moysof.blank.typeface.TextBasicTitleBold
                 android:id="@+id/play_card_timer_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

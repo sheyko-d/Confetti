@@ -11,7 +11,7 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
 
-        <com.moysof.whattheblank.typeface.TextRobotoRegular
+        <com.moysof.blank.typeface.TextRobotoRegular
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -19,14 +19,14 @@
             android:textColor="@color/primary_text"
             android:textSize="16sp" />
 
-        <com.moysof.whattheblank.typeface.TextRobotoRegular
+        <com.moysof.blank.typeface.TextRobotoRegular
             android:id="@+id/host_lobby_id_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/secondary_text"
             android:textSize="14sp" />
 
-        <com.moysof.whattheblank.typeface.TextRobotoRegular
+        <com.moysof.blank.typeface.TextRobotoRegular
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -34,7 +34,7 @@
             android:textColor="@color/primary_text"
             android:textSize="16sp" />
 
-        <com.moysof.whattheblank.typeface.TextRobotoRegular
+        <com.moysof.blank.typeface.TextRobotoRegular
             android:id="@+id/host_lobby_password_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
             android:textSize="14sp" />
     </LinearLayout>
 
-    <com.moysof.whattheblank.typeface.TextBasicTitleBold
+    <com.moysof.blank.typeface.TextBasicTitleBold
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="12dp"
@@ -68,7 +68,7 @@
         android:paddingTop="8dp"
         android:scrollbars="vertical" />
 
-    <com.moysof.whattheblank.typeface.ButtonBasicTitle
+    <com.moysof.blank.typeface.ButtonBasicTitle
         android:id="@+id/host_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
