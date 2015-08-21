@@ -31,7 +31,7 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <com.moysof.blank.typeface.TextRobotoRegular
+            <com.moysof.confetti.typeface.TextRobotoRegular
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -54,14 +54,14 @@
                 android:layout_marginTop="16dp"
                 android:orientation="vertical">
 
-                <com.moysof.blank.typeface.TextRobotoRegular
+                <com.moysof.confetti.typeface.TextRobotoRegular
                     android:id="@+id/play_name_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/primary_text"
                     android:textSize="14sp" />
 
-                <com.moysof.blank.typeface.TextRobotoRegular
+                <com.moysof.confetti.typeface.TextRobotoRegular
                     android:id="@+id/play_username_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

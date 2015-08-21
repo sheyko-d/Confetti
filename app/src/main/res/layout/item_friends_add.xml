@@ -8,7 +8,7 @@
     android:paddingRight="12dp"
     android:paddingTop="4dp">
 
-    <com.moysof.blank.typeface.ButtonBasicTitle
+    <com.moysof.confetti.typeface.ButtonBasicTitle
         android:id="@+id/friends_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
         android:textSize="18sp"
         android:theme="@style/ButtonPurple" />
 
-    <com.moysof.blank.typeface.ButtonBasicTitle
+    <com.moysof.confetti.typeface.ButtonBasicTitle
         android:id="@+id/friends_invite_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

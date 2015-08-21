@@ -35,7 +35,7 @@
                 android:contentDescription="@null"
                 android:src="@drawable/ic_btn_back" />
 
-            <com.moysof.blank.typeface.TextBasicTitleBold
+            <com.moysof.confetti.typeface.TextBasicTitleBold
                 android:id="@+id/join_title_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -69,14 +69,14 @@
                 android:paddingRight="16dp"
                 android:paddingTop="12dp">
 
-                <com.moysof.blank.typeface.TextRobotoRegular
+                <com.moysof.confetti.typeface.TextRobotoRegular
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/host_id_title"
                     android:textColor="@color/primary_text"
                     android:textSize="14sp" />
 
-                <com.moysof.blank.typeface.TextRobotoRegular
+                <com.moysof.confetti.typeface.TextRobotoRegular
                     android:id="@+id/host_id_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -93,14 +93,14 @@
                 android:paddingRight="16dp"
                 android:paddingTop="12dp">
 
-                <com.moysof.blank.typeface.TextRobotoRegular
+                <com.moysof.confetti.typeface.TextRobotoRegular
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/host_title_name"
                     android:textColor="@color/primary_text"
                     android:textSize="14sp" />
 
-                <com.moysof.blank.typeface.TextRobotoRegular
+                <com.moysof.confetti.typeface.TextRobotoRegular
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/host_desc_name"
@@ -136,14 +136,14 @@
                 android:paddingRight="16dp"
                 android:paddingTop="12dp">
 
-                <com.moysof.blank.typeface.TextRobotoRegular
+                <com.moysof.confetti.typeface.TextRobotoRegular
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/host_title_password"
                     android:textColor="@color/primary_text"
                     android:textSize="14sp" />
 
-                <com.moysof.blank.typeface.TextRobotoRegular
+                <com.moysof.confetti.typeface.TextRobotoRegular
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/host_desc_password"
@@ -177,7 +177,7 @@
                 android:paddingRight="16dp"
                 android:paddingTop="12dp">
 
-                <com.moysof.blank.typeface.TextRobotoRegular
+                <com.moysof.confetti.typeface.TextRobotoRegular
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/host_title_teams"
@@ -199,7 +199,7 @@
                 android:paddingRight="16dp"
                 android:paddingTop="12dp">
 
-                <com.moysof.blank.typeface.TextRobotoRegular
+                <com.moysof.confetti.typeface.TextRobotoRegular
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/host_title_players"
@@ -221,7 +221,7 @@
                 android:paddingRight="16dp"
                 android:paddingTop="12dp">
 
-                <com.moysof.blank.typeface.TextRobotoRegular
+                <com.moysof.confetti.typeface.TextRobotoRegular
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/host_title_cards"
@@ -243,7 +243,7 @@
                 android:paddingRight="16dp"
                 android:paddingTop="12dp">
 
-                <com.moysof.blank.typeface.TextRobotoRegular
+                <com.moysof.confetti.typeface.TextRobotoRegular
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/host_title_time"
@@ -257,7 +257,7 @@
                     android:entries="@array/time" />
             </LinearLayout>
 
-            <com.moysof.blank.typeface.ButtonBasicTitle
+            <com.moysof.confetti.typeface.ButtonBasicTitle
                 android:id="@+id/host_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

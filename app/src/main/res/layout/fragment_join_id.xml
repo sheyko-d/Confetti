@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.moysof.blank.typeface.TextRobotoRegular
+    <com.moysof.confetti.typeface.TextRobotoRegular
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
@@ -38,7 +38,7 @@
             android:visibility="gone" />
     </FrameLayout>
 
-    <com.moysof.blank.typeface.TextBasicTitleBold
+    <com.moysof.confetti.typeface.TextBasicTitleBold
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="12dp"
@@ -74,7 +74,7 @@
                 android:contentDescription="@null"
                 android:src="@drawable/search_placeholder" />
 
-            <com.moysof.blank.typeface.TextRobotoRegular
+            <com.moysof.confetti.typeface.TextRobotoRegular
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -88,7 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.moysof.blank.view.EmptyRecyclerView
+            <com.moysof.confetti.view.EmptyRecyclerView
                 android:id="@+id/join_id_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

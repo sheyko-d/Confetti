@@ -7,7 +7,7 @@
     android:paddingRight="12dp"
     android:paddingTop="4dp">
 
-    <com.moysof.blank.typeface.ButtonBasicTitle
+    <com.moysof.confetti.typeface.ButtonBasicTitle
         android:id="@+id/friends_facebook_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

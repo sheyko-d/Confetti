@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.moysof.blank">
+    package="com.moysof.confetti">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -39,13 +39,13 @@
     <uses-permission android:name="com.android.vending" />
 
     <application
-        android:name="com.moysof.blank.BaseApplication"
+        android:name="com.moysof.confetti.BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.moysof.blank.LauncherActivity"
+            android:name="com.moysof.confetti.LauncherActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.White">
             <intent-filter>
@@ -55,28 +55,28 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.moysof.blank.LoadingActivity"
-            android:label="@string/app_name_condensed"
+            android:name="com.moysof.confetti.LoadingActivity"
+            android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.White" />
         <activity
-            android:name="com.moysof.blank.LoginActivity"
+            android:name="com.moysof.confetti.LoginActivity"
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.White"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="com.moysof.blank.RegisterActivity"
+            android:name="com.moysof.confetti.RegisterActivity"
             android:label="@string/title_activity_register"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.White"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="com.moysof.blank.MainActivity"
+            android:name="com.moysof.confetti.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.moysof.blank.JoinActivity"
+            android:name="com.moysof.confetti.JoinActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/activity_title_join"
@@ -91,29 +91,29 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.moysof.blank.JoinLobbyActivity"
+            android:name="com.moysof.confetti.JoinLobbyActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.moysof.blank.HostActivity"
+            android:name="com.moysof.confetti.HostActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="com.moysof.blank.HostLobbyActivity"
+            android:name="com.moysof.confetti.HostLobbyActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.moysof.blank.StartGameActivity"
+            android:name="com.moysof.confetti.StartGameActivity"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar.Fullscreen" />
         <activity
-            android:name="com.moysof.blank.PlayGameActivity"
+            android:name="com.moysof.confetti.PlayGameActivity"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar.Fullscreen" >
         </activity>
         <activity
-            android:name="com.moysof.blank.PlayGameWaitActivity"
+            android:name="com.moysof.confetti.PlayGameWaitActivity"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar.Fullscreen" />
 
@@ -139,22 +139,22 @@
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
 
-                <category android:name="com.moysof.whattheblank" />
+                <category android:name="com.moysof.confetti" />
             </intent-filter>
         </receiver>
 
         <service
-            android:name="com.moysof.blank.RegistrationIntentService"
+            android:name="com.moysof.confetti.RegistrationIntentService"
             android:exported="false" />
         <service
-            android:name="com.moysof.blank.MyGcmListenerService"
+            android:name="com.moysof.confetti.MyGcmListenerService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
         <service
-            android:name="com.moysof.blank.MyInstanceIDListenerService"
+            android:name="com.moysof.confetti.MyInstanceIDListenerService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.gms.iid.InstanceID" />

@@ -1,4 +1,4 @@
-<com.moysof.blank.view.ControllableViewPager
+<com.moysof.confetti.view.ControllableViewPager
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/start_view_pager"
     android:layout_width="match_parent"
