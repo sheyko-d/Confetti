@@ -170,7 +170,6 @@ public class PlayCardFragment extends Fragment {
             PlayGameActivity.sDontStopTimer = false;
         } else {
             if (!isLastRound) {
-                sActivity.switchToFirstTeam();
                 sActivity.switchToNextRound();
                 gameIsFinished = false;
             }

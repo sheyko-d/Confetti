@@ -152,13 +152,10 @@ public class PlayGameActivity extends AppCompatActivity {
         }
     }
 
-    public void switchToFirstTeam() {
-        mCurrentTeamNum = 0;
-    }
-
     public void switchToNextRound() {
         updateCards();
         shuffleCards();
+        switchToNextTeam();
         mCurrentRoundNum++;
     }
 
