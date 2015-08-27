@@ -3,8 +3,8 @@
 
     <string name="app_name">Confetti</string>
     <string name="url_website">www.moyersoftware.com</string>
-    <string name="facebook_app_id">943466632343086</string>
-    <string name="gcm_sender_id">23881468737</string>
+    <string name="facebook_app_id">847678718633832</string>
+    <string name="gcm_sender_id">916497945482</string>
 
     <!-- Loading screen -->
     <string name="loading_btn_email">Register with Email</string>
